@@ -1,0 +1,32 @@
+div.main{
+    top:15%;
+}
+
+h2{
+    padding: 20px;
+    background-color: rgba(14,39,72,255);
+    color: rgba(250,181,0,255);
+    font-weight: bold;
+    border-radius: 2px;
+}
+
+input{
+    position:relative;
+    width: inherit;
+    padding: 5px;
+    background: whitesmoke;
+    border: 2px solid rgba(0,0,0,.15);
+    box-shadow: 0 5px 10px rgba(0,0,0,.1) inset;
+    border-radius: 5px;
+    font-size:15px;
+    color:rgb(86, 86, 86);
+
+}
+
+button{
+    width: 200px;
+    padding:5px;
+    border-radius: 10px;
+    background-color: green;
+    color: white;
+}

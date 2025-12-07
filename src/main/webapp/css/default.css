@@ -1,0 +1,97 @@
+body{
+    background-color:whitesmoke;
+}
+
+h1{
+    position:absolute;
+    font-size: 225%;
+    left: 50%;
+    top: 25%;
+    transform: translateX(-50%);
+    color:rgba(250,181,0,255);
+    text-align: center;
+    font-weight: bold;
+}
+
+h2{
+    padding: 20px;
+    background-color: rgba(14,39,72,255);
+    color: rgba(250,181,0,255);
+    font-weight: bold;
+    border-radius: 2px;
+}
+
+img.sortie{
+    position:absolute;
+    right: 5%;
+    height:50px;
+    width:50px;
+    padding: 1%;
+    border-radius: 5px;
+    background-color: white;
+}
+
+img.logo{
+    position:relative;
+    left:5%;
+    height: 50px;
+    width: 100px;
+    padding:1%;
+    border-radius: 5px;
+    background-color: white;
+}
+
+button.redirect{
+    background-color: rgb(189, 189, 189);
+    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+}
+
+input{
+    position:relative;
+    width: inherit;
+    padding: 5px;
+    background: whitesmoke;
+    border: 2px solid rgba(0,0,0,.15);
+    box-shadow: 0 5px 10px rgba(0,0,0,.1) inset;
+    border-radius: 5px;
+    font-size:15px;
+    color:rgb(86, 86, 86);
+
+}
+
+textarea{
+    position:relative;
+    width: max-content;
+    padding: 5px;
+    background: whitesmoke;
+    border: 2px solid rgba(0,0,0,.15);
+    box-shadow: 0 5px 10px rgba(0,0,0,.1) inset;
+    border-radius: 5px;
+    font-size:15px;
+    color:rgb(86, 86, 86);
+
+}
+
+select{
+    position:relative;
+    width: inherit;
+    padding: 5px;
+    background: whitesmoke;
+    border: 2px solid rgba(0,0,0,.15);
+    box-shadow: 0 5px 10px rgba(0,0,0,.1) inset;
+    border-radius: 5px;
+    font-size:15px;
+    color:rgb(86, 86, 86);
+
+}
+
+.navbar{
+    background-color:rgba(14,39,72,255) !important;
+}
+.nav-link{
+    border-width: 0;
+    background-color: rgba(14,39,72,255) !important;
+}

@@ -1,0 +1,17 @@
+x Export : traiter les \n : remplacer par un point.
+Vérifier le genre (enreg quand pas mas, fem) en cas de modif.
+Vérifier enreg du genre.
+Genre affiché en rouge si non Masc / Fem (changement par rapport à l'import).
+Ecran formulaireVe ajouter un bouton de réinitialisation login / password.
+Genre "Ne se prononce pas" -> mettre à 4.
+
+Bouton etat mission -> changer couleur de "Mettre à jour".
+Ajouter les 3 états.
+
+x Ajouter 1 colonne "boursier"
+x Ajouter 1 colonne "non résident en France"
+Bouton tout télécharger
+
+Mettre la partie statut de mission en haut
++ bouton télécharger
+

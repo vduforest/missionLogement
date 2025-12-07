@@ -1,0 +1,10 @@
+img.icon{
+    height:25px !important;
+    width:25px !important;
+}
+
+button.creation{
+    width:90%;
+    padding:5px;
+    border-radius: 10px;
+}

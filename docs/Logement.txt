@@ -1,0 +1,19 @@
+Ajouter Année, nom, scei
+
+MAJ sur l'actualisation
+Date de naissance et autres dates sur l'export incorrect
+
+Liste de tous les dossiers
+	ajouter la colonne état
+	v = validé
+	x = refusé
+	triangle, pas traité mais soumis
+	vide = pas soumis
+	
+	Dans le formulaire étudiant: transformer le textarea en zone de texte rouge
+
+vérifier les zones obligatoire du formulare (tout sauf les commentaires)
+
+Bouton sauvegarde administrateur quand le dossier est traité
+
+Afficher message sur page de connexion en fonction du statut

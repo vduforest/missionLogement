@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-Compile WAR</actionName>
+            <displayName>Compile WAR</displayName>
+            <preAction>build-with-dependencies</preAction>
+            <recursive>false</recursive>
+            <goals>
+                <goal>compile</goal>
+                <goal>war:war</goal>
+            </goals>
+        </action>
+    </actions>
