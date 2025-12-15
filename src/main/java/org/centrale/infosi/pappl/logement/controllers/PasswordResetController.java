@@ -107,7 +107,7 @@ public class PasswordResetController {
     }
     
     /**
-     * Gestion de la route permettant d'afficher la page de modifiation son mot de passe 
+     * Gestion de la route permettant d'afficher la page de modification son mot de passe 
      * @param request La requête http
      * @return La page de changement de mot de passe
      */

@@ -11,6 +11,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jakartaee>10.0.0</jakartaee>
     <springversion>6.1.14</springversion>
+    <sonar.organization> vduforest </sonar.organization>
+    <sonar.host.url> https://sonarcloud.io</sonar.host.url>
   </properties>
     
   <dependencies>
