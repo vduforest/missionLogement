@@ -7,9 +7,10 @@ package org.centrale.infosi.pappl.logement.controllers;
 import org.centrale.infosi.pappl.logement.util.PasswordUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.centrale.infosi.pappl.logement.items.Formulaire;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -67,25 +68,48 @@ public class FirstConnectionController {
     public ModelAndView handleCreationCompte(HttpServletRequest request) {
         ModelAndView returned = new ModelAndView("index"); //erreur 404
         String token = request.getParameter("token");
-        //vérification du token
-        //if(verifyToken(token)){
+        //vérification du token cad que si le token est expiré alors on envoie une page d'erreur
+        if(verifyToken(token)==1){
             // Si le  token existe, il faut récupérer le numéro SCEI de la personne et son mail et préremplir la page
-        String mail = formulaireRepository.findMailByToken(token).get(0);
-        String numSCEI = formulaireRepository.findSCEIByToken(token).get(0);
+            String mail = formulaireRepository.findMailByToken(token).get(0);
+            String numSCEI = formulaireRepository.findSCEIByToken(token).get(0);
             
-        returned = new ModelAndView("premier_connexion");
-        returned.addObject("mySCEI",numSCEI);  
-        returned.addObject("mail",mail);
-        returned.addObject("error", false);
+            returned = new ModelAndView("premier_connexion");
+            returned.addObject("mySCEI",numSCEI);  
+            returned.addObject("mail",mail);
+            returned.addObject("error", false);    
             //returned.addObject("token",token);
-        //}
+        } else if(verifyToken(token)==0){
+            // Si le token n'existe pas ou est expiré, alors on supprime le token de la base et on envoie une page demandant à l'élève d'aller faire mot de passe oublié
+            returned = new ModelAndView("tokenExpiry");
+        } else{
+            returned = new ModelAndView("index");
+        }
         return returned;
     }
     
-    private boolean verifyToken(String token) {
+    /**
+     * Méthode permettant de vérifier si un token existe et qu'il n'est pas expiré
+     *
+     * @param token token à vérifier
+     * @return true si le token est valide, false sinon
+     */
+    private int verifyToken(String token) {
         Optional<Personne> result = personneRepository.findByFirstConnectionToken(token);
-    
-        return result.isPresent() && result.get().getLogin() != null;
+        
+        // Test de l'existence de la personne
+        if (result.isPresent()){
+            
+            Date expiry = (Date) result.get().getFirstConnectionTokenExpiry();
+            // Test de l'expiration du token
+            Date now = new Date();
+            if (expiry.before(now)){
+                return 0;
+            }
+            return 1;
+        }
+        
+        return 2;
     }
 
     /**
@@ -222,8 +246,13 @@ public class FirstConnectionController {
                 if (personne.getRoleId().getRoleId() == 1 && personne.getFirstConnectionToken() == null) {
                     String token = generateUniqueToken(); // Generate a secure token
                     personne.setFirstConnectionToken(token); // Set the token in the user record
-                    LocalDate oneMonthLater = LocalDate.now().plusMonths(1);  // Add 1 month to the current date
-                    Date expiryDate = Date.valueOf(oneMonthLater);  // Convert to java.sql.Date
+                    Date dateNow = new Date();
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(dateNow);
+                    cal.add(Calendar.MINUTE, 2);
+                    Date expiryDate = cal.getTime();
+                    // LocalDate oneMonthLater = LocalDate.now().plusMonths(1);  // Add 1 month to the current date
+                    // java.sql.Date expiryDate = java.sql.Date.valueOf(oneMinuteLater);  // Convert to java.sql.Date
                     personne.setFirstConnectionTokenExpiry(expiryDate);
 
                     personneRepository.save(personne); // Save the updated user entity

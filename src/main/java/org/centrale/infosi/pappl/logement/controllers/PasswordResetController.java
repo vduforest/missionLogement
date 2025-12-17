@@ -53,8 +53,6 @@ public class PasswordResetController {
      * @param request La requête http
      * @return La page de connexion
      */
-    
-
     @RequestMapping(value="submitpasswordreset.do", method=RequestMethod.POST)
     public ModelAndView handlePasswordReset(HttpServletRequest request) {
         ModelAndView returned = new ModelAndView("index"); 
@@ -90,7 +88,7 @@ public class PasswordResetController {
     
     
     /**
-     * Gestion de la réinitialisation du mot de passe
+     * Gestion de la réinitialisation du mot de passe (doit être modif)
      * @param request La requête http
      * @return La vue de changement du mot de passe
      */

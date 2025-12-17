@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import org.centrale.infosi.pappl.logement.items.ConfigModif;
 import org.centrale.infosi.pappl.logement.items.Connexion;
+import org.centrale.infosi.pappl.logement.items.Personne;
 import org.centrale.infosi.pappl.logement.repositories.ConfigModifRepository;
 import org.centrale.infosi.pappl.logement.repositories.FormulaireRepository;
 import org.centrale.infosi.pappl.logement.repositories.PersonneRepository;
@@ -60,6 +61,8 @@ public class MailController {
     private static final int MSGPREMIERCONTACT = 7;
     private static final int MSGPFIN = 9;
     private static final int MAILCONTACT = 8;
+    private static final int SIGNATURE = 10;
+    private static final int NB = 11;
     
     //@Value("${spring.mail.username}")
     //private String usernameSMTP;
@@ -197,8 +200,24 @@ public class MailController {
             message.setSubject(subject);
             
             // Texte du mail
-            message.setText(body);
-            message.setText("Voilà votre token : "+"http://localhost:8080/MissionLogement/creationcompte.do?token="+token);
+            Optional<Personne> recipientString = personneRepository.findByFirstConnectionToken(token);
+            Optional<ConfigModif> signature = configmodifrepository.getLastTypeId(SIGNATURE);
+            Optional<ConfigModif> nb = configmodifrepository.getLastTypeId(NB);
+            String texte = "";
+            if ((signature.isPresent()) && (nb.isPresent()) && (recipientString.isPresent())){
+                texte += "Bonjour "+recipientString.get().getPrenom()+",\n";
+                texte += "\n"+body+"\n";
+                texte += """
+                         
+                         Voil\u00e0 votre lien de premier connexion : http://localhost:8080/MissionLogement/creationcompte.do?token="""+token + "\n";
+                texte += """
+                         Attention !! Ce lien est unique et personnel. Il expirera dans 24h \u00e0 compter de la r\u00e9ception du mail. Si votre lien a expir\u00e9, merci de r\u00e9initialiser votre mot de passe ou d'appeler la mission logement.
+                         """;
+                texte += "\n"+signature.get().getContenu()+"\n";
+                texte += "\n"+nb.get().getContenu()+"\n";
+            }
+
+            message.setText(texte);
 
             // Envoi du message
             Transport.send(message);

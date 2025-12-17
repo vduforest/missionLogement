@@ -130,6 +130,6 @@ public interface PersonneRepository extends JpaRepository<Personne,Integer>,Pers
      */
     @Modifying
     @Transactional
-    @Query(value="UPDATE personne SET first_connection_token = NULL WHERE personne_id = ?1",nativeQuery=true)
+    @Query(value="UPDATE personne SET first_connection_token = NULL, first_connection_token_expiry = NULL WHERE personne_id = ?1",nativeQuery=true)
     public void setFirstConnectionTokenToNull(Integer id);
 }
