@@ -1,99 +1,277 @@
-body{
-    background-color:rgb(239, 239, 239);
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&family=Open+Sans:wght@400;600&display=swap');
+
+/* --- Reset & Layout --- */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Default: No scroll on body, handled by panes */
+    height: 100%;
+    overflow: hidden;
+}
+
+.split-container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* --- Common Pane Styles --- */
+.split-pane {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    /* On enlève 'justify-content: center' ici pour éviter le problème de coupure */
+}
+
+.content-wrapper {
+    width: 100%;
+    max-width: 600px;
+    padding: 40px;
+    /* C'est la magie : margin auto centre verticalement SI il y a de la place, 
+       sinon ça s'affiche en haut et on peut scroller */
+    margin: auto;
+}
+
+/* --- LEFT PANE (Dark Blue) --- */
+.left-pane {
+    width: 50%;
+    background-color: rgba(14, 39, 72, 255);
+    color: white;
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+
+    /* AJOUT : Rend la gauche scrollable indépendamment si l'écran est petit en hauteur */
+    overflow-y: auto;
+}
+
+/* Typography Left */
+h1.brand-title {
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 42px;
+    font-weight: 300;
+    text-align: left;
+    margin-bottom: 40px;
+    line-height: 1.2;
+    color: white;
+}
+
+h1.brand-title .highlight {
+    font-weight: bold;
+    color: rgba(250, 181, 0, 255);
+    display: block;
+    margin-top: 10px;
 }
 
 a.defaultlink {
-    color: yellow; /* Makes the text yellow */
-    text-decoration: underline; /* Ensures visibility */
-    font-weight: bold;
+    color: rgba(250, 181, 0, 255);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.2s;
 }
 
-h1{
-    position:relative;
-    margin-left: 50px;
-    margin-right: 50px;
-    margin-top: 2px;
-    margin-bottom: 2px;
-    top:2%;
-    font-size: 50px;
-    font-weight: bold;
-    text-align:center;
-    color:rgba(250,181,0,255);
+a.defaultlink:hover {
+    color: #fff;
+    text-decoration: underline;
 }
 
-input{
-    position:relative;
-    left:50%;
-    transform:translateX(-50%);
-    display: inline;
-    width: inherit;
-    padding: 10px;
-    background: rgb(190, 190, 190);
-    border: 5px solid rgba(0,0,0,.15);
-    box-shadow: 0 5px 10px rgba(0,0,0,.1) inset;
-    border-radius: 15px;
-    font-size:25px;
-    &:invalid :not(:focus){
-        border-color: firebrick;
+/* Form Styling */
+.login-box {
+    width: 100%;
+}
+
+.custom-input {
+    width: 100%;
+    padding: 25px 20px;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #333;
+    height: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-input:focus {
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(250, 181, 0, 0.4);
+}
+
+.custom-button {
+    width: 100%;
+    background-color: rgba(250, 181, 0, 255);
+    border: none;
+    color: rgba(14, 39, 72, 255);
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.custom-button:hover {
+    background-color: #ffc832;
+    transform: translateY(-2px);
+}
+
+.custom-alert {
+    background: rgba(220, 53, 69, 0.9);
+    border: none;
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* --- RIGHT PANE (Light, Scrollable Desktop) --- */
+.right-pane {
+    width: 50%;
+    background-color: rgb(239, 239, 239);
+    overflow-y: auto;
+    /* Scroll only this side on desktop */
+    justify-content: flex-start;
+    padding-top: 60px;
+}
+
+.text-content {
+    color: #333;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.info-text img {
+    max-width: 100%;
+    height: auto;
+}
+
+.custom-alert-box {
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 5px solid;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+/* --- SCROLL TO TOP BUTTON (Mobile Only) --- */
+#mobileLoginBtn {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    background-color: rgba(250, 181, 0, 255);
+    /* Yellow */
+    color: rgba(14, 39, 72, 255);
+    /* Dark Blue */
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 50px;
+    /* Pill shape */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
-button{
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color:rgba(250,181,0,255);
-    border-color: rgba(250,181,0,255);
-    color:rgba(14,39,72,255);
-    width:335px;
-    padding:2px;
-    border-radius:15px;
-    font-size:25px;
-    font-style:inherit;
-    text-align:center;
-    box-shadow: 5px 5px 10px rgba(0,0,0,.1);
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 992px) {
+
+    /* 1. Reset Body Scroll */
+    html,
+    body {
+        height: auto;
+        overflow: auto;
+        /* Enable normal scrolling for the whole page */
+    }
+
+    /* 2. Stack Layout */
+    .split-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    /* 3. Reset Panes */
+    .left-pane,
+    .right-pane {
+        width: 100%;
+        height: auto;
+        /* Let content define height */
+        padding: 60px 0;
+        overflow: visible;
+        /* Don't hide overflow inside panes */
+        justify-content: flex-start;
+    }
+
+    .left-pane {
+        min-height: 80vh;
+        /* Make login screen tall enough on phone */
+        padding-top: 40px;
+    }
+
+    h1.brand-title {
+        font-size: 32px;
+        /* Smaller text on mobile */
+    }
 }
 
-#boite{
-    background-color: rgba(14,39,72,255);
-    height:max-content;
-    width: max-content;
-    border-width:2px;
-    border-radius: 20px;
-    border:5px solid rgba(0,0,0,.15);
-    box-shadow: 5px 5px 10px rgba(0,0,0,.1);
-
+/* --- New First Login Box Styles --- */
+.first-login-info {
+    margin-top: 40px;
+    /* Push it down from the login button */
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Semi-transparent white */
+    border-radius: 10px;
+    border-left: 4px solid rgba(250, 181, 0, 255);
+    /* Yellow accent line */
+    text-align: left;
 }
 
-img.info{
-    height: 50px;
-    width: 50px;
-    top: 5%;
-    right: 5%;
+.first-login-info h5 {
+    color: rgba(250, 181, 0, 255);
+    /* Yellow Title */
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
-p.popUp{
-    display: none;
-    position: absolute;
-    top: 50px;
-    left: 50px;
-    padding: 10px;
-    width: 90%;
-    background-color: rgb(57, 57, 57);
+.first-login-info p {
+    color: rgba(255, 255, 255, 0.9);
+    /* White text */
+    font-size: 14px;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.first-login-info .highlight-text {
+    font-weight: bold;
     color: white;
-    border-radius: 5px;
-    font-size: 25px;
-}
-
-.export{
-    position:absolute;
-    font-size: 150%;
-    left: 50%;
-    padding:5px;
-    transform: translateX(-50%);
-    text-align: center;
-    border-width: 2px;
-    border-style:solid;
-    border-radius:10px;
-    border-color: grey;
-    box-shadow: 6px 6px 6px lightgrey;
+    text-decoration: underline;
+    text-decoration-color: rgba(250, 181, 0, 255);
 }
