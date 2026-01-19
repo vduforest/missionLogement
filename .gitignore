@@ -1,0 +1,14 @@
+# Maven
+target/
+
+# IDEs
+.idea/
+.vscode/
+nbproject/private/
+*.iml
+
+# OS
+.DS_Store
+
+# Configuration
+src/main/resources/org/centrale/infosi/pappl/logement/util/config/config.properties
