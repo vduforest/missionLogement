@@ -257,7 +257,7 @@ public class Util {
     /**
      * Méthode assurant l'export d'un formulaire dans le fichier csv
      *
-     * @param formulaire Un formulaire
+     * @param formulaire     Un formulaire
      * @param bufferedWriter Le fichier en écriture
      * @throws IOException
      */
@@ -319,7 +319,7 @@ public class Util {
      * @return Le chemin du fichier
      */
     public static String export(Collection<Formulaire> formulaires) {
-        //Création du fichier
+        // Création du fichier
         LocalDateTime date = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH+mm-ss!");
         String dateStr = date.format(formatter);
@@ -333,10 +333,10 @@ public class Util {
 
         try {
             bufferedWriter = new BufferedWriter(new FileWriter(fileName));
-            //Ecriture dans le fichier
+            // Ecriture dans le fichier
             bufferedWriter.write("\uFEFF");
-            //bufferedWriter.newLine();
-            //Colonnes
+            // bufferedWriter.newLine();
+            // Colonnes
             bufferedWriter.write("Nom;");
             bufferedWriter.write("Prénom;");
             bufferedWriter.write("Date de naissance;");
@@ -356,7 +356,7 @@ public class Util {
             bufferedWriter.newLine();
 
             for (Formulaire formulaire : formulaires) {
-                //Ajout d'un formulaire
+                // Ajout d'un formulaire
                 exportFormulaire(formulaire, bufferedWriter);
             }
             bufferedWriter.close();
@@ -423,7 +423,8 @@ public class Util {
                         if (!file.exists()) {
                             file.createNewFile();
                             try (
-                                    InputStream uploadedStream = item.getInputStream(); OutputStream out = new FileOutputStream(file);) {
+                                    InputStream uploadedStream = item.getInputStream();
+                                    OutputStream out = new FileOutputStream(file);) {
                                 IOUtils.copy(uploadedStream, out);
                             } catch (IOException ex) {
                                 Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
@@ -471,7 +472,7 @@ public class Util {
             File file = null;
             if (request.getAttribute("MULTIPART") != null) {
                 ArrayList<File> tempFiles = (ArrayList<File>) (request.getAttribute(MULTIPART));
-                file = tempFiles.getFirst();
+                file = tempFiles.get(0);
             }
             return file;
         }
@@ -500,63 +501,67 @@ public class Util {
     }
 
     /*
-    private static void parseRequest(HttpServletRequest request) {
-        boolean isMultipart = JakartaServletFileUpload.isMultipartContent(request);
-        if (isMultipart) {
-            // MULTIPART request
-            if (request.getAttribute("MULTIPART") == null) {
-                // Not parsed
-                HashMap<String, File> tempFiles = new HashMap<>();
-                request.setAttribute(MULTIPARTFILES, tempFiles);
-                HashMap<String, String> tempFilesName = new HashMap<>();
-                request.setAttribute(MULTIPARTFILESNAME, tempFilesName);
-
-                try {
-                    DiskFileItemFactory factory = DiskFileItemFactory.builder().setFileCleaningTracker(null).get();
-                    ServletContext servletContext = request.getServletContext();
-                    File repository = (File) servletContext.getAttribute("jakarta.servlet.context.tempdir");
-
-                    // factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
-                    // factory.setSizeThreshold(DiskFileItemFactory.DEFAULT_SIZE_THRESHOLD);
-                    JakartaServletFileUpload upload = new JakartaServletFileUpload(factory);
-                    upload.setSizeMax(UPLOADMAX);
-
-                    FileItemInputIterator iterator = upload.getItemIterator(request);
-                    System.out.println(iterator);
-                    System.out.println(iterator.hasNext());
-                    while (iterator.hasNext()) {
-                        FileItemInput item = iterator.next();
-                        InputStream stream = item.getInputStream();
-                        String itemName = item.getFieldName();
-                        if (!item.isFormField()) {
-                            // File
-                            Path tempFile = Files.createTempFile("logement", ".tmp");
-                            InputStream is = item.getInputStream();
-                            File osFile = tempFile.toFile();
-                            OutputStream os = new FileOutputStream(osFile);
-                            try {
-                                byte[] buffer = new byte[1024];
-                                int length;
-                                while ((length = is.read(buffer)) > 0) {
-                                    os.write(buffer, 0, length);
-                                }
-                            } finally {
-                                is.close();
-                                os.close();
-                            }
-                            tempFiles.put(itemName, osFile);
-                            tempFilesName.put(itemName, item.getName());
-                        }
-                    }
-                    request.setAttribute(MULTIPARTFILES, tempFiles);
-                } catch (FileUploadException ex) {
-                    Logger.getLogger(FormulaireController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(FormulaireController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-    }
+     * private static void parseRequest(HttpServletRequest request) {
+     * boolean isMultipart = JakartaServletFileUpload.isMultipartContent(request);
+     * if (isMultipart) {
+     * // MULTIPART request
+     * if (request.getAttribute("MULTIPART") == null) {
+     * // Not parsed
+     * HashMap<String, File> tempFiles = new HashMap<>();
+     * request.setAttribute(MULTIPARTFILES, tempFiles);
+     * HashMap<String, String> tempFilesName = new HashMap<>();
+     * request.setAttribute(MULTIPARTFILESNAME, tempFilesName);
+     * 
+     * try {
+     * DiskFileItemFactory factory =
+     * DiskFileItemFactory.builder().setFileCleaningTracker(null).get();
+     * ServletContext servletContext = request.getServletContext();
+     * File repository = (File)
+     * servletContext.getAttribute("jakarta.servlet.context.tempdir");
+     * 
+     * // factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
+     * // factory.setSizeThreshold(DiskFileItemFactory.DEFAULT_SIZE_THRESHOLD);
+     * JakartaServletFileUpload upload = new JakartaServletFileUpload(factory);
+     * upload.setSizeMax(UPLOADMAX);
+     * 
+     * FileItemInputIterator iterator = upload.getItemIterator(request);
+     * System.out.println(iterator);
+     * System.out.println(iterator.hasNext());
+     * while (iterator.hasNext()) {
+     * FileItemInput item = iterator.next();
+     * InputStream stream = item.getInputStream();
+     * String itemName = item.getFieldName();
+     * if (!item.isFormField()) {
+     * // File
+     * Path tempFile = Files.createTempFile("logement", ".tmp");
+     * InputStream is = item.getInputStream();
+     * File osFile = tempFile.toFile();
+     * OutputStream os = new FileOutputStream(osFile);
+     * try {
+     * byte[] buffer = new byte[1024];
+     * int length;
+     * while ((length = is.read(buffer)) > 0) {
+     * os.write(buffer, 0, length);
+     * }
+     * } finally {
+     * is.close();
+     * os.close();
+     * }
+     * tempFiles.put(itemName, osFile);
+     * tempFilesName.put(itemName, item.getName());
+     * }
+     * }
+     * request.setAttribute(MULTIPARTFILES, tempFiles);
+     * } catch (FileUploadException ex) {
+     * Logger.getLogger(FormulaireController.class.getName()).log(Level.SEVERE,
+     * null, ex);
+     * } catch (IOException ex) {
+     * Logger.getLogger(FormulaireController.class.getName()).log(Level.SEVERE,
+     * null, ex);
+     * }
+     * }
+     * }
+     * }
      */
     /**
      * Save Formulaire from request data
@@ -566,8 +571,9 @@ public class Util {
      * @param validation
      * @param formulaireRepository
      */
-    public static void enregistrementFormulaire(HttpServletRequest request, int formulaireId, Boolean validation, FormulaireRepository formulaireRepository) {
-        //Récupération des attributs
+    public static void enregistrementFormulaire(HttpServletRequest request, int formulaireId, Boolean validation,
+            FormulaireRepository formulaireRepository) {
+        // Récupération des attributs
         Formulaire formulaire = formulaireRepository.getReferenceById(formulaireId);
 
         String nom = Util.getStringFromRequest(request, "nom"); // Obligatoire tous formulaires
