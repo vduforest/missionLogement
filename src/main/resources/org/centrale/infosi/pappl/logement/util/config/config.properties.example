@@ -1,0 +1,19 @@
+# TEMPLATE CONFIGURATION FILE
+# Copy this file to config.properties and update the paths for your local environment.
+
+# Le nom du dossier qui contiendra le rapport d'Exception lors de l'import des donnée
+# ATTENTION : sur windows penser à changer les \ en /
+
+## EN LOCAL (Exemple) : 
+#EmplacementFichierErreur = C:/Users/YourName/Mission_Logement/fichierLogement/logs
+#EmplacementFichierExport = C:/Users/YourName/Mission_Logement/fichierLogement/export
+#EmplacementFichierBourse = C:/Users/YourName/Mission_Logement/fichierLogement/bourses
+#EmplacementFichierTemp = C:/Users/YourName/Mission_Logement/fichierLogement/temp
+
+## CONFIGURATION ACTIVE
+EmplacementFichierErreur = /path/to/logement/logs
+EmplacementFichierExport = /path/to/logement/export
+EmplacementFichierBourse = /path/to/logement/bourses
+EmplacementFichierTemp = /path/to/logement/temp
+
+NomRapportException = exception
