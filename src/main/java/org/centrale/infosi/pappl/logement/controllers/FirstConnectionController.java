@@ -48,9 +48,10 @@ public class FirstConnectionController {
     @Lazy
     private ConfigModifRepository configModifRepository;
 
-    private ModelAndView invalidAccountCreation(String mail) {
+    private ModelAndView invalidAccountCreation(String scei,String mail) {
         ModelAndView returned = new ModelAndView("premier_connexion");
         returned.addObject("error", true);
+        returned.addObject("mySCEI",scei);
         returned.addObject("mail", mail);
         //returned.addObject("token",token);
         return returned;
@@ -170,28 +171,28 @@ public class FirstConnectionController {
         ModelAndView returned;
 
         //Paramètres de la requête
-        String SCEIStr = Util.getStringFromRequest(request, "numSCEI");
+        String Scei = Util.getStringFromRequest(request, "myScei");
         String mail = Util.getStringFromRequest(request, "mail").trim();
 
-        String login = Util.getStringFromRequest(request, "login");
-        String password = Util.getStringFromRequest(request, "password");
+        String login = Util.getStringFromRequest(request, "myLogin");
+        String password = Util.getStringFromRequest(request, "myPassword");
         String verifyPassword = Util.getStringFromRequest(request, "confMyPassword");
         String token=request.getParameter("token");
 
         // Check passwords are equal
         if ((password.isEmpty()) || (!password.equals(verifyPassword))) {
             // Given password is not the same as verifyPassword
-            return invalidAccountCreation(mail);
+            return invalidAccountCreation(Scei,mail);
         }
 
         // Check SCEI number and token
-        Collection<Formulaire> students = formulaireRepository.findByNumeroSceiAndMail(mail, SCEIStr);
-        if (students.isEmpty()) {
+        Optional<Formulaire> students = formulaireRepository.findBySceiAndMail(Scei,mail);
+        if (!students.isPresent()) {
             // No valid SCEI number ot given password is not the same as verifyPassword
-            return invalidAccountCreation(mail);
+            return invalidAccountCreation(Scei,mail);
         }
 
-        Formulaire formulaire = students.iterator().next();
+        Formulaire formulaire = students.get();
         Personne personne = formulaire.getPersonneId();
         personne = personneRepository.getReferenceById(personne.getPersonneId());
 
@@ -199,12 +200,19 @@ public class FirstConnectionController {
         // Check token (if it is given)
         if ((token != null) && (personne.getFirstConnectionToken() != null)
                 && (! personne.getFirstConnectionToken().equals(token))) {
-            return invalidAccountCreation(mail);
+            if (token != null){
+                return invalidAccountCreation("31",mail);
+                } else if (personne.getFirstConnectionToken() != null){
+                    return invalidAccountCreation("32",mail);
+                } else {
+                    return invalidAccountCreation("33",mail);
+                }
+            
         }
         
         // Check mail is the given one
         if ((formulaire.getMail() != null) && (!formulaire.getMail().equalsIgnoreCase(mail))) {
-            return invalidAccountCreation(mail);
+            return invalidAccountCreation("4",mail);
         }
 
         Collection<Personne> personneLogin = personneRepository.findByLogin(login);
@@ -213,13 +221,13 @@ public class FirstConnectionController {
             Personne altPerson = personneLogin.iterator().next();
             if (!personne.equals(altPerson)) {
                 // Not by this person
-                return invalidAccountCreation(mail);
+                return invalidAccountCreation("5",mail);
             }
         }
         
         if ((personne.getLogin() != null) && (! personne.getLogin().equals(login))) {
             // Login already defined but not this one
-            return invalidAccountCreation(mail);
+            return invalidAccountCreation("6",mail);
         }
 
         // OK, set Login / Password
@@ -249,7 +257,7 @@ public class FirstConnectionController {
                     Date dateNow = new Date();
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(dateNow);
-                    cal.add(Calendar.MINUTE, 2);
+                    cal.add(Calendar.HOUR, 24);
                     Date expiryDate = cal.getTime();
                     // LocalDate oneMonthLater = LocalDate.now().plusMonths(1);  // Add 1 month to the current date
                     // java.sql.Date expiryDate = java.sql.Date.valueOf(oneMinuteLater);  // Convert to java.sql.Date

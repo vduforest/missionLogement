@@ -8,11 +8,15 @@ import org.centrale.infosi.pappl.logement.util.PasswordUtils;
 import java.util.Iterator;
 import java.util.Optional;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
 import org.centrale.infosi.pappl.logement.items.Formulaire;
 import org.centrale.infosi.pappl.logement.items.Personne;
 import org.centrale.infosi.pappl.logement.repositories.FormulaireRepository;
 import org.centrale.infosi.pappl.logement.repositories.PersonneRepository;
 import org.centrale.infosi.pappl.logement.util.Util;
+import org.centrale.infosi.pappl.logement.controllers.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
@@ -38,6 +42,10 @@ public class PasswordResetController {
     @Lazy
     private PersonneRepository personRepository;
     
+    @Autowired
+    @Lazy
+    private MailService mailService;
+    
     /**
      * Permet d'afficher la page de réinitialisation d'un mot de passe
      * @return Le nom de la page de réinitialisation
@@ -53,38 +61,45 @@ public class PasswordResetController {
      * @param request La requête http
      * @return La page de connexion
      */
-    @RequestMapping(value="submitpasswordreset.do", method=RequestMethod.POST)
+    @RequestMapping(value = "submitpasswordreset.do", method = RequestMethod.POST)
     public ModelAndView handlePasswordReset(HttpServletRequest request) {
-        ModelAndView returned = new ModelAndView("index"); 
-        String email = Util.getStringFromRequest(request, "email");   
-        Iterator<Formulaire> formulaires = formulaireRepository.findByMail(email).iterator();
 
-        if (!formulaires.hasNext()) {
-            returned.addObject("errorMessage", "Aucun compte associé à cet e-mail.");
+        ModelAndView returned = new ModelAndView("index");
+
+        String mail = Util.getStringFromRequest(request, "mail");
+        String scei = Util.getStringFromRequest(request, "scei");
+
+        Optional<Formulaire> formulaireOpt = formulaireRepository.findBySceiAndMail(scei, mail);
+
+        if (formulaireOpt.isEmpty()) {
+            returned.addObject("errorMessage", scei+" "+mail);
             return returned;
         }
-        returned=new ModelAndView("premier_connexion");
-        returned.addObject("mail",email);
-        //La suite concerne l'envoi de mail et la génération de token, à faire avec un serveur SMTP
-        //Formulaire formulaire = formulaires.next();
-        
-        // Generate a reset token (example: random UUID)
-        //String resetToken = PasswordUtils.generateToken();
 
-        // Store the reset token in the database 
-        /*Personne personne = formulaire.getPersonneId();
-        if (personne.getLogin() != null){
-            personne.setFirstConnectionToken(resetToken);
-            personRepository.save(personne);
-            
-             // Send password reset email (you need an email service)
+        Personne personneReset = formulaireOpt.get().getPersonneId();
 
+        // Générer token + expiration
+        String resetToken = PasswordUtils.generateToken();
+        Date now = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(now);
+        cal.add(Calendar.HOUR, 24);
 
-            // Inform the user that a reset link has been sent
-        }
-        */    
+        Date expiry = cal.getTime();
+
+        // Stocker token + expiration
+        personneReset.setFirstConnectionToken(resetToken);
+        personneReset.setFirstConnectionTokenExpiry(expiry);
+        personRepository.save(personneReset);
+
+        // Envoyer le mail
+        mailService.sendPasswordResetMail(resetToken,mail);
+
+        returned.addObject("successMessage","Un e-mail de réinitialisation vous a été envoyé.");
+
         return returned;
     }
+
     
     
     /**
@@ -138,12 +153,16 @@ public class PasswordResetController {
     private boolean verifyToken(String token) {
         Optional<Personne> result = personRepository.findByFirstConnectionToken(token);
     
-        return result.isPresent() && result.get().getLogin() != null;
+        return result.isPresent(); //&& result.get().getLogin() != null;
     }
     
     private Personne changeLoginAndPassword (Personne personne, String login,String password){
         Personne result=personRepository.update(personne,login,PasswordUtils.hashPassword(password));
         return result;
+    }
+    
+    private void deletePassword(Personne personne){
+       personRepository.setPasswordToNull(personne.getPersonneId());
     }
     
     private void deleteToken(Personne personne){

@@ -141,6 +141,12 @@ Author     : Amolz
                               </c:if></td>
                           </tr>
                           <tr>
+                            <th scope="col">Mail de réinitialisation de password</th>
+                            <td>
+                              <textarea name="message_reset_password"  class="message_password" rows="10" cols="50" >${message_reset_password}</textarea>
+                            </td>
+                          </tr>
+                          <tr>
                             <th scope="col">Mail après la fermeture</th>
                             <td>
                               <textarea name="message_mission_fermee"  class="message_fin" rows="10" cols="50" >${message_mission_fermee}</textarea>
@@ -149,6 +155,7 @@ Author     : Amolz
                                 <button class="EnvoiMails" formaction="envoiemailfin.do" disabled="disabled">Envoyer mails <img src="img/mail.png" class="mails" /></button>
                               </c:if></td>
                           </tr>
+                          
                           <tr>
                             <td></td>
                             <td colspan="2">

@@ -60,6 +60,14 @@
               <p id="popUp" class="text-left" style="display:block">${textePopUp}</p>
             </div>
           </c:if>
+            
+          <c:if test="${! empty succesMessage}">
+            <div class="export" style="border-color: green"><p style="color:green">${succesMessage}</p></div>
+          </c:if>
+          
+          <c:if test="${! empty errorMessage}">
+            <div class="export" style="border-color: green"><p style="color:green">${errorMessage}</p></div>
+          </c:if>
         </div>
       </div>
 

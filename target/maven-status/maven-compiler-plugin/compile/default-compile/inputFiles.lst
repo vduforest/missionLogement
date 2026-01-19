@@ -1,3 +1,4 @@
+C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\util\CertificateManager.java
 C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\items\Genre.java
 C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\repositories\DateRepository.java
 C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\repositories\TypeAppartRepository.java
@@ -9,6 +10,7 @@ C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\s
 C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\repositories\SouhaitRepositoryCustomImpl.java
 C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\repositories\TypeAppartRepositoryCustomImpl.java
 C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\controllers\InformationsElevesController.java
+C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\controllers\MailService.java
 C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\controllers\AdminController.java
 C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\repositories\StatutRepository.java
 C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\controllers\PasswordResetController.java
@@ -48,6 +50,7 @@ C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\s
 C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\repositories\TypeModifRepository.java
 C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\items\Statut.java
 C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\repositories\PersonneRepositoryCustom.java
+C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\util\MailConstants.java
 C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\repositories\PaysRepositoryCustomImpl.java
 C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\repositories\PersonneRepository.java
 C:\Users\vdufo\OneDrive\Documents\NetBeansProjects\03Logement\Mission_Logement\src\main\java\org\centrale\infosi\pappl\logement\items\Logement.java

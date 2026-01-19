@@ -57,15 +57,42 @@
         </style>
     </head>
     <body>
-        <a href="index.do" class="return-btn">⬅ Retour</a>
-        <div id="boite">
-            <h1>Réinitialisation du mot de passe</h1>
+    <a href="index.do" class="return-btn">⬅ Retour</a>
+    
+    <div id="boite">
+        <h1>Réinitialisation du mot de passe</h1>
 
-            <p><strong>Service temporairement indisponible.</strong></p>
-            <p>Veuillez contacter la Mission Logement pour modifier votre mot de passe.</p>
+        <!-- Formulaire POST pour le reset -->
+        <form method="post" action="submitpasswordreset.do">
+            <div class="form-group row">
+                <div class="col-10">
+                    <input type="text" class="form-control" id="mySCEI"
+                           placeholder="Votre numéro SCEI" name="scei" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-10">
+                    <input type="text" class="form-control" id="myMail"
+                           placeholder="Votre mail" name="mail" required>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="Enregistrer" 
+                        style="background-color:lightgreen; cursor:pointer;">
+                    Submit
+                </button>
+            </div>
+        </form>
 
-        </div>
-    </body>
+        <!-- Affichage message d'erreur ou de succès -->
+        <c:if test="${param.success != null}">
+            <p style="color:green;text-align:center;">${param.success}</p>
+        </c:if>
+        <c:if test="${param.error != null}">
+            <p style="color:red;text-align:center;">${param.error}</p>
+        </c:if>
+    </div>
+</body>
 </html>
 
 

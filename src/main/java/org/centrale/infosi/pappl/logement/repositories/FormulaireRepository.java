@@ -6,6 +6,7 @@ package org.centrale.infosi.pappl.logement.repositories;
 import org.centrale.infosi.pappl.logement.items.Formulaire;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import org.centrale.infosi.pappl.logement.items.Genre;
 import org.centrale.infosi.pappl.logement.items.Logement;
 import org.centrale.infosi.pappl.logement.items.Personne;
@@ -43,8 +44,15 @@ public interface FormulaireRepository extends JpaRepository<Formulaire,Integer>,
      * @return
      */
     public Collection<Formulaire> findByNumeroScei(@Param("numeroScei")String numeroScei);
-
-
+    
+    /**
+     *
+     * @param numeroScei
+     * @param mail
+     * @return
+     */
+    //public Optional<Formulaire> findBySceiAndMail(@Param("numeroScei")String numeroScei,@Param("mail")String mail);
+    
     /**
      *
      * @param genre_id
@@ -172,6 +180,15 @@ public interface FormulaireRepository extends JpaRepository<Formulaire,Integer>,
      */
     @Query("SELECT f.numeroScei FROM Formulaire f JOIN f.personneId p WHERE p.firstConnectionToken = ?1")
     List<String> findSCEIByToken(String token);
+    
+    /**
+     * Recherche par Mail et numéroSCEI
+     * @param numeroScei le numéro scei
+     * @param mail le mail
+     * @return  Le formulaire lié au mail+numéro
+     */
+    @Query("SELECT f FROM Formulaire f WHERE f.numeroScei = :numeroScei AND UPPER(f.mail) = UPPER(:mail)")
+    Optional<Formulaire> findBySceiAndMail(@Param("numeroScei") String numeroScei,@Param("mail") String mail);
     
     /**
      * Update l'attribut vague, méthode appelée uniquement dans MailController lorsque les mails de première connexion ont été envoyées

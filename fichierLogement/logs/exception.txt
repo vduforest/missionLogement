@@ -1,0 +1,4 @@
+2026-01-09 11:15:29 - Mission logement_TEST.csv : Lecture de l'entête
+2026-01-09 11:15:29 - Mission logement_TEST.csv : Lecture des données
+2026-01-09 11:15:29 - Le fichier Mission logement_TEST.csv a été lu. 3 lignes analysées.
+2026-01-09 11:15:29 - Import terminé !

@@ -83,3 +83,17 @@ p.popUp{
     border-radius: 5px;
     font-size: 25px;
 }
+
+.export{
+    position:absolute;
+    font-size: 150%;
+    left: 50%;
+    padding:5px;
+    transform: translateX(-50%);
+    text-align: center;
+    border-width: 2px;
+    border-style:solid;
+    border-radius:10px;
+    border-color: grey;
+    box-shadow: 6px 6px 6px lightgrey;
+}

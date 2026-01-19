@@ -20,14 +20,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import javax.net.ssl.SSLContext;
 import org.centrale.infosi.pappl.logement.items.ConfigModif;
 import org.centrale.infosi.pappl.logement.items.Connexion;
 import org.centrale.infosi.pappl.logement.items.Personne;
 import org.centrale.infosi.pappl.logement.repositories.ConfigModifRepository;
 import org.centrale.infosi.pappl.logement.repositories.FormulaireRepository;
 import org.centrale.infosi.pappl.logement.repositories.PersonneRepository;
+import org.centrale.infosi.pappl.logement.controllers.MailService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.centrale.infosi.pappl.logement.util.CertificateManager;
 
 /**
  * Cette classe permet l'envoie automatique du premier mail pour la connexion;
@@ -46,13 +49,16 @@ public class MailController {
     @Lazy
     @Autowired
     private FormulaireRepository formulaireRepository;
-    
+
     @Lazy
     @Autowired
     private PersonneRepository personneRepository;
 
     @Autowired
     private ConnectionService connectionService;
+
+    @Autowired
+    private MailService mailService;
 
     @Lazy
     @Autowired
@@ -63,64 +69,63 @@ public class MailController {
     private static final int MAILCONTACT = 8;
     private static final int SIGNATURE = 10;
     private static final int NB = 11;
-    
-    //@Value("${spring.mail.username}")
-    //private String usernameSMTP;
+    private static final int MSGRESET = 12;
 
-    //@Value("${spring.mail.password}")
-    //private String passwordSMTP;
-
-    //@Value("${spring.mail.host}")
-    //private String hostSMTP;
-
-    //@Value("${spring.mail.port}")
-    //private int portSMTP;
-
-
+    /**
+     * Méthode permettant d'envoyer un message de premier connexion à tous les
+     * élèves selon la vague choisie
+     *
+     * @param request La requête http
+     * @param messageType le type de message à envoyer
+     * @return La page d'accueil admin avec un pop up
+     */
     private ModelAndView envoyerMessage(HttpServletRequest request, int messageType) {
         ModelAndView returned;
         Connexion connection = connectionService.checkAccess(request, "Admin");
         if (connection != null) {
+            
             // Il faut créer une liste avec l'adress mail de tous les utilisateurs.
             Optional<ConfigModif> contenuMsg = configmodifrepository.getLastTypeId(messageType);
             Optional<ConfigModif> envoyeurMsg = configmodifrepository.getLastTypeId(MAILCONTACT);
             if ((contenuMsg.isPresent()) && (envoyeurMsg.isPresent())) {
                 ConfigModif messageToSend = contenuMsg.get();
                 ConfigModif envoyeur = envoyeurMsg.get();
+                switch (messageType) {
+                    case 7:
+                        List<String> tousLesTokens = personneRepository.findAllTokenVague();
+                        Collection<String> tousLesMails = formulaireRepository.findAllEmailsVague();
+                        int compteur = 0;
+                        for (String email : tousLesMails) {
+                            mailService.sendFirstConnectionMail(tousLesTokens.get(compteur), email);
+                            compteur++;
+                        }
+                        formulaireRepository.updateVague();
 
-                String subject = "Mission logement connexion de compte";
-                String body = messageToSend.contenu;
-                
-                List<String> tous_les_tokens = personneRepository.findAllTokenVague();
-                Collection<String> tous_les_mails = formulaireRepository.findAllEmailsVague();
-                int compteur = 0;
-                for (String email : tous_les_mails) {
-                    sendEmail(tous_les_tokens.get(compteur),email, subject, body);
-                    compteur++;
-                }
-                        
-                formulaireRepository.updateVague();
-                
-                //Renvoie sur la page accueil_admin avec un message pop_up
-                List<Alerte> alertes = new ArrayList<Alerte>(alerteRepository.findAll());
-                Collections.sort(alertes, Alerte.getComparator());
+                        //Renvoie sur la page accueil_admin avec un message pop_up
+                        List<Alerte> alertes = new ArrayList<Alerte>(alerteRepository.findAll());
+                        Collections.sort(alertes, Alerte.getComparator());
 
-                returned = connectionService.prepareModelAndView(connection, "accueil_admin");
-                
-                returned.addObject("Alertes", alertes);
-                if (tous_les_mails.size() ==0){
-                    returned.addObject("confirmationMessage", "Aucun mail à envoyer");
-                } else{
-                    returned.addObject("confirmationMessage", "Emails envoyés avec succès !");
+                        returned = connectionService.prepareModelAndView(connection, "accueil_admin");
+
+                        returned.addObject("Alertes", alertes);
+                        if (tousLesMails.isEmpty()) {
+                            returned.addObject("confirmationMessage", "Aucun mail à envoyer");
+                        } else {
+                            returned.addObject("confirmationMessage", "Emails envoyés avec succès ! ");
+                        }
+                        break;
+                    default:
+                        returned= new ModelAndView("index");
+                        break;
                 }
                 return returned;
             }
         }
         return new ModelAndView("redirect");
     }
-    
+
     /**
-     * Gestion de la route permettant d'envoyer les mails
+     * Gestion de la route permettant d'envoyer les mails de premier connexion
      *
      * @param request La requête http
      * @return La page d'accueil admin avec un pop up
@@ -130,11 +135,30 @@ public class MailController {
         return envoyerMessage(request, MSGPREMIERCONTACT);
     }
 
+    /**
+     * Gestion de la route permettant d'envoyer les mails de reçu du formulaire
+     *
+     * @param request La requête http
+     * @return La page d'accueil admin avec un pop up
+     */
     @RequestMapping(value = "envoiemailfin.do", method = RequestMethod.POST)
     public ModelAndView EnvoiFin(HttpServletRequest request) {
         return envoyerMessage(request, MSGPFIN);
     }
 
+    /**
+     * Gestion de la route permettant d'envoyer un mail pour réinitialiser un
+     * mot de passe
+     *
+     * @param request La requête http
+     * @return La page d'accueil admin avec un pop up
+     */
+    /*
+    @RequestMapping(value = "", method =  RequestMethod.POST)
+    public ModelAndView EnvoiReset(HttpServletRequest request){
+        return envoyerMessageReset(request,MSGRESET);
+    }
+     */
     /**
      * Méthode permettant d'envoyer des mails avec JavaMail
      *
@@ -143,19 +167,14 @@ public class MailController {
      * @param subject L'objet du mail
      * @param body Le contenu
      */
-    public void sendEmail(String token,String recipient, String subject, String body) {
+    public void sendEmail(String token, String recipient, String subject, String body) {
+
+        final String mailExpediteur = "noreply@ec-nantes.fr";
+        final String usernameSMTP = "smtp.missionlogement";
+        final String passwordSMTP = "u6vSB@qAm49t2Gt";
         
-        // Récupération des identifiants
-            //ConfigModif Configmodif = (ConfigModif) configmodifrepository.findByModifId(MAILCONTACT);
-            //String username = Configmodif.contenu; // Adresse email
-            //String password = "logement"; // pour se connecter à la base de données. 
-            
-        // A ne pas mettre dans le code en dur normalement, uniquement ici pour le test
-        final String mailExpediteur = "Victor.Duforest@eleves.ec-nantes.fr";
-        final String usernameSMTP = "Victor.Duforest@eleves.ec-nantes.fr";
-        final String passwordSMTP = "dutzos-3Sujfu-cugves"; 
+        final String host = "smtps.ec-nantes.fr";
         
-        final String host = "smtps.nomade.ec-nantes.fr";
         String port = "587";
 
         // Configuration SMTP
@@ -164,6 +183,7 @@ public class MailController {
         properties.put("mail.smtp.port", port);
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.ssl.enable", "false");
         
         // A quoi servent ces deux lignes là ? 
         properties.put("mail.smtp.socketFactory.port", port);
@@ -172,18 +192,26 @@ public class MailController {
         properties.put("mail.smtp.user", usernameSMTP);
         properties.put("mail.smtp.password", passwordSMTP);
         
+        try {
+            // Récupère le SSLContext permissif
+            SSLContext sslContext = CertificateManager.getSSLContext();
+            properties.put("mail.smtp.ssl.socketFactory", sslContext.getSocketFactory());
+            properties.put("mail.smtp.ssl.checkserveridentity", "false");
 
-        // Création de la session avec authentification
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
+        // Création de la session avec authentification
         Authenticator authenticator = new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(usernameSMTP,passwordSMTP);
-			}
-		};
+                return new PasswordAuthentication(usernameSMTP, passwordSMTP);
+            }
+        };
 
         Session session = Session.getInstance(properties, authenticator);
-        
+
         // Active le debug pour voir la communication SMTP
         session.setDebug(true);
         try {
@@ -192,32 +220,13 @@ public class MailController {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(usernameSMTP));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-            
+
             // Emp$êche de répondre au mail
             message.setReplyTo(InternetAddress.parse("no-reply@invalid.local"));
-            
+
             // Objet du mail
             message.setSubject(subject);
-            
-            // Texte du mail
-            Optional<Personne> recipientString = personneRepository.findByFirstConnectionToken(token);
-            Optional<ConfigModif> signature = configmodifrepository.getLastTypeId(SIGNATURE);
-            Optional<ConfigModif> nb = configmodifrepository.getLastTypeId(NB);
-            String texte = "";
-            if ((signature.isPresent()) && (nb.isPresent()) && (recipientString.isPresent())){
-                texte += "Bonjour "+recipientString.get().getPrenom()+",\n";
-                texte += "\n"+body+"\n";
-                texte += """
-                         
-                         Voil\u00e0 votre lien de premier connexion : http://localhost:8080/MissionLogement/creationcompte.do?token="""+token + "\n";
-                texte += """
-                         Attention !! Ce lien est unique et personnel. Il expirera dans 24h \u00e0 compter de la r\u00e9ception du mail. Si votre lien a expir\u00e9, merci de r\u00e9initialiser votre mot de passe ou d'appeler la mission logement.
-                         """;
-                texte += "\n"+signature.get().getContenu()+"\n";
-                texte += "\n"+nb.get().getContenu()+"\n";
-            }
-
-            message.setText(texte);
+            message.setText(body);
 
             // Envoi du message
             Transport.send(message);

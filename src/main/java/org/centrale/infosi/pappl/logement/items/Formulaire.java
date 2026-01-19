@@ -60,8 +60,9 @@ import org.centrale.infosi.pappl.logement.util.Util;
     @NamedQuery(name = "Formulaire.findMailByToken", query = "SELECT f.mail FROM Formulaire f JOIN f.personneId p WHERE p.firstConnectionToken = ?1"),
     @NamedQuery(name = "Formulaire.findSCEIByToken", query = "SELECT f.numeroScei FROM Formulaire f JOIN f.personneId p WHERE p.firstConnectionToken = ?1"),
     @NamedQuery(name = "Formulaire.updateVague", query="UPDATE Formulaire f SET f.vague=true where f.vague=false"),
+    @NamedQuery(name = "Formulaire.findBySceiAndMail",query="SELECT f FROM Formulaire f WHERE f.numeroScei = :numeroScei AND UPPER(f.mail) = UPPER(:mail)"),
     @NamedQuery(name = "Formulaire.findByEstConforme", query = "SELECT f FROM Formulaire f WHERE f.estConforme = :estConforme")})
-
+    
 public class Formulaire implements Serializable {
 
     private static final long serialVersionUID = 1L;

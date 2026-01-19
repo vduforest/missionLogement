@@ -1,4 +1,5 @@
 org\centrale\infosi\pappl\logement\controllers\AdminController.class
+org\centrale\infosi\pappl\logement\controllers\MailService.class
 org\centrale\infosi\pappl\logement\items\Formulaire$1.class
 org\centrale\infosi\pappl\logement\repositories\MissionLogementStatusRepository.class
 org\centrale\infosi\pappl\logement\items\MissionLogementStatus.class
@@ -31,10 +32,12 @@ org\centrale\infosi\pappl\logement\items\ConfigModif.class
 org\centrale\infosi\pappl\logement\items\Personne.class
 org\centrale\infosi\pappl\logement\repositories\ConfigModifRepositoryCustomImpl.class
 org\centrale\infosi\pappl\logement\repositories\FormulaireRepository.class
+org\centrale\infosi\pappl\logement\util\CertificateManager.class
 org\centrale\infosi\pappl\logement\repositories\PersonneRepositoryCustomImpl.class
 org\centrale\infosi\pappl\logement\repositories\LogementRepositoryCustom.class
 org\centrale\infosi\pappl\logement\items\TypeModif.class
 org\centrale\infosi\pappl\logement\repositories\SouhaitRepositoryCustomImpl.class
+org\centrale\infosi\pappl\logement\util\CertificateManager$1.class
 org\centrale\infosi\pappl\logement\repositories\ConfigModifRepositoryCustom.class
 org\centrale\infosi\pappl\logement\util\PasswordUtils.class
 org\centrale\infosi\pappl\logement\repositories\GenreRepository.class
@@ -48,6 +51,7 @@ org\centrale\infosi\pappl\logement\items\TypeAppart.class
 org\centrale\infosi\pappl\logement\repositories\RoleRepository.class
 org\centrale\infosi\pappl\logement\controllers\StudentController.class
 org\centrale\infosi\pappl\logement\repositories\FormulaireRepositoryCustom.class
+org\centrale\infosi\pappl\logement\util\MailConstants.class
 org\centrale\infosi\pappl\logement\init\ApplicationInitializer.class
 org\centrale\infosi\pappl\logement\items\Pays.class
 org\centrale\infosi\pappl\logement\repositories\TypeModifRepository.class

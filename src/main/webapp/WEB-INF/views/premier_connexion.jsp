@@ -33,7 +33,7 @@
               <c:if test="${not empty mySCEI}">
                 <div class="form-group row">
                     <div class="col-10">
-                        <input type="text" class="form-control" id="mySCEI" name="mySCEI" value="${mySCEI}" disabled>
+                        <input type="text" class="form-control" id="myScei" name="myScei" value="${mySCEI}" readonly>
                     </div>
                 </div>
             </c:if>
@@ -41,7 +41,7 @@
             <c:if test="${not empty mail}">
               <div class="form-group row">
                 <div class="col-10">
-                  <input type="text" class="form-control" id="mail" name="mail" value="${mail}" disabled>
+                  <input type="text" class="form-control" id="mail" name="mail" value="${mail}" readonly>
                 </div>
               </div>
             </c:if>
@@ -56,14 +56,14 @@
             <div class="form-group row">
               <div class="col-10">
                 <input type="text" class="form-control" id="myLogin"
-                       placeholder="Créer un Identifiant" name="login" required="required">
+                       placeholder="Créer un Identifiant" name="myLogin" required="required">
               </div>
             </div>
             <p class="space"></p>
             <div class="form-group row">
               <div class="col-10">
                 <input type="password" class="form-control" id="myPassword"
-                       placeholder="Définir un mot de passe" name="password" required="required">
+                       placeholder="Définir un mot de passe" name="myPassword" required="required">
               </div>
             </div>
             <div class="form-group row">
