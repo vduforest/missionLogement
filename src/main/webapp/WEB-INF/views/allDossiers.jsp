@@ -74,7 +74,17 @@
                     <th scope="col" class="text-center">Numero SCEI</th>
                     <th scope="col" class="text-center">Nom</th>
                     <th scope="col" class="text-center">Prenom</th>
-                    <th scope="col" class="text-center">Etat</th>
+                    <th scope="col" class="text-center">Etat
+                      <div style="display:inline-block;position:relative;">
+                        <button id="etatFilterBtn" type="button" class="btn btn-sm" style="margin-left:6px;padding:2px 6px;">---</button>
+                        <div id="etatFilterDropdown" style="display:none;position:absolute;right:0;background:#fff;border:1px solid #ccc;padding:8px;z-index:1000;min-width:140px;">
+                          <label><input type="checkbox" class="etat-checkbox" value="traite_complet" checked/> Traitement complet</label><br/>
+                          <label><input type="checkbox" class="etat-checkbox" value="dossier_non_conforme" checked/> Dossier non conforme</label><br/>
+                          <label><input type="checkbox" class="etat-checkbox" value="a_traiter" checked/> A traiter</label><br/>
+                          <label><input type="checkbox" class="etat-checkbox" value="non_transmis" checked/> Non transmis</label>
+                        </div>
+                      </div>
+                    </th>
                     <th scope="col" class="text-center">Actions</th>
                   </tr>
                 </thead>
@@ -85,19 +95,33 @@
                       <td class="text-center">${formulaire.numeroScei}</td>
                       <td class="text-center">${formulaire.personneId.nom}</td>
                       <td class="text-center">${formulaire.personneId.prenom}</td>
-                      <td class="text-center">
+                      <c:choose>
+                        <c:when test="${formulaire.estConforme}">
+                          <c:set var="etat" value="traite_complet" />
+                        </c:when>
+                        <c:when test="${(!formulaire.estValide) && (! empty formulaire.commentairesVe)}">
+                          <c:set var="etat" value="dossier_non_conforme" />
+                        </c:when>
+                        <c:when test="${(formulaire.estPmr) || (formulaire.estBoursier) || (formulaire.genreId.genreId!=formulaire.genreAttendu.genreId)}">
+                          <c:set var="etat" value="a_traiter" />
+                        </c:when>
+                        <c:otherwise>
+                          <c:set var="etat" value="non_transmis" />
+                        </c:otherwise>
+                      </c:choose>
+                      <td class="text-center" data-etat="${etat}">
                         <c:choose>
                           <c:when test="${formulaire.estConforme}">
                             <img src="img/coche.png"alt="coche"class="icon"/>
                           </c:when>
                           <c:when test="${(!formulaire.estValide) && (! empty formulaire.commentairesVe)}">
-                            <img onclick="afficherTexte(${formulaire.estBoursier},${formulaire.estPmr},${formulaire.genreId.genreId},${formulaire.genreAttendu.genreId});" src="img/red-x-icon.png"alt="refus"class="icon"/>
+                            <img onclick="afficherTexte('${formulaire.estBoursier}','${formulaire.estPmr}','${formulaire.genreId.genreId}','${formulaire.genreAttendu.genreId}');" src="img/red-x-icon.png"alt="refus"class="icon"/>
                           </c:when>
                           <c:when test="${(formulaire.estPmr) || (formulaire.estBoursier) || (formulaire.genreId.genreId!=formulaire.genreAttendu.genreId)}">
-                            <img onclick="afficherTexte(${formulaire.estBoursier},${formulaire.estPmr},${formulaire.genreId.genreId},${formulaire.genreAttendu.genreId});" src="img/warning.png"alt="warning"class="icon"/>
+                            A traiter
                           </c:when>
                           <c:otherwise>
-                            A traiter
+                            Non transmis
                           </c:otherwise>
                         </c:choose>
                       </td>
@@ -126,5 +150,40 @@
         </div>
       </div>
     </div>
-  </body>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      var table = buildTable('StudentList');
+
+      var selectedStatuses = ['traite_complet','dossier_non_conforme','a_traiter','non_transmis'];
+
+      function reorderRows(){
+        selectedStatuses = $('.etat-checkbox:checked').map(function(){return $(this).val();}).get();
+        var tbody = $('#StudentList tbody');
+        var nodes = table.rows({order:'applied'}).nodes().toArray();
+        var matched = [], others = [];
+        nodes.forEach(function(row){
+          var status = $(row).find('td[data-etat]').data('etat');
+          if ($.inArray(status, selectedStatuses) !== -1) matched.push(row);
+          else others.push(row);
+        });
+        // append matched first, then others (moving DOM nodes)
+        matched.concat(others).forEach(function(r){ tbody.append(r); });
+        // redraw table display without resetting paging
+        table.rows().invalidate().draw(false);
+      }
+
+      $('#etatFilterBtn').on('click', function(e){
+        e.stopPropagation();
+        $('#etatFilterDropdown').toggle();
+      });
+
+      $(document).on('click', function(){ $('#etatFilterDropdown').hide(); });
+
+      $('.etat-checkbox').on('change', function(){ reorderRows(); });
+
+      // initial ordering
+      reorderRows();
+    });
+  </script>
+      </body>
 </html>
