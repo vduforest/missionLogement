@@ -9,26 +9,13 @@
     <link href="bootstrap/css/bootstrap.css"type="text/css"rel="stylesheet"/>
     <link href="css/default.css"type="text/css"rel="stylesheet"/>
     <link href="css/formulaire.css"type="text/css"rel="stylesheet"/>
+    <link href="css/header.css" type="text/css" rel="stylesheet"/>
+
     <script src="js/formulaire.js"></script>
   </head>
 
   <body>
-    <div id="header">
-      <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <div class="container">
-          <div class="collapse navbar-collapse"id="navbar1">
-            <form method="POST">
-              <ul class="navbar-nav ml-auto">
-                <h1>Plateforme Mission Logement</h1>
-                <input type="hidden" name="connexionId" value="${connexionId}" />
-                <li class="nav-item"><button class="btn nav-link text-white" formaction="allDossiers.do"><img src="img/logocn.png"alt="logo"class="logo"/></button></li>
-                <li class="nav-item"><button class="btn nav-link text-white" formaction="index.do"><img src="img/porteOuverte.png"alt="sortie"class="sortie"/></button></li>
-              </ul>
-            </form>
-          </div>
-        </div>
-      </nav>
-    </div> 
+    <jsp:include page="/WEB-INF/views/header.jsp"/>
     <div id="main">
       <div id="liste">
         <div class="py-3">
