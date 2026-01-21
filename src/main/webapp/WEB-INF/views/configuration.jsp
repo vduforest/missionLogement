@@ -11,13 +11,13 @@
           <link href="bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
           <link href="css/default.css" type="text/css" rel="stylesheet" />
           <link href="css/configuration.css" type="text/css" rel="stylesheet" />
-          <link href="css/header.css" type="text/css" rel="stylesheet"/>
+          <link href="css/header.css" type="text/css" rel="stylesheet" />
 
           <script src="js/configuration.js"></script>
         </head>
 
         <body>
-          <jsp:include page="/WEB-INF/views/header.jsp"/>
+          <jsp:include page="/WEB-INF/views/header.jsp" />
 
           <div id="main">
             <div id="liste">
@@ -225,6 +225,84 @@ M.;Durand;Lucas;15/06/2002;75015;Paris;France;84532;lucas.durand@eleves.ec-nante
                                     cols="50">${message_page_informations}</textarea>
                                 </td>
                               </tr>
+
+                              <tr>
+                                <td colspan="3">
+                                  <hr />
+                                  <h4 class="text-center">Infobulles du formulaire</h4>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Nom</th>
+                                <td colspan="2"><textarea name="tooltip_nom" rows="2"
+                                    cols="80">${tooltip_nom}</textarea></td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Prénom</th>
+                                <td colspan="2"><textarea name="tooltip_prenom" rows="2"
+                                    cols="80">${tooltip_prenom}</textarea></td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Date de naissance</th>
+                                <td colspan="2"><textarea name="tooltip_date_naissance" rows="2"
+                                    cols="80">${tooltip_date_naissance}</textarea></td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Ville</th>
+                                <td colspan="2"><textarea name="tooltip_ville" rows="2"
+                                    cols="80">${tooltip_ville}</textarea></td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Code Postal</th>
+                                <td colspan="2"><textarea name="tooltip_code_postal" rows="2"
+                                    cols="80">${tooltip_code_postal}</textarea></td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Pays</th>
+                                <td colspan="2"><textarea name="tooltip_pays" rows="2"
+                                    cols="80">${tooltip_pays}</textarea></td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Adresse mail</th>
+                                <td colspan="2"><textarea name="tooltip_mail" rows="2"
+                                    cols="80">${tooltip_mail}</textarea></td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Confirmation mail</th>
+                                <td colspan="2"><textarea name="tooltip_confirm_mail" rows="2"
+                                    cols="80">${tooltip_confirm_mail}</textarea></td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Genre</th>
+                                <td colspan="2"><textarea name="tooltip_genre" rows="2"
+                                    cols="80">${tooltip_genre}</textarea></td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Numéro de téléphone</th>
+                                <td colspan="2"><textarea name="tooltip_tel" rows="2"
+                                    cols="80">${tooltip_tel}</textarea></td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Êtes-vous boursier ?</th>
+                                <td colspan="2"><textarea name="tooltip_bourse" rows="2"
+                                    cols="80">${tooltip_bourse}</textarea></td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Préférence logement</th>
+                                <td colspan="2"><textarea name="tooltip_souhait" rows="2"
+                                    cols="80">${tooltip_souhait}</textarea></td>
+                              </tr>
+                              <tr>
+                                <th scope="col">PMR / Handicap</th>
+                                <td colspan="2"><textarea name="tooltip_pmr" rows="2"
+                                    cols="80">${tooltip_pmr}</textarea></td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Autres informations</th>
+                                <td colspan="2"><textarea name="tooltip_infos" rows="2"
+                                    cols="80">${tooltip_infos}</textarea></td>
+                              </tr>
+
                               <tr>
                                 <td></td>
                                 <td colspan="2">
