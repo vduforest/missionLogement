@@ -107,17 +107,17 @@
                             <span class="text-danger">Preuve manquante</span><br/>
                           </c:if>
                         </c:if>
-                        <c:if test="${(! empty formulaire.estPmr) && (formulaire.estPmr)}">Nï¿½cessite amï¿½nagement<br/></c:if>
+                        <c:if test="${(! empty formulaire.estPmr) && (formulaire.estPmr)}">Nécessite aménagement<br/></c:if>
                         <c:if test="${(! empty formulaire.paysId) && (formulaire.paysId.paysId != 1)}">Localisation : ${formulaire.paysId.paysNom}<br/></c:if>
                         <c:if test="${(empty formulaire.dateDeNaissance)}"><span class="text-danger">Date de naissance manquante</span><br/></c:if>
-                        <c:if test="${(empty formulaire.genreId)}"><span class="text-danger">Genre non indiquï¿½</span><br/></c:if>
-                        <c:if test="${(empty formulaire.mail)}"><span class="text-danger">Adresse mail non indiquï¿½</span><br/></c:if>
-                        <c:if test="${(empty formulaire.numeroTel)}"><span class="text-danger">Numï¿½ro de tï¿½lï¿½phone non indiquï¿½</span><br/></c:if>
+                        <c:if test="${(empty formulaire.genreId)}"><span class="text-danger">Genre non indiqué</span><br/></c:if>
+                        <c:if test="${(empty formulaire.mail)}"><span class="text-danger">Adresse mail non indiqué</span><br/></c:if>
+                        <c:if test="${(empty formulaire.numeroTel)}"><span class="text-danger">Numéro de téléphone non indiqué</span><br/></c:if>
                         <c:if test="${(empty formulaire.ville)}"><span class="text-danger">Ville manquante</span><br/></c:if>
                         <c:if test="${(empty formulaire.paysId)}"><span class="text-danger">Pays manquant</span><br/></c:if>
                         <c:if test="${(empty formulaire.estBoursier)}"><span class="text-danger">Statut boursier incorrect</span><br/></c:if>
                         <c:if test="${(empty formulaire.estPmr)}"><span class="text-danger">Statut PMR incorrect</span><br/></c:if>
-                        <c:if test="${(empty formulaire.souhaitId)}"><span class="text-danger">Souhait non formulï¿½</span><br/></c:if>
+                        <c:if test="${(empty formulaire.souhaitId)}"><span class="text-danger">Souhait non formulé</span><br/></c:if>
                         <c:if test="${(! empty formulaire.dateValidation)}"><span class="text-primary">Soumis le : <fmt:formatDate value='${formulaire.dateValidation}' pattern='dd/MM/yyyy HH:mm:ss'/></span><br/></c:if>
                         </td>
                         <td class="text-center">
