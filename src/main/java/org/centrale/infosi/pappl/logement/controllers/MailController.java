@@ -12,15 +12,12 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import java.util.Properties;
-import jakarta.mail.*;
-import jakarta.mail.internet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import javax.net.ssl.SSLContext;
+
 import org.centrale.infosi.pappl.logement.items.ConfigModif;
 import org.centrale.infosi.pappl.logement.items.Connexion;
 import org.centrale.infosi.pappl.logement.items.Personne;
@@ -30,7 +27,6 @@ import org.centrale.infosi.pappl.logement.repositories.PersonneRepository;
 import org.centrale.infosi.pappl.logement.controllers.MailService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.centrale.infosi.pappl.logement.util.CertificateManager;
 
 /**
  * Cette classe permet l'envoie automatique du premier mail pour la connexion;
@@ -75,7 +71,7 @@ public class MailController {
      * Méthode permettant d'envoyer un message de premier connexion à tous les
      * élèves selon la vague choisie
      *
-     * @param request La requête http
+     * @param request     La requête http
      * @param messageType le type de message à envoyer
      * @return La page d'accueil admin avec un pop up
      */
@@ -83,7 +79,7 @@ public class MailController {
         ModelAndView returned;
         Connexion connection = connectionService.checkAccess(request, "Admin");
         if (connection != null) {
-            
+
             // Il faut créer une liste avec l'adress mail de tous les utilisateurs.
             Optional<ConfigModif> contenuMsg = configmodifrepository.getLastTypeId(messageType);
             Optional<ConfigModif> envoyeurMsg = configmodifrepository.getLastTypeId(MAILCONTACT);
@@ -101,7 +97,7 @@ public class MailController {
                         }
                         formulaireRepository.updateVague();
 
-                        //Renvoie sur la page accueil_admin avec un message pop_up
+                        // Renvoie sur la page accueil_admin avec un message pop_up
                         List<Alerte> alertes = new ArrayList<Alerte>(alerteRepository.findAll());
                         Collections.sort(alertes, Alerte.getComparator());
 
@@ -115,7 +111,7 @@ public class MailController {
                         }
                         break;
                     default:
-                        returned= new ModelAndView("index");
+                        returned = new ModelAndView("index");
                         break;
                 }
                 return returned;
@@ -154,87 +150,10 @@ public class MailController {
      * @return La page d'accueil admin avec un pop up
      */
     /*
-    @RequestMapping(value = "", method =  RequestMethod.POST)
-    public ModelAndView EnvoiReset(HttpServletRequest request){
-        return envoyerMessageReset(request,MSGRESET);
-    }
+     * @RequestMapping(value = "", method = RequestMethod.POST)
+     * public ModelAndView EnvoiReset(HttpServletRequest request){
+     * return envoyerMessageReset(request,MSGRESET);
+     * }
      */
-    /**
-     * Méthode permettant d'envoyer des mails avec JavaMail
-     *
-     * @param token token de l'élève destinataire
-     * @param recipient Adresse mail du destinataire
-     * @param subject L'objet du mail
-     * @param body Le contenu
-     */
-    public void sendEmail(String token, String recipient, String subject, String body) {
 
-        final String mailExpediteur = "noreply@ec-nantes.fr";
-        final String usernameSMTP = "smtp.missionlogement";
-        final String passwordSMTP = "u6vSB@qAm49t2Gt";
-        
-        final String host = "smtps.ec-nantes.fr";
-        
-        String port = "587";
-
-        // Configuration SMTP
-        Properties properties = new Properties();
-        properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.port", port);
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.ssl.enable", "false");
-        
-        // A quoi servent ces deux lignes là ? 
-        properties.put("mail.smtp.socketFactory.port", port);
-        properties.put("mail.smtp.socketFactory.fallback", "false");
-
-        properties.put("mail.smtp.user", usernameSMTP);
-        properties.put("mail.smtp.password", passwordSMTP);
-        
-        try {
-            // Récupère le SSLContext permissif
-            SSLContext sslContext = CertificateManager.getSSLContext();
-            properties.put("mail.smtp.ssl.socketFactory", sslContext.getSocketFactory());
-            properties.put("mail.smtp.ssl.checkserveridentity", "false");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        // Création de la session avec authentification
-        Authenticator authenticator = new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(usernameSMTP, passwordSMTP);
-            }
-        };
-
-        Session session = Session.getInstance(properties, authenticator);
-
-        // Active le debug pour voir la communication SMTP
-        session.setDebug(true);
-        try {
-
-            // Création du message email
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(usernameSMTP));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-
-            // Emp$êche de répondre au mail
-            message.setReplyTo(InternetAddress.parse("no-reply@invalid.local"));
-
-            // Objet du mail
-            message.setSubject(subject);
-            message.setText(body);
-
-            // Envoi du message
-            Transport.send(message);
-
-            //System.out.println("Email envoyé avec succès !");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Erreur lors de l'envoi de l'email.");
-        }
-    }
 }
