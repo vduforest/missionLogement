@@ -16,6 +16,8 @@
     <!--Local-->
     <link href="css/default.css" type="text/css" rel="stylesheet"/>
     <link href="css/pageDossiers.css" type="text/css" rel="stylesheet"/>
+    <link href="css/header.css" type="text/css" rel="stylesheet"/>
+    
 
     <!--Datatable-->
     <script src="js/mainDataTables.js" type="text/javascript"></script>
@@ -47,22 +49,7 @@
 
   <body>
     <!-- Header Section -->
-    <div id="header">
-      <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <div class="container">
-          <div class="collapse navbar-collapse"id="navbar1">
-            <form method="POST">
-              <input type="hidden" name="connexionId" value="${connexionId}" />
-              <ul class="navbar-nav mb-lg">
-                <h1>Plateforme Mission Logement</h1>
-                <li class="nav-item"><button class="btn nav-link text-white" formaction="adminDashboard.do"><img src="img/logocn.png"alt="logo"class="logo"/></button></li>
-                <li class="nav-item"><button class="btn nav-link text-white" formaction="index.do"><img src="img/porteOuverte.png"alt="sortie"class="sortie"/></button></li>
-              </ul>
-            </form>
-          </div>
-        </div>
-      </nav>
-    </div>   
+    <jsp:include page="/WEB-INF/views/header.jsp"/>   
 
     <!-- Main Section -->
     <div class="py-3">
@@ -149,7 +136,7 @@
                               <input type="hidden" name="connexionId" value="${connexionId}" />
                               <input type="hidden" name="formulaireId" value="${formulaire.formulaireId}" />
                               <input type="hidden" name="id" value="${formulaire.formulaireId}" />
-                              <button name="reinitialiser" class="btn btn-danger" onclick="return checkSubmit('check_${formulaire.formulaireId}', 'Réinitialiser le mot de passe ?');">
+                              <button name="reinitialiser" class="btn btn-danger" onclick="return checkSubmit('check_${formulaire.formulaireId}', 'Rï¿½initialiser le mot de passe ?');">
                                 <img src="img/return.png" class="icon" alt="Reinitialiser"/>
                               </button>
                             </form>

@@ -1,68 +1,68 @@
-div.main{
-    top:15%;
+div.main {
+    top: 15%;
 }
 
-h2{
+h2 {
     padding: 20px;
-    background-color: rgba(14,39,72,255);
-    color: rgba(250,181,0,255);
+    background-color: rgba(14, 39, 72, 255);
+    color: rgba(250, 181, 0, 255);
     font-weight: bold;
     border-radius: 2px;
 }
 
-input{
-    position:relative;
+input {
+    position: relative;
     width: inherit;
     padding: 5px;
     background: whitesmoke;
-    border: 2px solid rgba(0,0,0,.15);
-    box-shadow: 0 5px 10px rgba(0,0,0,.1) inset;
+    border: 2px solid rgba(0, 0, 0, .15);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .1) inset;
     border-radius: 5px;
-    font-size:15px;
-    color:rgb(86, 86, 86);
+    font-size: 15px;
+    color: rgb(86, 86, 86);
 
 }
 
-textarea{
-    position:relative;
+textarea {
+    position: relative;
     width: inherit;
     padding: 5px;
     background: whitesmoke;
-    border: 2px solid rgba(0,0,0,.15);
-    box-shadow: 0 5px 10px rgba(0,0,0,.1) inset;
+    border: 2px solid rgba(0, 0, 0, .15);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .1) inset;
     border-radius: 5px;
-    font-size:15px;
-    color:rgb(86, 86, 86);
+    font-size: 15px;
+    color: rgb(86, 86, 86);
 
 }
 
-select{
-    position:relative;
+select {
+    position: relative;
     width: inherit;
     padding: 5px;
     background: whitesmoke;
-    border: 2px solid rgba(0,0,0,.15);
-    box-shadow: 0 5px 10px rgba(0,0,0,.1) inset;
+    border: 2px solid rgba(0, 0, 0, .15);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .1) inset;
     border-radius: 5px;
-    font-size:15px;
-    color:rgb(86, 86, 86);
+    font-size: 15px;
+    color: rgb(86, 86, 86);
 
 }
 
-input.infoSupplementaires{
+input.infoSupplementaires {
     height: 300px;
     width: 100%;
     text-align: left;
 
 }
 
-button.Enregistrer{
+button.Enregistrer {
     margin: 5px;
     padding: 5px;
     border-radius: 5px;
 }
 
-button.Confirmer{
+button.Confirmer {
     margin: 5px;
     padding: 5px;
     border-radius: 5px;
@@ -70,27 +70,90 @@ button.Confirmer{
     color: white;
 }
 
-img.icon{
-    height:20px;
-    width:20px;
+img.icon {
+    height: 20px;
+    width: 20px;
 }
-img.avion{
-    height:20px;
-    width:20px;
+
+img.avion {
+    height: 20px;
+    width: 20px;
 }
-.navbar{
-    background-color:rgba(14,39,72,255) !important;
+
+.navbar {
+    background-color: rgba(14, 39, 72, 255) !important;
 }
-.nav-link{
+
+.nav-link {
     border-width: 0;
-    background-color: rgba(14,39,72,255) !important;
+    background-color: rgba(14, 39, 72, 255) !important;
 }
-h1{
-    position:absolute;
+
+h1 {
+    position: absolute;
     font-size: 225%;
     left: 50%;
     transform: translateX(-50%);
-    color:rgba(250,181,0,255);
+    color: rgba(250, 181, 0, 255);
     text-align: center;
     font-weight: bold !important;
+}
+
+/* Tooltip styling */
+.tooltip-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-color: #0e2748;
+    /* Dark blue matching theme */
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 18px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: help;
+    margin-left: 8px;
+    position: relative;
+    font-family: 'Open Sans', sans-serif;
+    vertical-align: middle;
+}
+
+.tooltip-icon:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    width: 250px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 100;
+    bottom: 125%;
+    /* Position above */
+    left: 50%;
+    margin-left: -125px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 14px;
+    font-weight: normal;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Ensure text wrapping */
+    white-space: normal;
+}
+
+.tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
 }
