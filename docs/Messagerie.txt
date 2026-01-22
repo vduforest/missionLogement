@@ -1,0 +1,9 @@
+
+FQDN relai SMTP	smtps.ec-nantes.fr
+Port de communication	587/TCP
+Sécurité de la connexion	STARTTLS
+Méthode d'authentification	Mot de passe normal
+Nom d'utilisateur	smtp.missionlogement
+Mot de passe : u6vSB@qAm49t2Gt
+
+

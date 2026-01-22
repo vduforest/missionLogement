@@ -69,12 +69,7 @@
                                       src="img/save.png" class="icon" /></button>
                                 </td>
                                 <td>
-                                  <button type="button" <c:if test="${missionStatus != 2}">disabled="disabled"</c:if>
-                                    style="cursor: pointer;" onclick="return checkSubmit('configuration',
-                                    'supprimerDonnees.do', '!!Attention!! \n Voulez-vous vraiment supprimer ces données
-                                    ?\n Cette action est irréversible');" formaction="supprimerDonnees.do"
-                                    id="supprimerDonnees" class="Supprimer" >SupprimerDonnees <img src="img/warning.png"
-                                      class="icon" /></button>
+                                  <button type="button" <c:if test="${missionStatus != 2}">disabled="disabled"</c:if> style="cursor: pointer;" onclick="return checkSubmit('configuration', 'supprimerDonnees.do', '!!Attention!! \n Voulez-vous vraiment supprimer ces données ?\n Cette action est irréversible');" formaction="supprimerDonnees.do" id="supprimerDonnees" class="Supprimer" >SupprimerDonnees <img src="img/warning.png" class="icon"/></button>
                                 </td>
                               </tr>
                             </tbody>
@@ -176,6 +171,22 @@ M.;Durand;Lucas;15/06/2002;75015;Paris;France;84532;lucas.durand@eleves.ec-nante
                                   </c:if>
                                 </td>
                               </tr>
+                              <tr>
+                                <th scope="col">Mail de dossier incomplet</th>
+                                <td>
+                                  <textarea name="message_dossier_incomplet" class="message_dossier_incomplet" rows="10"
+                                    cols="50">${message_dossier_incomplet}</textarea>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Mail de dossier complet</th>
+                                <td>
+                                  <textarea name="message_dossier_complet" class="message_dossier_complet" rows="10"
+                                    cols="50">${message_dossier_complet}</textarea>
+                                </td>
+                              </tr>
+                              
+                                  
 
                               <tr>
                                 <td></td>

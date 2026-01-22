@@ -80,6 +80,10 @@ public class FormulaireController {
 
     @Autowired
     private ConnectionService connectionService;
+    
+    @Lazy
+    @Autowired
+    private MailController mailController;
 
     @Lazy
     @Autowired
@@ -528,7 +532,10 @@ public class FormulaireController {
             int formulaireId = getIntFromString(formulaireIdStr);
 
             Util.enregistrementFormulaire(request, formulaireId, true, formulaireRepository);
-            // TO DO : envoi du mail quand ce sera possible
+            
+            // Envoi du mail de validation du dossier
+            mailController.envoiMailDossierComplet(request);
+
             String idStr = Util.getStringFromRequest(request, "id");
             int id = Util.getIntFromString(idStr);
             alerteRepository.update(formulaireRepository.getReferenceById(id), "Traitée");
@@ -608,7 +615,18 @@ public class FormulaireController {
             int formulaireId = getIntFromString(formulaireIdStr);
 
             Util.enregistrementFormulaire(request, formulaireId, false, formulaireRepository);
-            // envoi du mail quand ce sera possible
+            
+            // Gestion de l'envoi du mail
+            String comm = Util.getStringFromRequest(request,"commentairesVe");
+            
+            //Tester que le commentaire n'est pas vide
+            if (comm != null && !comm.trim().isEmpty()){
+                mailController.envoiMailDossierIncomplet(request);
+            }
+            else{
+                // envoyer javascript
+            }
+            
             List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
             Collections.sort(forms, Formulaire.getComparator());
             // Redirection
@@ -679,6 +697,10 @@ public class FormulaireController {
             personneRepository.resetPassword(personne);
 
             formulaire = formulaireRepository.getReferenceById(formulaireId);
+            
+            // Envoi du mail
+            
+            
             // envoi du mail quand ce sera possible
             /*
              * List<Formulaire> forms = new
