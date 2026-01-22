@@ -95,7 +95,7 @@ public class FirstConnectionController {
      * @param token token à vérifier
      * @return true si le token est valide, false sinon
      */
-    private int verifyToken(String token) {
+    public int verifyToken(String token) {
         Optional<Personne> result = personneRepository.findByFirstConnectionToken(token);
         
         // Test de l'existence de la personne
@@ -197,22 +197,11 @@ public class FirstConnectionController {
         personne = personneRepository.getReferenceById(personne.getPersonneId());
 
 
-        // Check token (if it is given)
-        if ((token != null) && (personne.getFirstConnectionToken() != null)
-                && (! personne.getFirstConnectionToken().equals(token))) {
-            if (token != null){
-                return invalidAccountCreation("31",mail);
-                } else if (personne.getFirstConnectionToken() != null){
-                    return invalidAccountCreation("32",mail);
-                } else {
-                    return invalidAccountCreation("33",mail);
-                }
-            
-        }
+        
         
         // Check mail is the given one
         if ((formulaire.getMail() != null) && (!formulaire.getMail().equalsIgnoreCase(mail))) {
-            return invalidAccountCreation("4",mail);
+            return invalidAccountCreation(Scei,mail);
         }
 
         Collection<Personne> personneLogin = personneRepository.findByLogin(login);
@@ -221,13 +210,13 @@ public class FirstConnectionController {
             Personne altPerson = personneLogin.iterator().next();
             if (!personne.equals(altPerson)) {
                 // Not by this person
-                return invalidAccountCreation("5",mail);
+                return invalidAccountCreation(Scei,mail);
             }
         }
         
         if ((personne.getLogin() != null) && (! personne.getLogin().equals(login))) {
             // Login already defined but not this one
-            return invalidAccountCreation("6",mail);
+            return invalidAccountCreation(Scei,mail);
         }
 
         // OK, set Login / Password
@@ -276,7 +265,7 @@ public class FirstConnectionController {
         return modelAndView;
     }
 
-    private String generateUniqueToken() {
+    public String generateUniqueToken() {
         String token;
         boolean isTokenUnique = false;
 

@@ -623,7 +623,7 @@ public ModelAndView Sauvegardeformulaire(HttpServletRequest request) {
         return ResponseEntity.unprocessableEntity().body((InputStreamResource) null);
     }
 
-    @RequestMapping(value = "AnnulerPwd.do", method = RequestMethod.POST)
+    @RequestMapping(value = "envoiemailreset.do", method = RequestMethod.POST)
     public ModelAndView handleAnnulerPwd(HttpServletRequest request) {
         ModelAndView returned = null;
         //Check de la connexion

@@ -269,8 +269,8 @@
                             </c:when>
                             <c:otherwise>
                               <button onclick="openForm('formVe')" 
-                                      formaction="AnnulerPwd.do" type="submit" name="annulerpwd" class="btn btn-info" value="annulerpwd" <c:if test="${empty item.personneId.password}">disabled="disabled"</c:if>>
-                                        Reinitialiser Mot de Passe <img src="img/refuse.png" class="icon" alt="Reinitialiser"/>
+                                      formaction="envoiemailresetperso.do" type="submit" name="envoiemailreset" class="btn btn-info" value="resetperso" <c:if test="${empty item.personneId.password}">disabled="disabled"</c:if>>
+                                        Reinitialiser Mot de Passe <img src="img/mail.png" class="icon" />
                               </button>
 
                               <button onclick="openForm('formVe')" 

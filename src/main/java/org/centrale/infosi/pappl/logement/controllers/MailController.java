@@ -17,7 +17,9 @@ import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import javax.net.ssl.SSLContext;
@@ -28,6 +30,8 @@ import org.centrale.infosi.pappl.logement.repositories.ConfigModifRepository;
 import org.centrale.infosi.pappl.logement.repositories.FormulaireRepository;
 import org.centrale.infosi.pappl.logement.repositories.PersonneRepository;
 import org.centrale.infosi.pappl.logement.controllers.MailService;
+import org.centrale.infosi.pappl.logement.controllers.FirstConnectionController;
+import org.centrale.infosi.pappl.logement.items.Formulaire;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.centrale.infosi.pappl.logement.util.CertificateManager;
@@ -60,6 +64,9 @@ public class MailController {
     @Autowired
     private MailService mailService;
 
+    @Autowired
+    private FirstConnectionController firstConnection;
+
     @Lazy
     @Autowired
     private ConfigModifRepository configmodifrepository;
@@ -83,7 +90,7 @@ public class MailController {
         ModelAndView returned;
         Connexion connection = connectionService.checkAccess(request, "Admin");
         if (connection != null) {
-            
+
             // Il faut créer une liste avec l'adress mail de tous les utilisateurs.
             Optional<ConfigModif> contenuMsg = configmodifrepository.getLastTypeId(messageType);
             Optional<ConfigModif> envoyeurMsg = configmodifrepository.getLastTypeId(MAILCONTACT);
@@ -114,8 +121,43 @@ public class MailController {
                             returned.addObject("confirmationMessage", "Emails envoyés avec succès ! ");
                         }
                         break;
+                    case 12:
+                        returned = connectionService.prepareModelAndView(connection, "accueil_admin");
+                        /* on reçoit l'id du formulaire et de la personne */
+                        Integer id = Integer.parseInt(request.getParameter("id"));
+                        Integer personneId = Integer.parseInt(request.getParameter("personneId"));
+                        System.out.println("début");
+                        Optional<Formulaire> formulaires = formulaireRepository.findById(id);
+                        Optional<Personne> perso = personneRepository.findById(personneId);
+                        System.out.println("début2");
+
+                        if (perso.isPresent() && formulaires.isPresent()) {
+                            Personne personne = perso.get();
+                            Formulaire formulaire = formulaires.get();
+
+                            String token = personne.getFirstConnectionToken();
+                            System.out.println(token + personne);
+                            if ((token == null) || (firstConnection.verifyToken(token) == 0)) {
+                                genererToken(personne);
+                                throw new IllegalArgumentException("Token manquant");
+                            }
+
+                            /**
+                             * vérifier le token
+                             */
+                        
+                            /* le token est expire */
+                        genererToken(personne);
+
+                        token = personne.getFirstConnectionToken();
+                        System.out.println("a passer la condition");
+                        String recipient = formulaire.getMail();
+                        mailService.sendPasswordResetMail(token, recipient);
+                    }
+                        break;
+
                     default:
-                        returned= new ModelAndView("index");
+                        returned = new ModelAndView("index");
                         break;
                 }
                 return returned;
@@ -133,6 +175,17 @@ public class MailController {
     @RequestMapping(value = "envoiemail.do", method = RequestMethod.POST)
     public ModelAndView Envoi(HttpServletRequest request) {
         return envoyerMessage(request, MSGPREMIERCONTACT);
+    }
+
+    /**
+     * Gestion de la route permettant d'envoyer les mails de reset perso
+     *
+     * @param request La requête http
+     * @return La page d'accueil admin avec un pop up
+     */
+    @RequestMapping(value = "envoiemailresetperso.do", method = RequestMethod.POST)
+    public ModelAndView EnvoiReset(HttpServletRequest request) {
+        return envoyerMessage(request, MSGRESET);
     }
 
     /**
@@ -170,11 +223,11 @@ public class MailController {
     public void sendEmail(String token, String recipient, String subject, String body) {
 
         final String mailExpediteur = "noreply@ec-nantes.fr";
-        final String usernameSMTP = "smtp.missionlogement";
-        final String passwordSMTP = "u6vSB@qAm49t2Gt";
-        
-        final String host = "smtps.ec-nantes.fr";
-        
+        final String usernameSMTP = "raphael.delacote@eleves.ec-nantes.fr";
+        final String passwordSMTP = "baEd7n3kjE5@Ma2";
+
+        final String host = "smtps.nomade.ec-nantes.fr";
+
         String port = "587";
 
         // Configuration SMTP
@@ -183,15 +236,14 @@ public class MailController {
         properties.put("mail.smtp.port", port);
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.ssl.enable", "false");
-        
+
         // A quoi servent ces deux lignes là ? 
         properties.put("mail.smtp.socketFactory.port", port);
         properties.put("mail.smtp.socketFactory.fallback", "false");
-
+        properties.put("mail.smtp.ssl.trust", "smtps.nomade.ec-nantes.fr");
         properties.put("mail.smtp.user", usernameSMTP);
         properties.put("mail.smtp.password", passwordSMTP);
-        
+
         try {
             // Récupère le SSLContext permissif
             SSLContext sslContext = CertificateManager.getSSLContext();
@@ -201,7 +253,7 @@ public class MailController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         // Création de la session avec authentification
         Authenticator authenticator = new Authenticator() {
             @Override
@@ -236,5 +288,19 @@ public class MailController {
             e.printStackTrace();
             System.out.println("Erreur lors de l'envoi de l'email.");
         }
+    }
+
+    public void genererToken(Personne personne) {
+        String token = firstConnection.generateUniqueToken(); // Generate a secure token
+        personne.setFirstConnectionToken(token); // Set the token in the user record
+        Date dateNow = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateNow);
+        cal.add(Calendar.HOUR, 24);
+        Date expiryDate = cal.getTime();
+        // LocalDate oneMonthLater = LocalDate.now().plusMonths(1);  // Add 1 month to the current date
+        // java.sql.Date expiryDate = java.sql.Date.valueOf(oneMinuteLater);  // Convert to java.sql.Date
+        personne.setFirstConnectionTokenExpiry(expiryDate);
+        personneRepository.save(personne);
     }
 }

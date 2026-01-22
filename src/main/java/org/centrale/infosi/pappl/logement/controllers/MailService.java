@@ -44,8 +44,8 @@ public class MailService {
      */
     public void sendFirstConnectionMail(String token, String recipient) {
         String subject = "Première connexion à la plateforme logement";
-        String link = "http://dtest-mlogement.ec-nantes.fr:8080/MissionLogement_test/creationcompte.do?token=" + token;
-
+        String link = "http://localhost:8080/MissionLogement/creationcompte.do?token=" + token;
+/*http:/dtest-mlogement.ec-nantes.fr:8080/MissionLogement_test/creationcompte.do?token*/
         String body = getConfigText(MSGPREMIERCONTACT);
 
         sendGenericMail(token, subject, body, link, recipient);
@@ -59,7 +59,7 @@ public class MailService {
      */
     public void sendPasswordResetMail(String token, String recipient) {
         String subject = "Réinitialisation de votre mot de passe";
-        String link = "http://dtest-mlogement.ec-nantes.fr:8080/MissionLogement_test/passwordresetlink.do?token=" + token;
+        String link = "http://localhost:8080/MissionLogement/passwordresetlink.do?token=" + token;
 
         String body = getConfigText(MSGRESET);
 
