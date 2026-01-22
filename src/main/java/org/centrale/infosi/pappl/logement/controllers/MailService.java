@@ -171,7 +171,7 @@ public class MailService {
 
         final String mailExpediteur = "noreply@ec-nantes.fr";
         final String usernameSMTP = "victor.duforest@eleves.ec-nantes.fr";
-        final String passwordSMTP = "dutzos-3Sujfu-cugves";
+        final String passwordSMTP = "";
 
         final String host = "smtps.nomade.ec-nantes.fr";
 
