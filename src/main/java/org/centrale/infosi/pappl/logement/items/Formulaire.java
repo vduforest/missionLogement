@@ -488,19 +488,24 @@ public class Formulaire implements Serializable {
     }
 
     public File getBourseFile() {
-        String[] extList = {"png", "pdf"};
-        File bourseFile = null;
-        for (String ext1 : extList) {
-            File cible = new File(Util.buildBourseFilePath(this.getNumeroScei(), ext1));
-            if (cible.exists()) {
-                bourseFile = cible;
-                break;
+        try {
+            String[] extList = {"png", "pdf"};
+            File bourseFile = null;
+            for (String ext1 : extList) {
+                File cible = new File(Util.buildBourseFilePath(this.getNumeroScei(), ext1));
+                if (cible.exists()) {
+                    bourseFile = cible;
+                    break;
+                }
             }
-        }
-        if ((bourseFile == null) || (! bourseFile.exists())) {
+            if ((bourseFile == null) || (!bourseFile.exists())) {
+                return null;
+            } else {
+                return bourseFile;
+            }
+        } catch (RuntimeException ex) {
+            // Never fail page rendering just because the filesystem config is missing/misconfigured.
             return null;
-        } else {
-            return bourseFile;
         }
     }
 
