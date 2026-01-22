@@ -240,7 +240,7 @@
                           <tr>
                             <th scope="col" style="color:red">Commentaire Mission Logement<br/>(obligatoire en cas de refus)<br/>(sera transmis à l'étudiant en cas de refus du dossier)</th>
                             <td> 
-                              <textarea class="commentairesVe" cols="40" rows="5" name="commentairesVe" id="commentairesVe" disabled="disabled" >${item.commentairesVe}</textarea> 
+                              <textarea class="commentairesVe" cols="40" rows="5" name="commentairesVe" id="commentairesVe" disabled="true">${item.commentairesVe}</textarea> 
                             </td>
                             <td>
                               <button type="button" id="locker_commentairesVe" class="btn btn-secondary" onclick="delock('commentairesVe')">
@@ -284,7 +284,7 @@
                               </button>
 
                               <button onclick="openForm('formVe')" 
-                                      formaction="RefuserFormVe.do" type="submit" name="refuser" class="btn btn-danger" value="refuser" <c:if test="${(! item.estValide) && (! empty item.commentairesVe)}">disabled="disabled"</c:if>>
+                                      formaction="RefuserFormVe.do" type="submit" name="refuser" class="btn btn-danger" value="refuser" <c:if test="${(!item.estValide)}">disabled="disabled"</c:if>>
                                         Refuser <img src="img/refuse.png" class="icon" alt="Refuser"/>
                                       </button>
                             </c:otherwise>

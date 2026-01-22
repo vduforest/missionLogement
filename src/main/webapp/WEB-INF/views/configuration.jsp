@@ -84,12 +84,7 @@
                                       src="img/save.png" class="icon" /></button>
                                 </td>
                                 <td>
-                                  <button type="button" <c:if test="${missionStatus != 2}">disabled="disabled"</c:if>
-                                    style="cursor: pointer;" onclick="return checkSubmit('configuration',
-                                    'supprimerDonnees.do', '!!Attention!! \n Voulez-vous vraiment supprimer ces données
-                                    ?\n Cette action est irréversible');" formaction="supprimerDonnees.do"
-                                    id="supprimerDonnees" class="Supprimer" >SupprimerDonnees <img src="img/warning.png"
-                                      class="icon" /></button>
+                                  <button type="button" <c:if test="${missionStatus != 2}">disabled="disabled"</c:if> style="cursor: pointer;" onclick="return checkSubmit('configuration', 'supprimerDonnees.do', '!!Attention!! \n Voulez-vous vraiment supprimer ces données ?\n Cette action est irréversible');" formaction="supprimerDonnees.do" id="supprimerDonnees" class="Supprimer" >SupprimerDonnees <img src="img/warning.png" class="icon"/></button>
                                 </td>
                               </tr>
                             </tbody>

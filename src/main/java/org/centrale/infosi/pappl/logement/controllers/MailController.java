@@ -138,7 +138,7 @@ public class MailController {
     public void envoiMailDossierIncomplet(HttpServletRequest request) {
         // Récupération du mail à partir de la request
         String recipient = Util.getStringFromRequest(request, "mail");
-        String comm = Util.getStringFromRequest(request, "commentairesVE");
+        String comm = Util.getStringFromRequest(r:!equest, "commentairesVE");
         String prenom = Util.getStringFromRequest(request, "prenom");
 
         //Envoi au service - pas besoin de vérifier que le commentaire est vide, c'est sûr que c'est bon

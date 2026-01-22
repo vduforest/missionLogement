@@ -20,3 +20,9 @@
 2026-01-21 15:25:59 - Creation B Hortense
 2026-01-21 15:25:59 - Creation A Ian- Frederick
 2026-01-21 15:25:59 - Import terminé !
+2026-01-21 17:28:49 - Test_pappl_vague1_2pers.csv : Lecture de l'entête
+2026-01-21 17:28:49 - Test_pappl_vague1_2pers.csv : Lecture des données
+2026-01-21 17:28:49 - Le fichier Test_pappl_vague1_2pers.csv a été lu. 3 lignes analysées.
+2026-01-21 17:28:49 - Creation B Hortense
+2026-01-21 17:28:49 - Creation A Ian- Frederick
+2026-01-21 17:28:49 - Import terminé !
