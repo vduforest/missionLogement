@@ -109,6 +109,40 @@ public class MailController {
                             returned.addObject("confirmationMessage", "Emails envoyés avec succès ! ");
                         }
                         break;
+                        case MSGRESET:
+                        returned = connectionService.prepareModelAndView(connection, "accueil_admin");
+                        /* on reçoit l'id du formulaire et de la personne */
+                        Integer id = Integer.parseInt(request.getParameter("id"));
+                        Integer personneId = Integer.parseInt(request.getParameter("personneId"));
+                        System.out.println("début");
+                        Optional<Formulaire> formulaires = formulaireRepository.findById(id);
+                        Optional<Personne> perso = personneRepository.findById(personneId);
+                        System.out.println("début2");
+
+                        if (perso.isPresent() && formulaires.isPresent()) {
+                            Personne personne = perso.get();
+                            Formulaire formulaire = formulaires.get();
+
+                            String token = personne.getFirstConnectionToken();
+                            System.out.println(token + personne);
+                            /*if ((token == null) || (firstConnection.verifyToken(token) == 0)) {
+                                genererToken(personne);
+                                throw new IllegalArgumentException("Token manquant");
+                            }*/
+
+                            /**
+                             * vérifier le token
+                             */
+                        
+                            /* le token est expire */
+                        genererToken(personne);
+                        /* on met à jour le token transmis*/
+                        token = personne.getFirstConnectionToken();
+                        System.out.println("a passer la condition");
+                        String recipient = formulaire.getMail();
+                        mailService.sendPasswordResetMail(token, recipient);
+                    }
+                        break;
                     default:
                         returned = new ModelAndView("index");
                         break;
