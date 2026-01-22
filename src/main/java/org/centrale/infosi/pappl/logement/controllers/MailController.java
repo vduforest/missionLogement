@@ -197,6 +197,19 @@ public class MailController {
     public ModelAndView EnvoiFin(HttpServletRequest request) {
         return envoyerMessage(request, MSGPFIN);
     }
+    
+    /**
+     * Gestion de la route permettant d'envoyer les mails de reset perso
+     *
+     * @param request La requête http
+     * @return La page d'accueil admin avec un pop up
+     */
+    @RequestMapping(value = "envoiemailresetperso.do", method = RequestMethod.POST)
+    public ModelAndView EnvoiReset(HttpServletRequest request) {
+        return envoyerMessage(request, MSGRESET);
+    }
+
+    
 
     /**
      * Gestion de la route permettant d'envoyer un mail pour réinitialiser un
