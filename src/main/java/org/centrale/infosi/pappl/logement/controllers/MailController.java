@@ -25,6 +25,8 @@ import org.centrale.infosi.pappl.logement.repositories.ConfigModifRepository;
 import org.centrale.infosi.pappl.logement.repositories.FormulaireRepository;
 import org.centrale.infosi.pappl.logement.repositories.PersonneRepository;
 import org.centrale.infosi.pappl.logement.controllers.MailService;
+import org.centrale.infosi.pappl.logement.util.Util;
+import static org.centrale.infosi.pappl.logement.util.Util.getIntFromString;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -63,15 +65,12 @@ public class MailController {
     private static final int MSGPREMIERCONTACT = 7;
     private static final int MSGPFIN = 9;
     private static final int MAILCONTACT = 8;
-    private static final int SIGNATURE = 10;
-    private static final int NB = 11;
-    private static final int MSGRESET = 12;
 
     /**
      * Méthode permettant d'envoyer un message de premier connexion à tous les
      * élèves selon la vague choisie
      *
-     * @param request     La requête http
+     * @param request La requête http
      * @param messageType le type de message à envoyer
      * @return La page d'accueil admin avec un pop up
      */
@@ -87,7 +86,7 @@ public class MailController {
                 ConfigModif messageToSend = contenuMsg.get();
                 ConfigModif envoyeur = envoyeurMsg.get();
                 switch (messageType) {
-                    case 7:
+                    case MSGPREMIERCONTACT:
                         List<String> tousLesTokens = personneRepository.findAllTokenVague();
                         Collection<String> tousLesMails = formulaireRepository.findAllEmailsVague();
                         int compteur = 0;
@@ -132,6 +131,29 @@ public class MailController {
     }
 
     /**
+     * Gestion de l'envoi d'un mail lorsque un dossier est non conforme
+     *
+     * @param request La requête http
+     */
+    public void envoiMailDossierIncomplet(HttpServletRequest request) {
+        // Récupération du mail à partir de la request
+        String recipient = Util.getStringFromRequest(request, "mail");
+        String comm = Util.getStringFromRequest(r:!equest, "commentairesVE");
+        String prenom = Util.getStringFromRequest(request, "prenom");
+
+        //Envoi au service - pas besoin de vérifier que le commentaire est vide, c'est sûr que c'est bon
+        mailService.sendDossierIncompletMail(recipient, comm, prenom);
+    }
+    
+    public void envoiMailDossierComplet(HttpServletRequest request){
+        // Récupération du mail à partir de la request
+        String recipient = Util.getStringFromRequest(request, "mail");
+        String prenom = Util.getStringFromRequest(request, "prenom");
+        
+        mailService.sendDossierCompletMail(recipient,prenom);
+    }
+
+    /**
      * Gestion de la route permettant d'envoyer les mails de reçu du formulaire
      *
      * @param request La requête http
@@ -155,5 +177,4 @@ public class MailController {
      * return envoyerMessageReset(request,MSGRESET);
      * }
      */
-
 }

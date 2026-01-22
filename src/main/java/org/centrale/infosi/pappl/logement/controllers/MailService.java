@@ -54,7 +54,7 @@ public class MailService {
 
         String body = getConfigText(MSGPREMIERCONTACT);
 
-        sendGenericMail(token, subject, body, link, recipient);
+        sendGenericMailConnexion(token, subject, body, link, recipient);
     }
 
     /**
@@ -71,7 +71,41 @@ public class MailService {
 
         String body = getConfigText(MSGRESET);
 
-        sendGenericMail(token, subject, body, link, recipient);
+        sendGenericMailConnexion(token, subject, body, link, recipient);
+    }
+    
+    public void sendDossierIncompletMail(String recipient, String comm, String name){
+        String subject = "Mission Logement Dossier Incomplet";
+        String body = getConfigText(MSGDOSSIERINCOMPLET) + "\n"+comm;
+        
+        sendGenericMailDossier(subject,body,recipient,name);       
+    }
+    
+    public void sendDossierCompletMail(String recipient, String name){
+        String subject = "Mission Logement Dossier Complet";
+        String body = getConfigText(MSGDOSSIERCOMPLET);
+        
+        sendGenericMailDossier(subject,body,recipient,name); 
+    }
+    
+    private void sendGenericMailDossier(String subject, String body, String mail, String name){
+        Optional<ConfigModif> signature = configModifRepository.getLastTypeId(SIGNATURE);
+        Optional<ConfigModif> nb = configModifRepository.getLastTypeId(NB);
+
+        if (signature.isEmpty() || nb.isEmpty()) {
+            throw new IllegalStateException("Configuration mail manquante");
+        }
+        
+        StringBuilder texte = new StringBuilder();
+        texte.append("Bonjour ")
+                .append(name)
+                .append(",\n\n");
+
+        texte.append(body).append("\n");
+        
+        texte.append("\n").append(signature.get().getContenu()).append("\n\n").append(nb.get().getContenu());
+
+        sendEmail(mail, subject, texte.toString());
     }
 
     /**
@@ -88,7 +122,7 @@ public class MailService {
      * @throws IllegalArgumentException si le token est invalide ou la personne est
      *                                  introuvable
      */
-    private void sendGenericMail(String token, String subject, String body, String link, String mail) {
+    private void sendGenericMailConnexion(String token, String subject, String body, String link, String mail) {
 
         Optional<Personne> recipientOpt = personneRepository.findByFirstConnectionToken(token);
         Optional<ConfigModif> signature = configModifRepository.getLastTypeId(SIGNATURE);
@@ -121,29 +155,25 @@ public class MailService {
                 Si votre lien a expiré, merci de refaire une demande.
                 """);
 
-        texte.append("\n")
-                .append(signature.get().getContenu())
-                .append("\n\n")
-                .append(nb.get().getContenu());
+        texte.append("\n").append(signature.get().getContenu()).append("\n\n").append(nb.get().getContenu());
 
-        sendEmail(token, mail, subject, texte.toString());
+        sendEmail(mail, subject, texte.toString());
     }
 
     /**
      * Méthode permettant d'envoyer des mails avec JavaMail
      *
-     * @param token     token de l'élève destinataire
      * @param recipient Adresse mail du destinataire
      * @param subject   L'objet du mail
      * @param body      Le contenu
      */
-    public void sendEmail(String token, String recipient, String subject, String body) {
+    public void sendEmail(String recipient, String subject, String body) {
 
         final String mailExpediteur = "noreply@ec-nantes.fr";
-        final String usernameSMTP = "smtp.missionlogement";
-        final String passwordSMTP = "u6vSB@qAm49t2Gt";
+        final String usernameSMTP = "victor.duforest@eleves.ec-nantes.fr";
+        final String passwordSMTP = "dutzos-3Sujfu-cugves";
 
-        final String host = "smtps.ec-nantes.fr";
+        final String host = "smtps.nomade.ec-nantes.fr";
 
         String port = "587";
 

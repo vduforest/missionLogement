@@ -23,6 +23,7 @@
       <div class="row">
         <div class="col-md-12">
           <form action="saveUser.do" method="post" id="form">
+             <input type="hidden" name="token" value="${token}" />
             <div id="boiteMessageAttention">
               <p id="messageAttention">PENSEZ A NOTER VOTRE IDENTIFIANT ET VOTRE MOT DE PASSE</p>
             </div>
@@ -72,7 +73,6 @@
                        placeholder="Confirmer le mot de passe" name="confMyPassword" required="required">
               </div>
             </div>
-            <input type="hidden" value="${token}" name="token"/>
             <c:if test="${! empty mySCEI}"><input type="hidden" class="form-control" id="mySCEI" name="mySCEI" value="${mySCEI}" disabled></c:if>
             <c:if test="${! empty mail}"><input type="hidden" class="form-control" id="mail" name="mail" value="${mail}" disabled></c:if>
             <p class="space"></p>

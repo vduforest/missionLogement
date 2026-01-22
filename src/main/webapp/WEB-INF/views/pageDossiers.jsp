@@ -135,7 +135,7 @@
                               <input type="hidden" name="connexionId" value="${connexionId}" />
                               <input type="hidden" name="formulaireId" value="${formulaire.formulaireId}" />
                               <input type="hidden" name="id" value="${formulaire.formulaireId}" />
-                              <button name="reinitialiser" class="btn btn-danger" onclick="return checkSubmit('check_${formulaire.formulaireId}', 'Réinitialiser le mot de passe ?');">
+                              <button name="reinitialiser" class="btn btn-danger" onclick="return checkSubmit('check_${formulaire.formulaireId}', 'Rï¿½initialiser le mot de passe ?');">
                                 <img src="img/return.png" class="icon" alt="Reinitialiser"/>
                               </button>
                             </form>

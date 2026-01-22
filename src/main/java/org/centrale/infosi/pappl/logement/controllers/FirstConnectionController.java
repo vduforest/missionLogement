@@ -23,6 +23,7 @@ import org.centrale.infosi.pappl.logement.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -197,22 +198,11 @@ public class FirstConnectionController {
         personne = personneRepository.getReferenceById(personne.getPersonneId());
 
 
-        // Check token (if it is given)
-        if ((token != null) && (personne.getFirstConnectionToken() != null)
-                && (! personne.getFirstConnectionToken().equals(token))) {
-            if (token != null){
-                return invalidAccountCreation("31",mail);
-                } else if (personne.getFirstConnectionToken() != null){
-                    return invalidAccountCreation("32",mail);
-                } else {
-                    return invalidAccountCreation("33",mail);
-                }
-            
-        }
+        
         
         // Check mail is the given one
         if ((formulaire.getMail() != null) && (!formulaire.getMail().equalsIgnoreCase(mail))) {
-            return invalidAccountCreation("4",mail);
+            return invalidAccountCreation(Scei,mail);
         }
 
         Collection<Personne> personneLogin = personneRepository.findByLogin(login);
@@ -221,13 +211,13 @@ public class FirstConnectionController {
             Personne altPerson = personneLogin.iterator().next();
             if (!personne.equals(altPerson)) {
                 // Not by this person
-                return invalidAccountCreation("5",mail);
+                return invalidAccountCreation(Scei,mail);
             }
         }
         
         if ((personne.getLogin() != null) && (! personne.getLogin().equals(login))) {
             // Login already defined but not this one
-            return invalidAccountCreation("6",mail);
+            return invalidAccountCreation(Scei,mail);
         }
 
         // OK, set Login / Password
@@ -241,12 +231,14 @@ public class FirstConnectionController {
      * Gestion de la route permettant de générer les tokens de premières
      * connexion
      *
+     * @param request
      * @return La page d'accueil de l'admin après création des tokens
      */
     @RequestMapping(value = "generatetokens.do")
-    public ModelAndView generateTokensForAllUsers() {
+    public ModelAndView generateTokensForAllUsers(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("accueil_admin");
-
+        String connexionId = request.getParameter("connexionId");
+        
         try {
             Collection<Personne> personnes = personneRepository.findAll(); // Fetch all users
             for (Personne personne : personnes) {
@@ -269,8 +261,10 @@ public class FirstConnectionController {
             }
 
             modelAndView.addObject("confirmationMessage", "Tokens generated and emails sent to all users.");
+            modelAndView.addObject("connexionId",connexionId);
         } catch (Exception e) {
             modelAndView.addObject("confirmationMessage", "An error occurred while generating tokens.");
+            modelAndView.addObject("connexionId",connexionId);
         }
 
         return modelAndView;
@@ -288,5 +282,6 @@ public class FirstConnectionController {
 
         return token;
     }
-
+    
+    
 }
