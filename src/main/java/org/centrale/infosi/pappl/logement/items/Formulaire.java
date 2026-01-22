@@ -158,6 +158,52 @@ public class Formulaire implements Serializable {
     @NotNull
     @Column(name = "vague")
     private boolean vague;
+
+    @Column(name = "distance")
+    private Integer distance;
+
+    @Column(name = "rang")
+    private Integer rang;
+
+    @Column(name = "international")
+    private Boolean international;
+
+    @Size(max = 16)
+    @Column(name = "tel_2")
+    private String tel2;
+
+    public Integer getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Integer distance) {
+        this.distance = distance;
+    }
+
+    public Integer getRang() {
+        return rang;
+    }
+
+    public void setRang(Integer rang) {
+        this.rang = rang;
+    }
+
+    public Boolean getInternational() {
+        return international;
+    }
+
+    public void setInternational(Boolean international) {
+        this.international = international;
+    }
+
+    public String getTel2() {
+        return tel2;
+    }
+
+    public void setTel2(String tel2) {
+        this.tel2 = tel2;
+    }
+    
     
     /**
      *

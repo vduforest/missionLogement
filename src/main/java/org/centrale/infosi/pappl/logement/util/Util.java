@@ -693,9 +693,41 @@ public class Util {
             boursier = Util.getStringFromRequest(request, "boursier");
         }
 
+        String tel2 = formulaire.getTel2();
+        if (Util.hasRequestParameter(request, "tel2")) {
+            tel2 = Util.getStringFromRequest(request, "tel2");
+        }
+
+        int distance = -1;
+        if (formulaire.getDistance() != null) {
+            distance = formulaire.getDistance();
+        }
+        if (Util.hasRequestParameter(request, "distance")) {
+            String distanceStr = Util.getStringFromRequest(request, "distance");
+            distance = getIntFromString(distanceStr);
+        }
+
+        int rang = -1;
+        if (formulaire.getRang() != null) {
+            rang = formulaire.getRang();
+        }
+        if (Util.hasRequestParameter(request, "rang")) {
+            String rangStr = Util.getStringFromRequest(request, "rang");
+            rang = getIntFromString(rangStr);
+        }
+
+        String international = "null";
+        if (formulaire.getInternational() != null) {
+            international = formulaire.getInternational().toString().toLowerCase();
+        }
+        if (Util.hasRequestParameter(request, "international")) {
+            international = Util.getStringFromRequest(request, "international");
+        }
+
+
         formulaireRepository.update(formulaireId,
                 nom, prenom, dateNaissance, ville, codePostal, pays, mail, genre, numTelephone,
-                boursier, souhait, pmr, commentaireVe, commentairesEleve, validation);
+                boursier, souhait, pmr, commentaireVe, commentairesEleve, validation, tel2, distance, rang, international);
     }
 
     public static ResponseEntity<InputStreamResource> sendFile(String fileName, File theFile, MediaType mediaType) {
