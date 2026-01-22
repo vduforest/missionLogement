@@ -158,6 +158,52 @@ public class Formulaire implements Serializable {
     @NotNull
     @Column(name = "vague")
     private boolean vague;
+
+    @Column(name = "distance")
+    private Integer distance;
+
+    @Column(name = "rang")
+    private Integer rang;
+
+    @Column(name = "international")
+    private Boolean international;
+
+    @Size(max = 16)
+    @Column(name = "tel_2")
+    private String tel2;
+
+    public Integer getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Integer distance) {
+        this.distance = distance;
+    }
+
+    public Integer getRang() {
+        return rang;
+    }
+
+    public void setRang(Integer rang) {
+        this.rang = rang;
+    }
+
+    public Boolean getInternational() {
+        return international;
+    }
+
+    public void setInternational(Boolean international) {
+        this.international = international;
+    }
+
+    public String getTel2() {
+        return tel2;
+    }
+
+    public void setTel2(String tel2) {
+        this.tel2 = tel2;
+    }
+    
     
     /**
      *
@@ -488,19 +534,24 @@ public class Formulaire implements Serializable {
     }
 
     public File getBourseFile() {
-        String[] extList = {"png", "pdf"};
-        File bourseFile = null;
-        for (String ext1 : extList) {
-            File cible = new File(Util.buildBourseFilePath(this.getNumeroScei(), ext1));
-            if (cible.exists()) {
-                bourseFile = cible;
-                break;
+        try {
+            String[] extList = {"png", "pdf"};
+            File bourseFile = null;
+            for (String ext1 : extList) {
+                File cible = new File(Util.buildBourseFilePath(this.getNumeroScei(), ext1));
+                if (cible.exists()) {
+                    bourseFile = cible;
+                    break;
+                }
             }
-        }
-        if ((bourseFile == null) || (! bourseFile.exists())) {
+            if ((bourseFile == null) || (!bourseFile.exists())) {
+                return null;
+            } else {
+                return bourseFile;
+            }
+        } catch (RuntimeException ex) {
+            // Never fail page rendering just because the filesystem config is missing/misconfigured.
             return null;
-        } else {
-            return bourseFile;
         }
     }
 
