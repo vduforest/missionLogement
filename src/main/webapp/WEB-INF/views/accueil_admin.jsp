@@ -44,11 +44,12 @@
               </h1>
 
               <!-- RIGHT: exit -->
-              <button class="p-0 bg-transparent border-0"
-                      formaction="index.do"
-                      style="display:flex; align-items:center; justify-content:center;">
-                <img src="img/porteOuverte.png" alt="sortie" class="sortie"/>
+              <button class="p-0 bg-transparent border-0 exit-btn"
+                formaction="index.do"
+                style="display:flex; align-items:center; justify-content:center;">
+               <img src="img/porteOuverte.png" alt="sortie" class="sortie"/>
               </button>
+
 
             </div>
           </form>

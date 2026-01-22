@@ -6,14 +6,15 @@
         <html lang="fr-fr">
 
         <head>
-          <title>CONFIGURATION</title>
-          <meta charset="UTF-8" />
-          <link href="bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
-          <link href="css/default.css" type="text/css" rel="stylesheet" />
-          <link href="css/configuration.css" type="text/css" rel="stylesheet" />
-          <link href="css/header.css" type="text/css" rel="stylesheet" />
+            <title>CONFIGURATION</title>
+            <meta charset="UTF-8" />
 
-          <script src="js/configuration.js"></script>
+            <link rel="stylesheet" href="${pageContext.request.contextPath}/bootstrap/css/bootstrap.css">
+            <link rel="stylesheet" href="${pageContext.request.contextPath}/css/default.css">
+            <link rel="stylesheet" href="${pageContext.request.contextPath}/css/header.css">
+            <link rel="stylesheet" href="${pageContext.request.contextPath}/css/configuration.css?v=1">
+
+            <script src="${pageContext.request.contextPath}/js/configuration.js"></script>
         </head>
 
         <body>

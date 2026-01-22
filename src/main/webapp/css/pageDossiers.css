@@ -56,3 +56,25 @@ button.edit{
     background-color: rgb(0, 0, 174) !important;
     color: white;    
 }
+
+/* Boutons footer : Voir tous les dossiers + Exporter */
+#export, #allDossiers{
+  cursor: pointer;
+  transition: filter .15s ease, transform .15s ease, box-shadow .15s ease;
+}
+
+/* main même si tu passes sur le texte */
+#export *, #allDossiers *{
+  cursor: pointer;
+}
+
+#export:hover, #allDossiers:hover{
+  filter: brightness(1.12);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  transform: translateY(-1px);
+}
+
+#export:active, #allDossiers:active{
+  transform: translateY(0);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.18);
+}

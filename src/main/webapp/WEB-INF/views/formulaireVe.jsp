@@ -159,6 +159,18 @@
                               </td>
                             </tr>
                             <tr>
+                                <th scope="col">Numéro de téléphone (2)</th>
+                                <td>
+                                  <input id="tel2" type="text" name="tel2" value="" disabled="disabled" />
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_tel2" class="btn btn-secondary" onclick="delock('tel2')">
+                                    <img id="img_tel2" src="img/close.png" class="avion" alt="submit"/>
+                                  </button>
+                                </td>
+                            </tr>
+
+                            <tr>
                               <th scope="col"
                               <c:choose>
                                 <c:when test="${(! empty item.estBoursier) && ((item.estBoursier) && (! item.hasBourseFile()))}">style="background-color:red"</c:when>
@@ -219,6 +231,52 @@
                               </button>
                             </td>
                           <tr>
+                              <tr>
+                                <th scope="col">Distance (km)</th>
+                                <td>
+                                  <input type="number" id="distance" name="distance" step="0.01" min="0" value="" disabled="disabled" />
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_distance" class="btn btn-secondary" onclick="delock('distance')">
+                                    <img id="img_distance" src="img/close.png" class="avion" alt="submit"/>
+                                  </button>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <th scope="col">Rang</th>
+                                <td>
+                                  <select id="rang" name="rang" disabled="disabled">
+                                    <option value="">---</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                  </select>
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_rang" class="btn btn-secondary" onclick="delock('rang')">
+                                    <img id="img_rang" src="img/close.png" class="avion" alt="submit"/>
+                                  </button>
+                                </td>
+                              </tr>
+
+                              <tr>
+                                <th scope="col">International</th>
+                                <td>
+                                  <select id="international" name="international" disabled="disabled">
+                                    <option value="">---</option>
+                                    <option value="true">Oui</option>
+                                    <option value="false">Non</option>
+                                  </select>
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_international" class="btn btn-secondary" onclick="delock('international')">
+                                    <img id="img_international" src="img/close.png" class="avion" alt="submit"/>
+                                  </button>
+                                </td>
+                              </tr>
+
                             <th scope="col" style="color:blue">Commentaire Eleve</th>
                             <td class="infoSupplementaires" name="infoSupplementaires" style="color:blue">${item.commentairesEleve}</td>
                             <td></td>
