@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.MailConsants;
+
 import org.centrale.infosi.pappl.logement.items.ConfigModif;
 import org.centrale.infosi.pappl.logement.items.Connexion;
 import org.centrale.infosi.pappl.logement.items.Personne;
@@ -26,6 +26,7 @@ import org.centrale.infosi.pappl.logement.repositories.FormulaireRepository;
 import org.centrale.infosi.pappl.logement.repositories.PersonneRepository;
 import org.centrale.infosi.pappl.logement.controllers.MailService;
 import org.centrale.infosi.pappl.logement.util.Util;
+import org.centrale.infosi.pappl.logement.util.MailConsants;
 import static org.centrale.infosi.pappl.logement.util.Util.getIntFromString;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMethod;
