@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 import org.centrale.infosi.pappl.logement.items.MissionLogementStatus;
 import org.centrale.infosi.pappl.logement.repositories.MissionLogementStatusRepository;
+import org.centrale.infosi.pappl.logement.repositories.PersonneRepository;
 import org.centrale.infosi.pappl.logement.util.Util;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,10 +37,13 @@ public class ConnectionService {
     @Autowired
     private MissionLogementStatusRepository missionStatusRepository;
 
+    @Autowired
+    private PersonneRepository personneRepository;
+
     /**
      * Méthode permettant de vérifier l'accès à une page
      *
-     * @param request La requête http
+     * @param request      La requête http
      * @param requiredRole Le rôle à vérifier
      * @return La connexion s'il elle est autorisée
      */
@@ -89,13 +93,19 @@ public class ConnectionService {
      */
     @Transactional
     public Connexion createConnection(Personne person) {
+        // Reload person to ensure it is managed in the current transaction
+        if (person.getPersonneId() != null) {
+            person = personneRepository.findById(person.getPersonneId()).orElse(person);
+        }
+
         repository.removeOld();
         Optional<Connexion> existingConnectionOpt = repository.findByPersonneId(person);
 
         if (existingConnectionOpt.isPresent()) {
             // If an active connection exists, don't create a new one
             // You can either return the existing connection or throw an exception
-            // For now, we will return null to indicate the creation of a new connection is not allowed
+            // For now, we will return null to indicate the creation of a new connection is
+            // not allowed
             return existingConnectionOpt.get();
         }
         String randomKey = UUID.randomUUID().toString(); // Generate a random key for the connection
@@ -104,7 +114,7 @@ public class ConnectionService {
         Connexion newConnection = new Connexion();
         newConnection.setConnexionId(randomKey);
         newConnection.setExpiration(expiryDate);
-        newConnection.setPersonneId(person);  // Set the associated person (user)
+        newConnection.setPersonneId(person); // Set the associated person (user)
 
         return repository.save(newConnection); // Save and return the created connection
     }
@@ -112,7 +122,7 @@ public class ConnectionService {
     /**
      * Méthode permettant de checker la statue de la mission logement
      *
-     * @param connection La connexion
+     * @param connection     La connexion
      * @param requiredStatus Le statut
      * @return La connexion mise à jour
      */
@@ -128,7 +138,7 @@ public class ConnectionService {
     /**
      * Méthode perméttant de créer le bon ModelAndView à partir de la connexion
      *
-     * @param connexion La connexion
+     * @param connexion   La connexion
      * @param jspFileName Le nom du fichier jsp à renvoyer
      * @return Le modelAndView correspondant
      */

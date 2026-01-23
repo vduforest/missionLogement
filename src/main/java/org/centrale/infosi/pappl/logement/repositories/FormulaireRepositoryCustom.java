@@ -12,78 +12,88 @@ import org.centrale.infosi.pappl.logement.items.Personne;
 
 /**
  * Interface du repository custom des formulaires
+ * 
  * @author clesp
  */
 public interface FormulaireRepositoryCustom {
 
-    /**
-     * Cree un nouveau formulaire à l'import des nouvelles donnees
-     * @param personne
-     * @param ville
-     * @param mail
-     * @param scei
-     * @param dateDeNaissance
-     * @param codePostal
-     * @param genreId
-     * @param paysId
-     * @return le formulaire cree
-     */
-    public Formulaire createNewForm(
-            Personne personne, String ville, String mail, String scei, Date dateDeNaissance,
-            String codePostal, Genre genreId, Pays paysId);
+        /**
+         * Cree un nouveau formulaire à l'import des nouvelles donnees
+         * 
+         * @param personne
+         * @param ville
+         * @param mail
+         * @param scei
+         * @param dateDeNaissance
+         * @param codePostal
+         * @param genreId
+         * @param paysId
+         * @return le formulaire cree
+         */
+        public Formulaire createNewForm(
+                        Personne personne, String ville, String mail, String scei, Date dateDeNaissance,
+                        String codePostal, Genre genreId, Pays paysId);
 
-    /**
-     * Met à jour un formulaire
-     * @param Id Son identifiant
-     * @param nom Le nom de la personne
-     * @param prenom le prénom de la personne
-     * @param dateNaissance Sa date de naissance
-     * @param ville Sa ville
-     * @param codePostal Son code postal
-     * @param pays Son pays
-     * @param mail Son mail
-     * @param genre Son genre
-     * @param numTelephone Son numéro de téléphone
-     * @param numTelephone2 Son numéro de téléphone 2
-     * @param distance Distance en km
-     * @param estInternational Statut international
-     * @param rang Rang calculé
-     * @param boursier Son statut de boursier
-     * @param souhait Son souhait d'appartement
-     * @param pmr Son statut pmr
-     * @param commentaireVe Ses commentaires de l'admin
-     * @param commentaireEleve
-     * @param validation Sa validation
-     * @return Le formulaire mis à jour
-     */
-    public Formulaire update(int Id, String nom, String prenom, Date dateNaissance ,String ville, String codePostal, int pays, String mail, int genre, String numTelephone,
-            String boursier, int souhait, String pmr, String commentaireVe, String commentaireEleve, Boolean validation, String tel2, int distance, int rang, String international);
-    
-    /**
-     * Vide et valide un formulaire (en cas de problème pour remplir un formulaire par un élève)
-     * @param Id l'identifiant du formulaire
-     * @return Le formulaire mis à jour
-     */
-    public Formulaire viderEtValider(int Id);
+        /**
+         * Met à jour un formulaire
+         * 
+         * @param Id               Son identifiant
+         * @param nom              Le nom de la personne
+         * @param prenom           le prénom de la personne
+         * @param dateNaissance    Sa date de naissance
+         * @param ville            Sa ville
+         * @param codePostal       Son code postal
+         * @param pays             Son pays
+         * @param mail             Son mail
+         * @param genre            Son genre
+         * @param numTelephone     Son numéro de téléphone
+         * @param numTelephone2    Son numéro de téléphone 2
+         * @param distance         Distance en km
+         * @param estInternational Statut international
+         * @param rang             Rang calculé
+         * @param boursier         Son statut de boursier
+         * @param souhait          Son souhait d'appartement
+         * @param pmr              Son statut pmr
+         * @param commentaireVe    Ses commentaires de l'admin
+         * @param commentaireEleve
+         * @param validation       Sa validation
+         * @return Le formulaire mis à jour
+         */
+        public Formulaire update(int Id, String nom, String prenom, Date dateNaissance, String ville, String codePostal,
+                        int pays, String mail, int genre, String numTelephone, String numTelephone2,
+                        Double distance, Boolean estInternational, Integer rang, String boursier, int souhait,
+                        String pmr, String commentaireVe, String commentaireEleve, Boolean validation);
 
-    /**
-     * Soumettre un formulaire (par un candidat)
-     * @param id
-     * @param soumission
-     */
-    public void soumettre(int id, boolean soumission);
+        /**
+         * Vide et valide un formulaire (en cas de problème pour remplir un formulaire
+         * par un élève)
+         * 
+         * @param Id l'identifiant du formulaire
+         * @return Le formulaire mis à jour
+         */
+        public Formulaire viderEtValider(int Id);
 
-    /**
-     * Get by mail
-     * @param mail
-     * @return
-     */
-    public Formulaire getByEmail(String mail);
+        /**
+         * Soumettre un formulaire (par un candidat)
+         * 
+         * @param id
+         * @param soumission
+         */
+        public void soumettre(int id, boolean soumission);
 
-    /**
-     * Get by scei
-     * @param scei
-     * @return
-     */
-    public Formulaire getBySCEI(String scei);
+        /**
+         * Get by mail
+         * 
+         * @param mail
+         * @return
+         */
+        public Formulaire getByEmail(String mail);
+
+        /**
+         * Get by scei
+         * 
+         * @param scei
+         * @return
+         */
+        public Formulaire getBySCEI(String scei);
 }
