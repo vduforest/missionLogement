@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.MailConsants;
 import org.centrale.infosi.pappl.logement.items.ConfigModif;
 import org.centrale.infosi.pappl.logement.items.Connexion;
 import org.centrale.infosi.pappl.logement.items.Personne;
