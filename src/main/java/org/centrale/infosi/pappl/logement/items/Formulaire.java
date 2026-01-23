@@ -60,9 +60,9 @@ import org.centrale.infosi.pappl.logement.util.Util;
     @NamedQuery(name = "Formulaire.findMailByToken", query = "SELECT f.mail FROM Formulaire f JOIN f.personneId p WHERE p.firstConnectionToken = ?1"),
     @NamedQuery(name = "Formulaire.findSCEIByToken", query = "SELECT f.numeroScei FROM Formulaire f JOIN f.personneId p WHERE p.firstConnectionToken = ?1"),
     @NamedQuery(name = "Formulaire.updateVague", query="UPDATE Formulaire f SET f.vague=true where f.vague=false"),
-    @NamedQuery(name = "Formulaire.findBySceiAndMail",query="SELECT f FROM Formulaire f WHERE f.numeroScei = :numeroScei AND UPPER(f.mail) = UPPER(:mail)"),
-    @NamedQuery(name = "Formulaire.findByEstConforme", query = "SELECT f FROM Formulaire f WHERE f.estConforme = :estConforme")})
-    
+    @NamedQuery(name = "Formulaire.findBySceiAndMail", query="SELECT f FROM Formulaire f WHERE f.numeroScei = :numeroScei AND UPPER(f.mail) = UPPER(:mail)"),
+    @NamedQuery(name = "Formulaire.findByEstConforme", query = "SELECT f FROM Formulaire f WHERE f.estConforme = :estConforme")
+})
 public class Formulaire implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -124,6 +124,20 @@ public class Formulaire implements Serializable {
     @Column(name = "numero_tel")
     private String numeroTel;
 
+    // ====== NOUVEAUX CHAMPS ======
+    @Size(max = 16)
+    @Column(name = "tel_2")
+    private String numeroTel2;
+
+    @Column(name = "distance")
+    private Double distance;
+
+    @Column(name = "international")
+    private Boolean estInternational;
+
+    @Column(name = "rang")
+    private Integer rang;
+
     @Size(max = 2147483647)
     @Column(name = "commentaires_ve")
     private String commentairesVe;
@@ -142,7 +156,8 @@ public class Formulaire implements Serializable {
     @Column(name = "est_conforme")
     private boolean estConforme;
 
-    @Size(max = 2147483647)
+    // ✅ mieux que 2147483647
+    @Size(max = 16)
     @Column(name = "code_postal")
     private String codePostal;
 
@@ -158,251 +173,161 @@ public class Formulaire implements Serializable {
     @NotNull
     @Column(name = "vague")
     private boolean vague;
-    
-    /**
-     *
-     */
+
+    // getters/setters
+
     public Formulaire() {
     }
 
-    /**
-     *
-     * @param formulaireId
-     */
     public Formulaire(Integer formulaireId) {
         this.formulaireId = formulaireId;
     }
 
-    /**
-     *
-     * @param formulaireId
-     * @param numeroScei
-     */
     public Formulaire(Integer formulaireId, String numeroScei) {
         this.formulaireId = formulaireId;
         this.numeroScei = numeroScei;
     }
 
-    /**
-     *
-     * @return
-     */
     public Integer getFormulaireId() {
         return formulaireId;
     }
 
-    /**
-     *
-     * @param formulaireId
-     */
     public void setFormulaireId(Integer formulaireId) {
         this.formulaireId = formulaireId;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getNumeroScei() {
         return numeroScei;
     }
 
-    /**
-     *
-     * @param numeroScei
-     */
     public void setNumeroScei(String numeroScei) {
         this.numeroScei = numeroScei;
     }
 
-    /**
-     *
-     * @return
-     */
     public Date getDateDeNaissance() {
         return dateDeNaissance;
     }
 
-    /**
-     *
-     * @param dateDeNaissance
-     */
     public void setDateDeNaissance(Date dateDeNaissance) {
         this.dateDeNaissance = dateDeNaissance;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getNumeroTel() {
         return numeroTel;
     }
 
-    /**
-     *
-     * @param numeroTel
-     */
     public void setNumeroTel(String numeroTel) {
         this.numeroTel = numeroTel;
     }
 
-    /**
-     *
-     * @return
-     */
+    public String getNumeroTel2() {
+        return numeroTel2;
+    }
+
+    public void setNumeroTel2(String numeroTel2) {
+        this.numeroTel2 = numeroTel2;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
+    public Boolean getEstInternational() {
+        return estInternational;
+    }
+
+    public void setEstInternational(Boolean estInternational) {
+        this.estInternational = estInternational;
+    }
+
+    public Integer getRang() {
+        return rang;
+    }
+
+    public void setRang(Integer rang) {
+        this.rang = rang;
+    }
+
     public String getCommentairesVe() {
         return commentairesVe;
     }
 
-    /**
-     *
-     * @param commentairesVe
-     */
     public void setCommentairesVe(String commentairesVe) {
         this.commentairesVe = commentairesVe;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getCommentairesEleve() {
         return commentairesEleve;
     }
 
-    /**
-     *
-     * @param commentairesEleve
-     */
     public void setCommentairesEleve(String commentairesEleve) {
         this.commentairesEleve = commentairesEleve;
     }
 
-    /**
-     *
-     * @return
-     */
     public Boolean getEstBoursier() {
         return estBoursier;
     }
 
-    /**
-     *
-     * @param estBoursier
-     */
     public void setEstBoursier(Boolean estBoursier) {
         this.estBoursier = estBoursier;
     }
 
-    /**
-     *
-     * @return
-     */
     public Boolean getEstPmr() {
         return estPmr;
     }
 
-    /**
-     *
-     * @param estPmr
-     */
     public void setEstPmr(Boolean estPmr) {
         this.estPmr = estPmr;
     }
 
-    /**
-     *
-     * @return
-     */
     public Collection<Alerte> getAlerteCollection() {
         return alerteCollection;
     }
 
-    /**
-     *
-     * @param alerteCollection
-     */
     public void setAlerteCollection(Collection<Alerte> alerteCollection) {
         this.alerteCollection = alerteCollection;
     }
 
-    /**
-     *
-     * @return
-     */
     public Genre getGenreId() {
         return genreId;
     }
 
-    /**
-     *
-     * @param genreId
-     */
     public void setGenreId(Genre genreId) {
         this.genreId = genreId;
     }
 
-    /**
-     *
-     * @return
-     */
     public Logement getNumeroLogement() {
         return numeroLogement;
     }
 
-    /**
-     *
-     * @param numeroLogement
-     */
     public void setNumeroLogement(Logement numeroLogement) {
         this.numeroLogement = numeroLogement;
     }
 
-    /**
-     *
-     * @return
-     */
     public Pays getPaysId() {
         return paysId;
     }
 
-    /**
-     *
-     * @param paysId
-     */
     public void setPaysId(Pays paysId) {
         this.paysId = paysId;
     }
 
-    /**
-     *
-     * @return
-     */
     public Personne getPersonneId() {
         return personneId;
     }
 
-    /**
-     *
-     * @param personneId
-     */
     public void setPersonneId(Personne personneId) {
         this.personneId = personneId;
     }
 
-    /**
-     *
-     * @return
-     */
     public Souhait getSouhaitId() {
         return souhaitId;
     }
 
-    /**
-     *
-     * @param souhaitId
-     */
     public void setSouhaitId(Souhait souhaitId) {
         this.souhaitId = souhaitId;
     }
@@ -414,27 +339,15 @@ public class Formulaire implements Serializable {
         return null;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public String toString() {
         return "centrale.org.pappl.mission_logement.Formulaire[ formulaireId=" + formulaireId + " ]";
     }
 
-    /**
-     *
-     * @return
-     */
     public boolean getEstValide() {
         return estValide;
     }
 
-    /**
-     *
-     * @param estValide
-     */
     public void setEstValide(boolean estValide) {
         this.estValide = estValide;
     }
@@ -497,7 +410,7 @@ public class Formulaire implements Serializable {
                 break;
             }
         }
-        if ((bourseFile == null) || (! bourseFile.exists())) {
+        if ((bourseFile == null) || (!bourseFile.exists())) {
             return null;
         } else {
             return bourseFile;
@@ -516,11 +429,6 @@ public class Formulaire implements Serializable {
         this.vague = vague;
     }
 
-    
-    /**
-     *
-     * @return
-     */
     @Override
     public int hashCode() {
         int hash = 0;
@@ -528,19 +436,14 @@ public class Formulaire implements Serializable {
         return hash;
     }
 
-    /**
-     *
-     * @param object
-     * @return
-     */
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Formulaire)) {
             return false;
         }
         Formulaire other = (Formulaire) object;
-        if ((this.formulaireId == null && other.formulaireId != null) || (this.formulaireId != null && !this.formulaireId.equals(other.formulaireId))) {
+        if ((this.formulaireId == null && other.formulaireId != null)
+                || (this.formulaireId != null && !this.formulaireId.equals(other.formulaireId))) {
             return false;
         }
         return true;
@@ -556,11 +459,6 @@ public class Formulaire implements Serializable {
         return this.getPersonneId().compareTo(object1.getPersonneId());
     }
 
-    /**
-     * Return Comparator for sorting tools
-     *
-     * @return
-     */
     public static Comparator<Formulaire> getComparator() {
         return new Comparator<Formulaire>() {
             @Override

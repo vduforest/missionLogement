@@ -6,9 +6,9 @@
   <head>
     <title>FORMULAIRE_VE</title>
     <meta charset="UTF-8"/>
-    <link href="bootstrap/css/bootstrap.css"type="text/css"rel="stylesheet"/>
-    <link href="css/default.css"type="text/css"rel="stylesheet"/>
-    <link href="css/formulaire.css"type="text/css"rel="stylesheet"/>
+    <link href="bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet"/>
+    <link href="css/default.css" type="text/css" rel="stylesheet"/>
+    <link href="css/formulaire.css" type="text/css" rel="stylesheet"/>
     <link href="css/header.css" type="text/css" rel="stylesheet"/>
     <script src="js/formulaire.js"></script>
   </head>
@@ -32,21 +32,29 @@
                 </h2>
               </div>
             </div>
+
             <div class="row">
               <div class="col-md-12">
                 <div class="table-responsive">
                   <c:choose>
-                    <c:when test="${item.estConforme}"><p style="color:red">Le formulaire à déjà été validé</p></c:when>
-                    <c:when test="${(!item.estValide) && (! empty item.commentairesVe)}"><p style="color:blue">Le formulaire a été refusé mais peut être corrigé</p></c:when>
+                    <c:when test="${item.estConforme}">
+                      <p style="color:red">Le formulaire à déjà été validé</p>
+                    </c:when>
+                    <c:when test="${(!item.estValide) && (! empty item.commentairesVe)}">
+                      <p style="color:blue">Le formulaire a été refusé mais peut être corrigé</p>
+                    </c:when>
                   </c:choose>
+
                   <form id="formVe" method="post">
                     <script>
                       // Récupérer la valeur de formulaireId depuis le JSP
                       var formulaireId = "${item.formulaireId}";
                     </script>
+
                     <div class="table-responsive">
                       <table class="table table-striped">
                         <tbody>
+
                           <tr>
                             <th scope="col">Nom</th>
                             <td>
@@ -58,8 +66,8 @@
                                 <img id="img_nom" src="img/close.png" class="avion" alt="submit"/>
                               </button>
                             </td>
-                            </td>
                           </tr>
+
                           <tr>
                             <th scope="col">Prenom</th>
                             <td>
@@ -71,21 +79,25 @@
                               </button>
                             </td>
                           </tr>
+
                           <tr>
                             <th scope="col">Date de naissance (DD/MM/YYYY)</th>
                             <td> 
-                              <input type="text" id="dateNaissance" name="dateDeNaissance" class="dateNaissance" value="<c:if test="${! empty item.dateDeNaissance}"><fmt:formatDate value='${item.dateDeNaissance}' pattern='dd/MM/yyyy'/></c:if>" disabled="disabled" required="required"/> 
-                              </td>
-                              <td>
-                                <button type="button" id="locker_dateNaissance" class="btn btn-secondary" onclick="delock('dateNaissance')">
-                                  <img id="img_dateNaissance" src="img/close.png" class="avion" alt="submit"/>
-                                </button>
-                              </td>
-                            </tr>
-                            <tr>
-                              <th scope="col">Ville</th>
-                              <td>
-                                <input type="text" id="ville" name="ville" value="${item.ville}" disabled="disabled" required="required"/>
+                              <input type="text" id="dateNaissance" name="dateDeNaissance" class="dateNaissance"
+                                     value="<c:if test='${! empty item.dateDeNaissance}'><fmt:formatDate value='${item.dateDeNaissance}' pattern='dd/MM/yyyy'/></c:if>"
+                                     disabled="disabled" required="required"/> 
+                            </td>
+                            <td>
+                              <button type="button" id="locker_dateNaissance" class="btn btn-secondary" onclick="delock('dateNaissance')">
+                                <img id="img_dateNaissance" src="img/close.png" class="avion" alt="submit"/>
+                              </button>
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <th scope="col">Ville</th>
+                            <td>
+                              <input type="text" id="ville" name="ville" value="${item.ville}" disabled="disabled" required="required"/>
                             </td>
                             <td>
                               <button type="button" id="locker_ville" class="btn btn-secondary" onclick="delock('ville')">
@@ -93,6 +105,7 @@
                               </button>                                                                
                             </td>
                           </tr>
+
                           <tr>
                             <th scope="col">Code Postal</th>
                             <td>
@@ -104,12 +117,13 @@
                               </button>
                             </td>
                           </tr>
+
                           <tr>
                             <th scope="col" <c:if test="${(empty item.paysId) || (item.paysId.paysId != 1)}">style="background-color:orange"</c:if>>Pays</th>
-                              <td>
-                                <select id='pays' name="pays" disabled='disabled' required="required">
+                            <td>
+                              <select id="pays" name="pays" disabled="disabled" required="required">
                                 <c:forEach var="pays" items="${pays}">
-                                  <option value=${pays.paysId} ${item.paysId.paysId == pays.paysId?'selected="selected"' : ''}>${pays.paysNom}</option>
+                                  <option value="${pays.paysId}" ${item.paysId.paysId == pays.paysId ? 'selected="selected"' : ''}>${pays.paysNom}</option>
                                 </c:forEach>
                               </select>
                             </td>
@@ -119,6 +133,7 @@
                               </button>
                             </td>
                           </tr>
+
                           <tr>
                             <th scope="col">Adresse mail</th>
                             <td>
@@ -130,12 +145,16 @@
                               </button>
                             </td>
                           </tr>
+
                           <tr>
                             <th scope="col" <c:if test="${(empty item.genreId) || (item.genreId.genreId > 2) || (item.genreId.genreId != item.genreAttendu.genreId)}">style="background-color:orange"</c:if>>Genre</th>   
-                              <td>
-                                <select id="Genre" name="Genre" disabled="disabled" required="required">
-                                <c:if test="${(empty item.genreId) || (item.genreId.genreId <= 0)}"><option value=0 selected="selected">------------------------------------------------</option></c:if>
-                                <c:forEach var="genre" items="${genresList}"><option value="${genre.genreId}" ${(! empty item.genreId) && (genre.genreId == item.genreId.genreId) ? 'selected="selected"' : ''} readonly="readonly">${genre.genreNom}</option>
+                            <td>
+                              <select id="Genre" name="Genre" disabled="disabled" required="required">
+                                <c:if test="${(empty item.genreId) || (item.genreId.genreId <= 0)}">
+                                  <option value="0" selected="selected">------------------------------------------------</option>
+                                </c:if>
+                                <c:forEach var="genre" items="${genresList}">
+                                  <option value="${genre.genreId}" ${(! empty item.genreId) && (genre.genreId == item.genreId.genreId) ? 'selected="selected"' : ''} readonly="readonly">${genre.genreNom}</option>
                                 </c:forEach>
                               </select>
                               <br/>
@@ -147,41 +166,48 @@
                               </button>
                             </td>
                           </tr>
+
                           <tr>
                             <th scope="col">Numéro de téléphone</th>
                             <td>
-                              <input id="tel" type="text"name="tel" value="<c:if test="${! empty item.numeroTel}">${item.numeroTel}</c:if>" disabled="disabled" required="required" />
-                              </td>
-                              <td>
-                                <button type="button" id="locker_tel" class="btn btn-secondary" onclick="delock('tel')">
-                                  <img id="img_tel" src="img/close.png" class="avion" alt="submit"/>
-                                </button>
-                              </td>
-                            </tr>
-                            <tr>
-                                <th scope="col">Numéro de téléphone (2)</th>
-                                <td>
-                                  <input id="tel2" type="text" name="tel2" value="" disabled="disabled" />
-                                </td>
-                                <td>
-                                  <button type="button" id="locker_tel2" class="btn btn-secondary" onclick="delock('tel2')">
-                                    <img id="img_tel2" src="img/close.png" class="avion" alt="submit"/>
-                                  </button>
-                                </td>
-                            </tr>
+                              <input id="tel" type="text" name="tel" value="<c:if test='${! empty item.numeroTel}'>${item.numeroTel}</c:if>" disabled="disabled" required="required" />
+                            </td>
+                            <td>
+                              <button type="button" id="locker_tel" class="btn btn-secondary" onclick="delock('tel')">
+                                <img id="img_tel" src="img/close.png" class="avion" alt="submit"/>
+                              </button>
+                            </td>
+                          </tr>
 
-                            <tr>
-                              <th scope="col"
+                          <tr>
+                            <th scope="col">Numéro de téléphone (2)</th>
+                            <td>
+                              <input id="tel2" type="text" name="tel2"
+                                     value="<c:if test='${! empty item.numeroTel2}'>${item.numeroTel2}</c:if>"
+                                     disabled="disabled" />
+                            </td>
+                            <td>
+                              <button type="button" id="locker_tel2" class="btn btn-secondary" onclick="delock('tel2')">
+                                <img id="img_tel2" src="img/close.png" class="avion" alt="submit"/>
+                              </button>
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <th scope="col"
                               <c:choose>
-                                <c:when test="${(! empty item.estBoursier) && ((item.estBoursier) && (! item.hasBourseFile()))}">style="background-color:red"</c:when>
+                                <c:when test="${(! empty item.estBoursier) && (item.estBoursier) && (! item.hasBourseFile())}">style="background-color:red"</c:when>
                                 <c:when test="${(! empty item.estBoursier) && (item.estBoursier)}">style="background-color:orange"</c:when>
                               </c:choose>>Êtes-vous boursier ?</th>
                             <td>
                               <select name="boursier" id="boursier" disabled="disabled" required="required">
-                                <c:if test="${(empty item.estBoursier)}"><option value="null" ${empty item.estBoursier ? 'selected="selected"' : ''}>---</option></c:if>
-                                <option value="true" ${item.estBoursier == 'true' ? 'selected="selected"' : ''}>Oui</option>
-                                <option value="false" ${item.estBoursier == 'false' ? 'selected="selected"' : ''}>Non</option>                                                       
+                                <c:if test="${empty item.estBoursier}">
+                                  <option value="null" selected="selected">---</option>
+                                </c:if>
+                                <option value="true"  ${item.estBoursier == true ? 'selected="selected"' : ''}>Oui</option>
+                                <option value="false" ${item.estBoursier == false ? 'selected="selected"' : ''}>Non</option>                                                       
                               </select>
+
                               <c:choose>
                                 <c:when test="${item.estBoursier && (! item.hasBourseFile())}">
                                   <button type="submit" class="btn btn-danger" disabled="disabled">
@@ -201,12 +227,14 @@
                               </button>
                             </td>   
                           </tr> 
+
                           <tr>
                             <th scope="col">Préférence logement</th>
                             <td>
-                              <select id="souhait" name="Souhait"<c:if test="${item.estValide}"> disabled="disabled"</c:if> required="required">
-                                <option value=0 ${(empty item.souhaitId) || (item.souhaitId.souhaitId <=0) ? 'selected="selected"' : ''} readonly="readonly">------------------------------------------------</option>
-                                <c:forEach var="souhait" items="${souhaitsList}"><option value="${souhait.souhaitId}" ${(! empty item.souhaitId) && (souhait.souhaitId == item.souhaitId.souhaitId) ? 'selected="selected"' : ''} readonly="readonly">${souhait.souhaitType}</option>
+                              <select id="souhait" name="Souhait" <c:if test="${item.estValide}">disabled="disabled"</c:if> required="required">
+                                <option value="0" ${(empty item.souhaitId) || (item.souhaitId.souhaitId <= 0) ? 'selected="selected"' : ''} readonly="readonly">------------------------------------------------</option>
+                                <c:forEach var="souhait" items="${souhaitsList}">
+                                  <option value="${souhait.souhaitId}" ${(! empty item.souhaitId) && (souhait.souhaitId == item.souhaitId.souhaitId) ? 'selected="selected"' : ''} readonly="readonly">${souhait.souhaitType}</option>
                                 </c:forEach>
                               </select> 
                             </td>
@@ -216,13 +244,16 @@
                               </button>
                             </td>
                           </tr>
+
                           <tr>
                             <th scope="col">Avez-vous besoin de dispositions particulières<br/>(pmr, traitement médical...) ?</th>
                             <td>
                               <select name="pmr" id="pmr" disabled="disabled" required="required">
-                                <c:if test="${empty item.estPmr}"><option value="null" selected="selected">---</option></c:if>
-                                <option value="true" ${item.estPmr == 'true' ? 'selected="selected"' : ''}>Oui</option>
-                                <option value="false" ${item.estPmr == 'false' ? 'selected="selected"' : ''}>Non</option>                                                       
+                                <c:if test="${empty item.estPmr}">
+                                  <option value="null" selected="selected">---</option>
+                                </c:if>
+                                <option value="true"  ${item.estPmr == true ? 'selected="selected"' : ''}>Oui</option>
+                                <option value="false" ${item.estPmr == false ? 'selected="selected"' : ''}>Non</option>                                                       
                               </select>
                             </td>
                             <td>
@@ -230,57 +261,62 @@
                                 <img id="img_pmr" src="img/close.png" class="avion" alt="submit"/>
                               </button>
                             </td>
+                          </tr>
+
                           <tr>
-                              <tr>
-                                <th scope="col">Distance (km)</th>
-                                <td>
-                                  <input type="number" id="distance" name="distance" step="0.01" min="0" value="" disabled="disabled" />
-                                </td>
-                                <td>
-                                  <button type="button" id="locker_distance" class="btn btn-secondary" onclick="delock('distance')">
-                                    <img id="img_distance" src="img/close.png" class="avion" alt="submit"/>
-                                  </button>
-                                </td>
-                              </tr>
+                            <th scope="col">Distance (km)</th>
+                            <td>
+                              <input type="number" id="distance" name="distance" step="0.01" min="0"
+                                     value="<c:if test='${! empty item.distance}'>${item.distance}</c:if>"
+                                     disabled="disabled" />
+                            </td>
+                            <td>
+                              <button type="button" id="locker_distance" class="btn btn-secondary" onclick="delock('distance')">
+                                <img id="img_distance" src="img/close.png" class="avion" alt="submit"/>
+                              </button>
+                            </td>
+                          </tr>
 
-                              <tr>
-                                <th scope="col">Rang</th>
-                                <td>
-                                  <select id="rang" name="rang" disabled="disabled">
-                                    <option value="">---</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                  </select>
-                                </td>
-                                <td>
-                                  <button type="button" id="locker_rang" class="btn btn-secondary" onclick="delock('rang')">
-                                    <img id="img_rang" src="img/close.png" class="avion" alt="submit"/>
-                                  </button>
-                                </td>
-                              </tr>
+                          <tr>
+                            <th scope="col">Rang</th>
+                            <td>
+                              <select id="rang" name="rang" disabled="disabled">
+                                <option value="">---</option>
+                                <option value="1" ${item.rang == 1 ? 'selected="selected"' : ''}>1</option>
+                                <option value="2" ${item.rang == 2 ? 'selected="selected"' : ''}>2</option>
+                                <option value="3" ${item.rang == 3 ? 'selected="selected"' : ''}>3</option>
+                                <option value="4" ${item.rang == 4 ? 'selected="selected"' : ''}>4</option>
+                              </select>
+                            </td>
+                            <td>
+                              <button type="button" id="locker_rang" class="btn btn-secondary" onclick="delock('rang')">
+                                <img id="img_rang" src="img/close.png" class="avion" alt="submit"/>
+                              </button>
+                            </td>
+                          </tr>
 
-                              <tr>
-                                <th scope="col">International</th>
-                                <td>
-                                  <select id="international" name="international" disabled="disabled">
-                                    <option value="">---</option>
-                                    <option value="true">Oui</option>
-                                    <option value="false">Non</option>
-                                  </select>
-                                </td>
-                                <td>
-                                  <button type="button" id="locker_international" class="btn btn-secondary" onclick="delock('international')">
-                                    <img id="img_international" src="img/close.png" class="avion" alt="submit"/>
-                                  </button>
-                                </td>
-                              </tr>
+                          <tr>
+                            <th scope="col">International</th>
+                            <td>
+                              <select id="international" name="international" disabled="disabled">
+                                <option value="">---</option>
+                                <option value="true"  ${item.estInternational == true ? 'selected="selected"' : ''}>Oui</option>
+                                <option value="false" ${item.estInternational == false ? 'selected="selected"' : ''}>Non</option>
+                              </select>
+                            </td>
+                            <td>
+                              <button type="button" id="locker_international" class="btn btn-secondary" onclick="delock('international')">
+                                <img id="img_international" src="img/close.png" class="avion" alt="submit"/>
+                              </button>
+                            </td>
+                          </tr>
 
+                          <tr>
                             <th scope="col" style="color:blue">Commentaire Eleve</th>
                             <td class="infoSupplementaires" name="infoSupplementaires" style="color:blue">${item.commentairesEleve}</td>
                             <td></td>
                           </tr>
+
                           <tr>
                             <th scope="col" style="color:red">Commentaire Mission Logement<br/>(obligatoire en cas de refus)<br/>(sera transmis à l'étudiant en cas de refus du dossier)</th>
                             <td> 
@@ -292,15 +328,18 @@
                               </button>
                             </td>
                           </tr>
+
                         </tbody>
                       </table>
                     </div>  
+
                     <div class="container mt-4 mb-4 text-center">
                       <div class="row justify-content-center">
                         <div class="col-md-10">
                           <input type="hidden" name="id" value="${item.formulaireId}" />
                           <input type="hidden" name="personneId" value="${item.personneId.personneId}" />
                           <input type="hidden" name="connexionId" value="${connexionId}" />
+
                           <c:choose>
                             <c:when test="${item.estConforme}">
                               <p>Le formulaire à déjà été validé</p>
@@ -311,10 +350,12 @@
                                 </button>
                               </c:if>
                             </c:when>
+
                             <c:otherwise>
                               <button onclick="openForm('formVe')" 
-                                      formaction="AnnulerPwd.do" type="submit" name="annulerpwd" class="btn btn-info" value="annulerpwd" <c:if test="${empty item.personneId.password}">disabled="disabled"</c:if>>
-                                        Reinitialiser Mot de Passe <img src="img/refuse.png" class="icon" alt="Reinitialiser"/>
+                                      formaction="AnnulerPwd.do" type="submit" name="annulerpwd" class="btn btn-info" value="annulerpwd"
+                                      <c:if test="${empty item.personneId.password}">disabled="disabled"</c:if>>
+                                Reinitialiser Mot de Passe <img src="img/refuse.png" class="icon" alt="Reinitialiser"/>
                               </button>
 
                               <button onclick="openForm('formVe')" 
@@ -328,22 +369,26 @@
                               </button>
 
                               <button onclick="openForm('formVe')" 
-                                      formaction="RefuserFormVe.do" type="submit" name="refuser" class="btn btn-danger" value="refuser" <c:if test="${(!item.estValide)}">disabled="disabled"</c:if>>
-                                        Refuser <img src="img/refuse.png" class="icon" alt="Refuser"/>
-                                      </button>
+                                      formaction="RefuserFormVe.do" type="submit" name="refuser" class="btn btn-danger" value="refuser"
+                                      <c:if test="${(!item.estValide)}">disabled="disabled"</c:if>>
+                                Refuser <img src="img/refuse.png" class="icon" alt="Refuser"/>
+                              </button>
                             </c:otherwise>
                           </c:choose>
                         </div>
                       </div>
                     </div>
+
                   </form> 
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
     </div>
+
     <script>
       window.onload = function () {
         var message = "<%= request.getAttribute("confirmationMessage")%>";
@@ -354,10 +399,3 @@
     </script>
   </body>
 </html>
-
-
-
-
-
-
-
