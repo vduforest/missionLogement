@@ -68,6 +68,18 @@ function openForm(id) {
   openRecursive(formVE);
 }
 
+function messageCommVide(id){
+    const comm = document.getElementById("commentairesVe").content;
+    if((comm===null)||(comm.trim()==="")){
+        alert("Vous ne pouvez pas refuser un dossier sans expliquer la raison, veuillez remplir la case de commentaires à transmettre au candidat.");
+        return false;
+    }
+    else{
+    openForm(id);
+    return true;
+    }
+}
+
 function message() {
   alert("Si vous voulez changer ces attributs veuillez appeler le numéro de la mission logement (voir informations standards)")
 }
