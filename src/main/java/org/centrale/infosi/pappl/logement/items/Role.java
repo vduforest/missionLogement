@@ -22,15 +22,16 @@ import jakarta.validation.constraints.Size;
 
 /**
  * Classe d'un rôle générée automatiquement
+ * 
  * @author samer
  * 
  */
 @Entity
 @Table(name = "role")
 @NamedQueries({
-    @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r"),
-    @NamedQuery(name = "Role.findByRoleId", query = "SELECT r FROM Role r WHERE r.roleId = :roleId"),
-    @NamedQuery(name = "Role.findByRoleNom", query = "SELECT r FROM Role r WHERE r.roleNom = :roleNom")})
+        @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r"),
+        @NamedQuery(name = "Role.findByRoleId", query = "SELECT r FROM Role r WHERE r.roleId = :roleId"),
+        @NamedQuery(name = "Role.findByRoleNom", query = "SELECT r FROM Role r WHERE r.roleNom = :roleNom") })
 public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -85,7 +86,6 @@ public class Role implements Serializable {
         this.personneCollection = personneCollection;
     }
 
-    
     public boolean isAdmin() {
         return (this.getRoleNom().toLowerCase().equals("admin"));
     }
@@ -104,7 +104,8 @@ public class Role implements Serializable {
             return false;
         }
         Role other = (Role) object;
-        if ((this.roleId == null && other.roleId != null) || (this.roleId != null && !this.roleId.equals(other.roleId))) {
+        if ((this.roleId == null && other.roleId != null)
+                || (this.roleId != null && !this.roleId.equals(other.roleId))) {
             return false;
         }
         return true;
