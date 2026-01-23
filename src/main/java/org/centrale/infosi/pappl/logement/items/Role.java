@@ -90,6 +90,10 @@ public class Role implements Serializable {
         return (this.getRoleNom().toLowerCase().equals("admin"));
     }
 
+    public boolean isAssistant() {
+        return (this.getRoleNom().toLowerCase().equals("assistant"));
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

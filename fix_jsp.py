@@ -1,4 +1,7 @@
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+import os
+
+content = r"""<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html lang='fr-fr'>
@@ -244,3 +247,7 @@
   </script>
 </body>
 </html>
+"""
+
+with open('/Users/michel/dev/missionLogement/src/main/webapp/WEB-INF/views/pageDossiers.jsp', 'w', encoding='utf-8') as f:
+    f.write(content)

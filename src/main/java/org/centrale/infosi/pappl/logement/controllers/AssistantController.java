@@ -53,6 +53,7 @@ public class AssistantController {
             returned = connectionService.prepareModelAndView(connection, "pageDossiersAssist");
             if (returned != null) {
                 returned.addObject("forms", forms);
+                returned.addObject("hideBackButton", true);
             }
             return returned;
         }

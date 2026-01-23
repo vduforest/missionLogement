@@ -195,6 +195,15 @@ public class Personne implements Serializable {
         }
     }
 
+    public boolean isAssistant() {
+        Role role = this.getRoleId();
+        if (role == null) {
+            return false;
+        } else {
+            return role.isAssistant();
+        }
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

@@ -84,6 +84,10 @@ public class Connexion implements Serializable {
         return this.getPersonneId().isAdmin();
     }
 
+    public boolean isAssistant() {
+        return this.getPersonneId().isAssistant();
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
