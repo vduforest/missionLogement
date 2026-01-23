@@ -373,6 +373,9 @@
                               <c:choose>
                                 <c:when test="${item.estConforme}">
                                   <p>Le formulaire à déjà été validé</p>
+                                  <c:if test="${!empty item.assistant}">
+                                    <p>Validé par ${item.assistant.prenom} ${item.assistant.nom}</p>
+                                  </c:if>
                                   <c:if test="${(! empty connexion) && (connexion.isAdmin())}">
                                     <button onclick="openForm('formVe')" formaction="EnregistrerFormVe.do" type="submit"
                                       name="enregistrer" class="btn btn-primary mr-3" value="enregistrer">

@@ -179,7 +179,8 @@ CREATE TABLE public.formulaire (
     distance integer,
     rang integer,
     international boolean,
-    tel_2 character varying(16)
+    tel_2 character varying(16),
+    assistant_id integer
 );
 
 --
