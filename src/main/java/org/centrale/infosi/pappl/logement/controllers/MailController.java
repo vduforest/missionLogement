@@ -70,7 +70,7 @@ public class MailController {
      * Méthode permettant d'envoyer un message de premier connexion à tous les
      * élèves selon la vague choisie
      *
-     * @param request La requête http
+     * @param request     La requête http
      * @param messageType le type de message à envoyer
      * @return La page d'accueil admin avec un pop up
      */
@@ -109,7 +109,7 @@ public class MailController {
                             returned.addObject("confirmationMessage", "Emails envoyés avec succès ! ");
                         }
                         break;
-                        case MSGRESET:
+                    case MSGRESET:
                         returned = connectionService.prepareModelAndView(connection, "accueil_admin");
                         /* on reçoit l'id du formulaire et de la personne */
                         Integer id = Integer.parseInt(request.getParameter("id"));
@@ -125,23 +125,25 @@ public class MailController {
 
                             String token = personne.getFirstConnectionToken();
                             System.out.println(token + personne);
-                            /*if ((token == null) || (firstConnection.verifyToken(token) == 0)) {
-                                genererToken(personne);
-                                throw new IllegalArgumentException("Token manquant");
-                            }*/
+                            /*
+                             * if ((token == null) || (firstConnection.verifyToken(token) == 0)) {
+                             * genererToken(personne);
+                             * throw new IllegalArgumentException("Token manquant");
+                             * }
+                             */
 
                             /**
                              * vérifier le token
                              */
-                        
+
                             /* le token est expire */
-                        genererToken(personne);
-                        /* on met à jour le token transmis*/
-                        token = personne.getFirstConnectionToken();
-                        System.out.println("a passer la condition");
-                        String recipient = formulaire.getMail();
-                        mailService.sendPasswordResetMail(token, recipient);
-                    }
+                            genererToken(personne);
+                            /* on met à jour le token transmis */
+                            token = personne.getFirstConnectionToken();
+                            System.out.println("a passer la condition");
+                            String recipient = formulaire.getMail();
+                            mailService.sendPasswordResetMail(token, recipient);
+                        }
                         break;
                     default:
                         returned = new ModelAndView("index");
@@ -175,16 +177,17 @@ public class MailController {
         String comm = Util.getStringFromRequest(request, "commentairesVE");
         String prenom = Util.getStringFromRequest(request, "prenom");
 
-        //Envoi au service - pas besoin de vérifier que le commentaire est vide, c'est sûr que c'est bon
+        // Envoi au service - pas besoin de vérifier que le commentaire est vide, c'est
+        // sûr que c'est bon
         mailService.sendDossierIncompletMail(recipient, comm, prenom);
     }
-    
-    public void envoiMailDossierComplet(HttpServletRequest request){
+
+    public void envoiMailDossierComplet(HttpServletRequest request) {
         // Récupération du mail à partir de la request
         String recipient = Util.getStringFromRequest(request, "mail");
         String prenom = Util.getStringFromRequest(request, "prenom");
-        
-        mailService.sendDossierCompletMail(recipient,prenom);
+
+        mailService.sendDossierCompletMail(recipient, prenom);
     }
 
     /**
@@ -197,7 +200,7 @@ public class MailController {
     public ModelAndView EnvoiFin(HttpServletRequest request) {
         return envoyerMessage(request, MSGPFIN);
     }
-    
+
     /**
      * Gestion de la route permettant d'envoyer les mails de reset perso
      *
@@ -208,8 +211,6 @@ public class MailController {
     public ModelAndView EnvoiReset(HttpServletRequest request) {
         return envoyerMessage(request, MSGRESET);
     }
-
-    
 
     /**
      * Gestion de la route permettant d'envoyer un mail pour réinitialiser un
