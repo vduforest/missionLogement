@@ -27,8 +27,11 @@ import org.centrale.infosi.pappl.logement.repositories.PersonneRepository;
 import org.centrale.infosi.pappl.logement.controllers.MailService;
 import org.centrale.infosi.pappl.logement.util.Util;
 import static org.centrale.infosi.pappl.logement.util.Util.getIntFromString;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMethod;
+import java.util.Date;
+import java.util.Calendar;
+import org.centrale.infosi.pappl.logement.items.Formulaire;
+import org.centrale.infosi.pappl.logement.util.PasswordUtils;
 
 /**
  * Cette classe permet l'envoie automatique du premier mail pour la connexion;
@@ -65,12 +68,13 @@ public class MailController {
     private static final int MSGPREMIERCONTACT = 7;
     private static final int MSGPFIN = 9;
     private static final int MAILCONTACT = 8;
+    private static final int MSGRESET = 10;
 
     /**
      * Méthode permettant d'envoyer un message de premier connexion à tous les
      * élèves selon la vague choisie
      *
-     * @param request La requête http
+     * @param request     La requête http
      * @param messageType le type de message à envoyer
      * @return La page d'accueil admin avec un pop up
      */
@@ -125,23 +129,25 @@ public class MailController {
 
                             String token = personne.getFirstConnectionToken();
                             System.out.println(token + personne);
-                            /*if ((token == null) || (firstConnection.verifyToken(token) == 0)) {
-                                genererToken(personne);
-                                throw new IllegalArgumentException("Token manquant");
-                            }*/
+                            /*
+                             * if ((token == null) || (firstConnection.verifyToken(token) == 0)) {
+                             * genererToken(personne);
+                             * throw new IllegalArgumentException("Token manquant");
+                             * }
+                             */
 
                             /**
                              * vérifier le token
                              */
-                        
+
                             /* le token est expire */
-                        genererToken(personne);
-                        /* on met à jour le token transmis*/
-                        token = personne.getFirstConnectionToken();
-                        System.out.println("a passer la condition");
-                        String recipient = formulaire.getMail();
-                        mailService.sendPasswordResetMail(token, recipient);
-                    }
+                            genererToken(personne);
+                            /* on met à jour le token transmis */
+                            token = personne.getFirstConnectionToken();
+                            System.out.println("a passer la condition");
+                            String recipient = formulaire.getMail();
+                            mailService.sendPasswordResetMail(token, recipient);
+                        }
                         break;
                     default:
                         returned = new ModelAndView("index");
@@ -175,16 +181,17 @@ public class MailController {
         String comm = Util.getStringFromRequest(request, "commentairesVE");
         String prenom = Util.getStringFromRequest(request, "prenom");
 
-        //Envoi au service - pas besoin de vérifier que le commentaire est vide, c'est sûr que c'est bon
+        // Envoi au service - pas besoin de vérifier que le commentaire est vide, c'est
+        // sûr que c'est bon
         mailService.sendDossierIncompletMail(recipient, comm, prenom);
     }
-    
-    public void envoiMailDossierComplet(HttpServletRequest request){
+
+    public void envoiMailDossierComplet(HttpServletRequest request) {
         // Récupération du mail à partir de la request
         String recipient = Util.getStringFromRequest(request, "mail");
         String prenom = Util.getStringFromRequest(request, "prenom");
-        
-        mailService.sendDossierCompletMail(recipient,prenom);
+
+        mailService.sendDossierCompletMail(recipient, prenom);
     }
 
     /**
@@ -197,7 +204,7 @@ public class MailController {
     public ModelAndView EnvoiFin(HttpServletRequest request) {
         return envoyerMessage(request, MSGPFIN);
     }
-    
+
     /**
      * Gestion de la route permettant d'envoyer les mails de reset perso
      *
@@ -209,19 +216,32 @@ public class MailController {
         return envoyerMessage(request, MSGRESET);
     }
 
-    
-
-        public void genererToken(Personne personne) {
-        String token = firstConnection.generateUniqueToken(); // Generate a secure token
+    public void genererToken(Personne personne) {
+        String token = generateUniqueToken(); // Generate a secure token
         personne.setFirstConnectionToken(token); // Set the token in the user record
         Date dateNow = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateNow);
         cal.add(Calendar.HOUR, 24);
         Date expiryDate = cal.getTime();
-        // LocalDate oneMonthLater = LocalDate.now().plusMonths(1);  // Add 1 month to the current date
-        // java.sql.Date expiryDate = java.sql.Date.valueOf(oneMinuteLater);  // Convert to java.sql.Date
+        // LocalDate oneMonthLater = LocalDate.now().plusMonths(1); // Add 1 month to
+        // the current date
+        // java.sql.Date expiryDate = java.sql.Date.valueOf(oneMinuteLater); // Convert
+        // to java.sql.Date
         personne.setFirstConnectionTokenExpiry(expiryDate);
         personneRepository.save(personne);
+    }
+
+    private String generateUniqueToken() {
+        String token;
+        boolean isTokenUnique = false;
+
+        do {
+            token = PasswordUtils.generateToken(); // Generate a secure token
+            isTokenUnique = !personneRepository.existsByFirstConnectionToken(token); // Check if the token already
+                                                                                     // exists in the database
+        } while (!isTokenUnique); // If the token already exists, generate a new one
+
+        return token;
     }
 }
