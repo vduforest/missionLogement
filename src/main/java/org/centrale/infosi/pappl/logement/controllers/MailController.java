@@ -26,7 +26,7 @@ import org.centrale.infosi.pappl.logement.repositories.FormulaireRepository;
 import org.centrale.infosi.pappl.logement.repositories.PersonneRepository;
 import org.centrale.infosi.pappl.logement.controllers.MailService;
 import org.centrale.infosi.pappl.logement.util.Util;
-import org.centrale.infosi.pappl.logement.util.MailConsants;
+import org.centrale.infosi.pappl.logement.util.MailConstants;
 import static org.centrale.infosi.pappl.logement.util.Util.getIntFromString;
 import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.Date;
