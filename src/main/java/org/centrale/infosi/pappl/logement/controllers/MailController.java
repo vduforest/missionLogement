@@ -109,7 +109,7 @@ public class MailController {
                             returned.addObject("confirmationMessage", "Emails envoyés avec succès ! ");
                         }
                         break;
-                        case MSGRESET:
+                    case MSGRESET:
                         returned = connectionService.prepareModelAndView(connection, "accueil_admin");
                         /* on reçoit l'id du formulaire et de la personne */
                         Integer id = Integer.parseInt(request.getParameter("id"));
@@ -211,17 +211,17 @@ public class MailController {
 
     
 
-    /**
-     * Gestion de la route permettant d'envoyer un mail pour réinitialiser un
-     * mot de passe
-     *
-     * @param request La requête http
-     * @return La page d'accueil admin avec un pop up
-     */
-    /*
-     * @RequestMapping(value = "", method = RequestMethod.POST)
-     * public ModelAndView EnvoiReset(HttpServletRequest request){
-     * return envoyerMessageReset(request,MSGRESET);
-     * }
-     */
+        public void genererToken(Personne personne) {
+        String token = firstConnection.generateUniqueToken(); // Generate a secure token
+        personne.setFirstConnectionToken(token); // Set the token in the user record
+        Date dateNow = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateNow);
+        cal.add(Calendar.HOUR, 24);
+        Date expiryDate = cal.getTime();
+        // LocalDate oneMonthLater = LocalDate.now().plusMonths(1);  // Add 1 month to the current date
+        // java.sql.Date expiryDate = java.sql.Date.valueOf(oneMinuteLater);  // Convert to java.sql.Date
+        personne.setFirstConnectionTokenExpiry(expiryDate);
+        personneRepository.save(personne);
+    }
 }
