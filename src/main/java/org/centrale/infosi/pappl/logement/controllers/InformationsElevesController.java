@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Controller pour la gestion de la page d'information des étudiants
+ * 
  * @author Amolz
  */
 @Controller
@@ -26,29 +27,33 @@ public class InformationsElevesController {
     @Lazy
     @Autowired
     private ConfigModifRepository configModifRepository;
-    
+
     @Autowired
     private ConnectionService connectionService;
-     /**
-     * Gestion de la route permettant d'afficher les informations de la mission logement
+
+    /**
+     * Gestion de la route permettant d'afficher les informations de la mission
+     * logement
+     * 
      * @param request La requête
      * @return La page d'information
      */
-    @RequestMapping(value="informations.do",method=RequestMethod.POST)
-    public ModelAndView handleInformation(HttpServletRequest request){
+    @RequestMapping(value = "informations.do", method = RequestMethod.POST)
+    public ModelAndView handleInformation(HttpServletRequest request) {
         Connexion connection = connectionService.checkAccess(request, "Eleve");
-        if (connection == null){
+        if (connection == null) {
             return new ModelAndView("redirect");
         }
-        Optional<ConfigModif> configInformationTexteOpt = configModifRepository.findTopByTypeNomOrderByModifIdDesc("message_page_informations");
+        Optional<ConfigModif> configInformationTexteOpt = configModifRepository
+                .findTopByTypeNomOrderByModifIdDesc("message_page_informations");
         ConfigModif configInformationTexte = configInformationTexteOpt.get();
         String texteInformation = configInformationTexte.getContenu();
         texteInformation = texteInformation.replaceAll("\n", "<br/>");
-        
-        String connectionIdStr=Util.getStringFromRequest(request, "connexionId");
-        ModelAndView returned = connectionService.prepareModelAndView(connection,"informationEleves");
+
+        String connectionIdStr = Util.getStringFromRequest(request, "connexionId");
+        ModelAndView returned = connectionService.prepareModelAndView(connection, "informationEleves");
         returned.addObject("texteInfo", texteInformation);
         return returned;
-        
+
     }
 }

@@ -68,7 +68,8 @@ public class Util {
         String resourceName = packageClassName + ".config." + CONFIGFILENAME;
         try {
             // Prefer an explicit resource lookup through the webapp ClassLoader.
-            // This avoids surprising ResourceBundle lookup issues in some servlet containers.
+            // This avoids surprising ResourceBundle lookup issues in some servlet
+            // containers.
             String resourcePath = resourceName.replace('.', '/') + ".properties";
             ClassLoader cl = Util.class.getClassLoader();
             try (InputStream in = (cl != null) ? cl.getResourceAsStream(resourcePath) : null) {
@@ -86,14 +87,14 @@ public class Util {
             ResourceBundle theResource = ResourceBundle.getBundle(resourceName);
             return theResource.getString(typeFile);
         } catch (MissingResourceException ex) {
-            // Fail-safe: don't crash the whole app if config is missing in the deployed WAR.
+            // Fail-safe: don't crash the whole app if config is missing in the deployed
+            // WAR.
             // This happens often when Tomcat is running an older deployment.
             Logger.getLogger(Util.class.getName()).log(
                     Level.SEVERE,
                     "Missing ResourceBundle '" + resourceName + "'. " +
-                    "Expected a file like 'org/centrale/infosi/pappl/logement/util/config/config.properties' on the classpath.",
-                    ex
-            );
+                            "Expected a file like 'org/centrale/infosi/pappl/logement/util/config/config.properties' on the classpath.",
+                    ex);
 
             // Best-effort fallback: use project-local folders (works for local dev setups).
             String baseDir = System.getProperty("missionlogement.baseDir");
@@ -452,11 +453,13 @@ public class Util {
             DiskFileItemFactory factory = DiskFileItemFactory.builder().get();
             JakartaServletFileUpload upload = new JakartaServletFileUpload(factory);
 
-            boolean hasFile = false;
+            // Initialize the attribute immediately to prevent re-parsing
+            ArrayList<File> uploadedFiles = new ArrayList<>();
+            request.setAttribute(MULTIPART, uploadedFiles);
+
             File file = null;
-            // File file = temp.getFile();
             try {
-                List items = upload.parseRequest(request);
+                List<FileItem> items = upload.parseRequest(request);
                 Iterator<FileItem> iter = items.iterator();
                 while (iter.hasNext()) {
                     FileItem item = iter.next();
@@ -476,12 +479,7 @@ public class Util {
                             } catch (IOException ex) {
                                 Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                            if (!hasFile) {
-                                request.setAttribute(MULTIPART, new ArrayList<File>());
-                            }
-                            ArrayList<File> tempFiles = (ArrayList<File>) (request.getAttribute(MULTIPART));
-                            tempFiles.add(file);
-                            hasFile = true;
+                            uploadedFiles.add(file);
                         }
                     }
                 }
@@ -519,7 +517,9 @@ public class Util {
             File file = null;
             if (request.getAttribute("MULTIPART") != null) {
                 ArrayList<File> tempFiles = (ArrayList<File>) (request.getAttribute(MULTIPART));
-                file = tempFiles.get(0);
+                if (!tempFiles.isEmpty()) {
+                    file = tempFiles.get(0);
+                }
             }
             return file;
         }
@@ -531,7 +531,11 @@ public class Util {
 
         boolean isMultipart = JakartaServletFileUpload.isMultipartContent(request);
         if (isMultipart) {
-            return (String) (request.getAttribute(value));
+            String val = (String) (request.getAttribute(value));
+            if (val == null) {
+                val = request.getParameter(value);
+            }
+            return val;
         } else {
             // Standart request
             return request.getParameter(value);
@@ -724,10 +728,10 @@ public class Util {
             international = Util.getStringFromRequest(request, "international");
         }
 
-
         formulaireRepository.update(formulaireId,
                 nom, prenom, dateNaissance, ville, codePostal, pays, mail, genre, numTelephone,
-                boursier, souhait, pmr, commentaireVe, commentairesEleve, validation, tel2, distance, rang, international);
+                boursier, souhait, pmr, commentaireVe, commentairesEleve, validation, tel2, distance, rang,
+                international);
     }
 
     public static ResponseEntity<InputStreamResource> sendFile(String fileName, File theFile, MediaType mediaType) {

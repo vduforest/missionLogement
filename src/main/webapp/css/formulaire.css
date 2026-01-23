@@ -1,127 +1,198 @@
+/* RESET DES ANCIENS STYLES */
+div#main,
 div.main {
-    top: 15%;
+    top: auto;
+    position: static;
 }
 
+/* FIXE DU TITRE */
 h2 {
-    padding: 20px;
-    background-color: rgba(14, 39, 72, 255);
-    color: rgba(250, 181, 0, 255);
-    font-weight: bold;
-    border-radius: 2px;
-}
-
-input {
-    position: relative;
-    width: inherit;
-    padding: 5px;
-    background: whitesmoke;
-    border: 2px solid rgba(0, 0, 0, .15);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, .1) inset;
-    border-radius: 5px;
-    font-size: 15px;
-    color: rgb(86, 86, 86);
-
-}
-
-textarea {
-    position: relative;
-    width: inherit;
-    padding: 5px;
-    background: whitesmoke;
-    border: 2px solid rgba(0, 0, 0, .15);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, .1) inset;
-    border-radius: 5px;
-    font-size: 15px;
-    color: rgb(86, 86, 86);
-
-}
-
-select {
-    position: relative;
-    width: inherit;
-    padding: 5px;
-    background: whitesmoke;
-    border: 2px solid rgba(0, 0, 0, .15);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, .1) inset;
-    border-radius: 5px;
-    font-size: 15px;
-    color: rgb(86, 86, 86);
-
-}
-
-input.infoSupplementaires {
-    height: 300px;
-    width: 100%;
-    text-align: left;
-
-}
-
-button.Enregistrer {
-    margin: 5px;
-    padding: 5px;
-    border-radius: 5px;
-}
-
-button.Confirmer {
-    margin: 5px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: rgb(0, 174, 0);
-    color: white;
-}
-
-img.icon {
-    height: 20px;
-    width: 20px;
-}
-
-img.avion {
-    height: 20px;
-    width: 20px;
-}
-
-.navbar {
-    background-color: rgba(14, 39, 72, 255) !important;
-}
-
-.nav-link {
-    border-width: 0;
-    background-color: rgba(14, 39, 72, 255) !important;
-}
-
-h1 {
-    position: absolute;
-    font-size: 225%;
-    left: 50%;
-    transform: translateX(-50%);
-    color: rgba(250, 181, 0, 255);
-    text-align: center;
-    font-weight: bold !important;
-}
-
-/* Tooltip styling */
-.tooltip-icon {
+    background-color: transparent !important;
+    color: var(--brand-blue) !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    border-bottom: 3px solid var(--brand-yellow);
     display: inline-block;
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+/* --- STRUCTURE TABLEAU MODERNE --- */
+.modern-form-table {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: white;
+}
+
+.form-row {
+    display: flex;
+    border-bottom: 1px solid #e2e8f0;
+    align-items: center;
+}
+
+.form-row:last-child {
+    border-bottom: none;
+}
+
+/* COLONNE GAUCHE (TITRES) */
+.label-col {
+    width: 30%;
+    background-color: #f8fafc;
+    padding: 15px 20px;
+    border-right: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+}
+
+.label-col label {
+    margin: 0;
+    font-weight: 600;
+    color: var(--brand-blue);
+    font-size: 0.95rem;
+}
+
+/* COLONNE DROITE (INPUTS) */
+.input-col {
+    width: 70%;
+    padding: 10px 20px;
+    background-color: white;
+}
+
+/* --- STYLE DES INPUTS --- */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+select,
+textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: white;
+    transition: border 0.3s;
+    font-size: 1rem;
+    color: #333;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--brand-blue);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(14, 39, 72, 0.1);
+}
+
+/* --- CORRECTIF READONLY (Gris visible) --- */
+.readonly-input {
+    background-color: #e9ecef !important;
+    /* Gris visible (Bootstrap style) */
+    border-color: #ced4da !important;
+    color: #495057 !important;
+    cursor: not-allowed !important;
+    /* Curseur 'interdit' */
+    opacity: 1;
+}
+
+/* --- OPTIONS RADIO --- */
+.radio-options {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.radio-options input[type="radio"] {
+    width: auto;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.radio-options label {
+    margin: 0;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+/* --- BOUTONS & MESSAGES --- */
+.form-actions {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.buttons-container {
+    display: flex;
+    gap: 20px;
+}
+
+/* Message d'attention */
+.warning-message {
+    color: #d9534f;
+    font-weight: bold;
+    font-size: 0.95rem;
+    background-color: #fff5f5;
+    padding: 10px 20px;
+    border: 1px solid #ffcccc;
+    border-radius: 50px;
+    margin-bottom: 10px;
+}
+
+/* Bouton Sauvegarder (Bleu) */
+.btn-save {
+    background-color: var(--brand-blue) !important;
+    color: white !important;
+}
+
+.btn-save:hover {
+    background-color: var(--brand-yellow) !important;
+    color: var(--brand-blue) !important;
+}
+
+/* Bouton Soumettre (Vert) */
+.btn-submit-active {
+    background-color: #28a745 !important;
+    color: white !important;
+}
+
+.btn-submit-active:hover {
+    background-color: #218838 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+}
+
+/* Bouton Soumettre (Gris) */
+.btn-submit-disabled {
+    background-color: #6c757d !important;
+    color: #eee !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* --- TOOLTIPS --- */
+.tooltip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 18px;
     height: 18px;
-    background-color: #0e2748;
-    /* Dark blue matching theme */
+    background-color: var(--brand-blue);
     color: white;
     border-radius: 50%;
-    text-align: center;
-    line-height: 18px;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: help;
+    font-size: 11px;
     margin-left: 8px;
+    cursor: help;
     position: relative;
-    font-family: 'Open Sans', sans-serif;
-    vertical-align: middle;
-}
-
-.tooltip-icon:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
 }
 
 .tooltip-text {
@@ -134,26 +205,34 @@ h1 {
     padding: 8px;
     position: absolute;
     z-index: 100;
-    bottom: 125%;
-    /* Position above */
+    bottom: 130%;
     left: 50%;
     margin-left: -125px;
     opacity: 0;
     transition: opacity 0.3s;
-    font-size: 14px;
+    font-size: 0.85rem;
     font-weight: normal;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* Ensure text wrapping */
-    white-space: normal;
 }
 
-.tooltip-text::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #333 transparent transparent transparent;
+.tooltip-icon:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .label-col {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+    }
+
+    .input-col {
+        width: 100%;
+    }
 }
