@@ -31,16 +31,19 @@ import org.centrale.infosi.pappl.logement.items.Genre;
 import org.centrale.infosi.pappl.logement.items.Pays;
 import org.centrale.infosi.pappl.logement.items.Souhait;
 import org.centrale.infosi.pappl.logement.repositories.AlerteRepository;
+import org.centrale.infosi.pappl.logement.repositories.ConfigModifRepository;
 import org.centrale.infosi.pappl.logement.repositories.FormulaireRepository;
 import org.centrale.infosi.pappl.logement.repositories.GenreRepository;
 import org.centrale.infosi.pappl.logement.repositories.PaysRepository;
 
+import org.centrale.infosi.pappl.logement.repositories.AlerteRepository;
+import org.centrale.infosi.pappl.logement.repositories.PersonneRepository;
+import org.centrale.infosi.pappl.logement.repositories.SouhaitRepository;
+
 import org.centrale.infosi.pappl.logement.util.Util;
 import org.centrale.infosi.pappl.logement.items.ConfigModif;
 import org.centrale.infosi.pappl.logement.items.Personne;
-import org.centrale.infosi.pappl.logement.repositories.ConfigModifRepository;
-import org.centrale.infosi.pappl.logement.repositories.PersonneRepository;
-import org.centrale.infosi.pappl.logement.repositories.SouhaitRepository;
+
 import org.centrale.infosi.pappl.logement.util.PasswordUtils;
 import static org.centrale.infosi.pappl.logement.util.Util.getIntFromString;
 

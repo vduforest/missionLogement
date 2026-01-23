@@ -231,4 +231,18 @@ public class MailController {
         personne.setFirstConnectionTokenExpiry(expiryDate);
         personneRepository.save(personne);
     }
+
+    /**
+     * Gestion de la route permettant d'envoyer un mail pour réinitialiser un
+     * mot de passe
+     *
+     * @param request La requête http
+     * @return La page d'accueil admin avec un pop up
+     */
+    /*
+     * @RequestMapping(value = "", method = RequestMethod.POST)
+     * public ModelAndView EnvoiReset(HttpServletRequest request){
+     * return envoyerMessageReset(request,MSGRESET);
+     * }
+     */
 }
