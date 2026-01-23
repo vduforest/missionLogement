@@ -414,10 +414,12 @@
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
     </div>
+
     <script>
       window.onload = function () {
         var message = "<%= request.getAttribute("confirmationMessage")%>";
