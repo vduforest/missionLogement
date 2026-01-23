@@ -58,7 +58,7 @@ public interface FormulaireRepositoryCustom {
      * @return Le formulaire mis à jour
      */
     public Formulaire update(int Id, String nom, String prenom, Date dateNaissance ,String ville, String codePostal, int pays, String mail, int genre, String numTelephone,
-            String boursier, int souhait, String pmr, String commentaireVe, String commentaireEleve, Boolean validation);
+            String boursier, int souhait, String pmr, String commentaireVe, String commentaireEleve, Boolean validation, String tel2, int distance, int rang, String international);
     
     /**
      * Vide et valide un formulaire (en cas de problème pour remplir un formulaire par un élève)

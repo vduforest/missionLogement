@@ -49,12 +49,12 @@ public class FirstConnectionController {
     @Lazy
     private ConfigModifRepository configModifRepository;
 
-    private ModelAndView invalidAccountCreation(String scei,String mail) {
+    private ModelAndView invalidAccountCreation(String scei, String mail) {
         ModelAndView returned = new ModelAndView("premier_connexion");
         returned.addObject("error", true);
-        returned.addObject("mySCEI",scei);
+        returned.addObject("mySCEI", scei);
         returned.addObject("mail", mail);
-        //returned.addObject("token",token);
+        // returned.addObject("token",token);
         return returned;
     }
 
@@ -62,34 +62,37 @@ public class FirstConnectionController {
      * Méthode permettant de traiter la route "firstConnection.do"
      *
      * @param request La requête contenant le token d'authentification et l'état
-     * d'erreur de login/mdp/numéro SCEI
+     *                d'erreur de login/mdp/numéro SCEI
      * @return La page de première connexion si le token existe, une erreur 404
-     * sinon
+     *         sinon
      */
     @RequestMapping(value = "creationcompte.do", method = RequestMethod.GET)
     public ModelAndView handleCreationCompte(HttpServletRequest request) {
-        ModelAndView returned = new ModelAndView("index"); //erreur 404
+        ModelAndView returned = new ModelAndView("index"); // erreur 404
         String token = request.getParameter("token");
-        //vérification du token cad que si le token est expiré alors on envoie une page d'erreur
-        if(verifyToken(token)==1){
-            // Si le  token existe, il faut récupérer le numéro SCEI de la personne et son mail et préremplir la page
+        // vérification du token cad que si le token est expiré alors on envoie une page
+        // d'erreur
+        if (verifyToken(token) == 1) {
+            // Si le token existe, il faut récupérer le numéro SCEI de la personne et son
+            // mail et préremplir la page
             String mail = formulaireRepository.findMailByToken(token).get(0);
             String numSCEI = formulaireRepository.findSCEIByToken(token).get(0);
-            
+
             returned = new ModelAndView("premier_connexion");
-            returned.addObject("mySCEI",numSCEI);  
-            returned.addObject("mail",mail);
-            returned.addObject("error", false);    
-            //returned.addObject("token",token);
-        } else if(verifyToken(token)==0){
-            // Si le token n'existe pas ou est expiré, alors on supprime le token de la base et on envoie une page demandant à l'élève d'aller faire mot de passe oublié
+            returned.addObject("mySCEI", numSCEI);
+            returned.addObject("mail", mail);
+            returned.addObject("error", false);
+            // returned.addObject("token",token);
+        } else if (verifyToken(token) == 0) {
+            // Si le token n'existe pas ou est expiré, alors on supprime le token de la base
+            // et on envoie une page demandant à l'élève d'aller faire mot de passe oublié
             returned = new ModelAndView("tokenExpiry");
-        } else{
+        } else {
             returned = new ModelAndView("index");
         }
         return returned;
     }
-    
+
     /**
      * Méthode permettant de vérifier si un token existe et qu'il n'est pas expiré
      *
@@ -98,19 +101,19 @@ public class FirstConnectionController {
      */
     private int verifyToken(String token) {
         Optional<Personne> result = personneRepository.findByFirstConnectionToken(token);
-        
+
         // Test de l'existence de la personne
-        if (result.isPresent()){
-            
+        if (result.isPresent()) {
+
             Date expiry = (Date) result.get().getFirstConnectionTokenExpiry();
             // Test de l'expiration du token
             Date now = new Date();
-            if (expiry.before(now)){
+            if (expiry.before(now)) {
                 return 0;
             }
             return 1;
         }
-        
+
         return 2;
     }
 
@@ -132,18 +135,18 @@ public class FirstConnectionController {
      *
      * @param request La requête
      * @return La page de refus si le mail est invalide, la page de changement
-     * de login s'il est valide
+     *         de login s'il est valide
      */
     @RequestMapping(value = "verificationdumail.do", method = RequestMethod.GET)
     public ModelAndView handleVerificationduMail(HttpServletRequest request) {
         ModelAndView returned;
 
         String referer = request.getHeader("Referer");
-        // Pour que l'on puisse y arriver seulement depuis first_connexion.jsp 
-        System.out.println("Referer: " + referer);  // Pour voir la valeur dans la console
+        // Pour que l'on puisse y arriver seulement depuis first_connexion.jsp
+        System.out.println("Referer: " + referer); // Pour voir la valeur dans la console
         // Vérifie que la requête vient bien de la page du formulaire
         if (referer == null || !referer.contains("verificationmail.do")) {
-            return new ModelAndView("Pasledroit");  // Redirige ailleurs si l'accès est direct
+            return new ModelAndView("Pasledroit"); // Redirige ailleurs si l'accès est direct
         }
 
         String mail = Util.getStringFromRequest(request, "mail");
@@ -163,61 +166,58 @@ public class FirstConnectionController {
      * Méthode permettant de traiter la route saveUser.do
      *
      * @param request La requête contenant le login et mot de passe voulus, un
-     * mot de passe de vérification, le numéro SCEI et le token
+     *                mot de passe de vérification, le numéro SCEI et le token
      * @return La page de première connexion si erreur, la page de connexion
-     * générale sinon
+     *         générale sinon
      */
     @RequestMapping(value = "saveUser.do", method = RequestMethod.POST)
     public ModelAndView handleSaveUserPost(HttpServletRequest request) {
         ModelAndView returned;
 
-        //Paramètres de la requête
+        // Paramètres de la requête
         String Scei = Util.getStringFromRequest(request, "myScei");
         String mail = Util.getStringFromRequest(request, "mail").trim();
 
         String login = Util.getStringFromRequest(request, "myLogin");
         String password = Util.getStringFromRequest(request, "myPassword");
         String verifyPassword = Util.getStringFromRequest(request, "confMyPassword");
-        String token=request.getParameter("token");
+        String token = request.getParameter("token");
 
         // Check passwords are equal
         if ((password.isEmpty()) || (!password.equals(verifyPassword))) {
             // Given password is not the same as verifyPassword
-            return invalidAccountCreation(Scei,mail);
+            return invalidAccountCreation(Scei, mail);
         }
 
         // Check SCEI number and token
-        Optional<Formulaire> students = formulaireRepository.findBySceiAndMail(Scei,mail);
+        Optional<Formulaire> students = formulaireRepository.findBySceiAndMail(Scei, mail);
         if (!students.isPresent()) {
             // No valid SCEI number ot given password is not the same as verifyPassword
-            return invalidAccountCreation(Scei,mail);
+            return invalidAccountCreation(Scei, mail);
         }
 
         Formulaire formulaire = students.get();
         Personne personne = formulaire.getPersonneId();
         personne = personneRepository.getReferenceById(personne.getPersonneId());
 
-
-        
-        
         // Check mail is the given one
         if ((formulaire.getMail() != null) && (!formulaire.getMail().equalsIgnoreCase(mail))) {
-            return invalidAccountCreation(Scei,mail);
+            return invalidAccountCreation(Scei, mail);
         }
 
         Collection<Personne> personneLogin = personneRepository.findByLogin(login);
-        if (! personneLogin.isEmpty()) {
+        if (!personneLogin.isEmpty()) {
             // Login already used
             Personne altPerson = personneLogin.iterator().next();
             if (!personne.equals(altPerson)) {
                 // Not by this person
-                return invalidAccountCreation(Scei,mail);
+                return invalidAccountCreation(Scei, mail);
             }
         }
-        
-        if ((personne.getLogin() != null) && (! personne.getLogin().equals(login))) {
+
+        if ((personne.getLogin() != null) && (!personne.getLogin().equals(login))) {
             // Login already defined but not this one
-            return invalidAccountCreation(Scei,mail);
+            return invalidAccountCreation(Scei, mail);
         }
 
         // OK, set Login / Password
@@ -238,7 +238,7 @@ public class FirstConnectionController {
     public ModelAndView generateTokensForAllUsers(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView("accueil_admin");
         String connexionId = request.getParameter("connexionId");
-        
+
         try {
             Collection<Personne> personnes = personneRepository.findAll(); // Fetch all users
             for (Personne personne : personnes) {
@@ -251,8 +251,10 @@ public class FirstConnectionController {
                     cal.setTime(dateNow);
                     cal.add(Calendar.HOUR, 24);
                     Date expiryDate = cal.getTime();
-                    // LocalDate oneMonthLater = LocalDate.now().plusMonths(1);  // Add 1 month to the current date
-                    // java.sql.Date expiryDate = java.sql.Date.valueOf(oneMinuteLater);  // Convert to java.sql.Date
+                    // LocalDate oneMonthLater = LocalDate.now().plusMonths(1); // Add 1 month to
+                    // the current date
+                    // java.sql.Date expiryDate = java.sql.Date.valueOf(oneMinuteLater); // Convert
+                    // to java.sql.Date
                     personne.setFirstConnectionTokenExpiry(expiryDate);
 
                     personneRepository.save(personne); // Save the updated user entity
@@ -261,27 +263,27 @@ public class FirstConnectionController {
             }
 
             modelAndView.addObject("confirmationMessage", "Tokens generated and emails sent to all users.");
-            modelAndView.addObject("connexionId",connexionId);
+            modelAndView.addObject("connexionId", connexionId);
         } catch (Exception e) {
             modelAndView.addObject("confirmationMessage", "An error occurred while generating tokens.");
-            modelAndView.addObject("connexionId",connexionId);
+            modelAndView.addObject("connexionId", connexionId);
         }
 
         return modelAndView;
     }
 
-    private String generateUniqueToken() {
+    public String generateUniqueToken() {
         String token;
         boolean isTokenUnique = false;
 
         do {
             token = PasswordUtils.generateToken(); // Generate a secure token
-            isTokenUnique = !personneRepository.existsByFirstConnectionToken(token); // Check if the token already exists in the database
+            isTokenUnique = !personneRepository.existsByFirstConnectionToken(token); // Check if the token already
+                                                                                     // exists in the database
             System.out.println(!personneRepository.existsByFirstConnectionToken(token));
         } while (!isTokenUnique); // If the token already exists, generate a new one
 
         return token;
     }
-    
-    
+
 }

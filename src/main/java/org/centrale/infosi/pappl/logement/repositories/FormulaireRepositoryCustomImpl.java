@@ -126,7 +126,7 @@ public class FormulaireRepositoryCustomImpl implements FormulaireRepositoryCusto
      */
     @Override
     public Formulaire update(int id, String nom, String prenom, Date dateNaissance, String ville, String codePostal, int pays, String mail, int genre, String numTelephone,
-            String boursier, int souhait, String pmr, String commentaireVe, String commentaireEleve, Boolean validation) {
+            String boursier, int souhait, String pmr, String commentaireVe, String commentaireEleve, Boolean validation, String tel2, int distance, int rang, String international) {
         Formulaire formulaire = repository.getReferenceById(id);
         if (formulaire != null) {
             personneRepository.updateNoms(formulaire.getPersonneId().getPersonneId(), nom, prenom);
@@ -163,6 +163,35 @@ public class FormulaireRepositoryCustomImpl implements FormulaireRepositoryCusto
                 numTelephone = numTelephone.trim();
                 formulaire.setNumeroTel(numTelephone);
             }
+            if (tel2 != null) {
+                tel2 = tel2.trim();
+                formulaire.setTel2(tel2);
+            }
+            
+            if (distance > 0) {
+                formulaire.setDistance(distance);
+            } else {
+                formulaire.setDistance(null);
+            }
+            
+            if (rang > 0) {
+                formulaire.setRang(rang);
+            } else {
+                formulaire.setRang(null);
+            }
+            
+            switch (international) {
+                case "true":
+                    formulaire.setInternational(true);
+                    break;
+                case "false":
+                    formulaire.setInternational(false);
+                    break;
+                default:
+                    formulaire.setInternational(null);
+                    break;
+            }
+
             if (souhait > 0) {
                 Souhait souhaitId = souhaitRepository.getReferenceById(souhait);
                 if (souhaitId != null) {

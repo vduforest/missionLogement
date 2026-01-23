@@ -33,3 +33,31 @@
   width: auto;
   display: block;
 }
+
+/* Zone stable -> plus de flash */
+button.exit-btn{
+  width: 48px;
+  height: 48px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Effet hover sur l’icône */
+button.exit-btn img.sortie{
+  display: block;
+  transition: filter .15s ease, transform .15s ease;
+}
+
+button.exit-btn:hover img.sortie{
+  filter: brightness(1.25);
+  transform: scale(1.08);
+}
+
+/* enlève le contour focus */
+button.exit-btn:focus{
+  outline: none;
+  box-shadow: none;
+}
