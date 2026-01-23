@@ -1,4 +1,3 @@
-<<<<<<< OURS
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
@@ -270,7 +269,7 @@
                                 Valider <img src="img/coche.png" class="icon" alt="Valider"/>
                               </button>
 
-                              <button onclick="messageCommVide('formVe')" 
+                              <button onclick="return messageCommVide('formVe')" 
                                       formaction="RefuserFormVe.do" type="submit" name="refuser" class="btn btn-danger" value="refuser" <c:if test="${!(item.estConforme)|| (empty item.commentairesVe)}">disabled="disabled"</c:if>>
                                         Refuser <img src="img/refuse.png" class="icon" alt="Refuser"/>
                                       </button>
