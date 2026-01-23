@@ -14,20 +14,22 @@
           http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 <mvc:annotation-driven/>
 
-<context:component-scan base-package="org.centrale.infosi.pappl.logement.controllers"/>
+    <context:component-scan base-package="org.centrale.infosi.pappl.logement.controllers"/>
 
-<context:load-time-weaver/>
-<mvc:resources mapping="/static/**" location="/static/" />
-<jpa:repositories base-package="org.centrale.infosi.pappl.logement.repositories" entity-manager-factory-ref="entityManagerFactoryBean"/>
-<bean id="entityManagerFactoryBean" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-<property name="persistenceUnitName" value="org.centrale.infosi.pappl.Mission_Logement_1.0PU"/>
-<property name="loadTimeWeaver">
-<bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
-</property>
-</bean>
+    <context:load-time-weaver/>
+    <mvc:resources mapping="/static/**" location="/static/" />
+    <jpa:repositories base-package="org.centrale.infosi.pappl.logement.repositories" entity-manager-factory-ref="entityManagerFactoryBean"/>
 
-<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-<property name="entityManagerFactory" ref="entityManagerFactoryBean"/>
-</bean>
+
+    <bean id="entityManagerFactoryBean" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="org.centrale.infosi.pappl.Mission_Logement_1.0PU"/>
+        <property name="loadTimeWeaver">
+            <bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactoryBean"/>
+    </bean>
 
 </beans>

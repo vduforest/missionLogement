@@ -15,7 +15,6 @@ import org.centrale.infosi.pappl.logement.items.Personne;
 import org.centrale.infosi.pappl.logement.items.Souhait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-
 import org.springframework.stereotype.Repository;
 
 /**
@@ -76,13 +75,13 @@ public class FormulaireRepositoryCustomImpl implements FormulaireRepositoryCusto
 
             if (ville != null) {
                 ville = ville.trim();
-                if (! ville.isEmpty()) {
+                if (!ville.isEmpty()) {
                     item.setVille(ville);
                 }
             }
             if (mail != null) {
                 mail = mail.trim().toLowerCase();
-                if (! mail.isEmpty()) {
+                if (!mail.isEmpty()) {
                     item.setMail(mail);
                 }
             }
@@ -106,72 +105,105 @@ public class FormulaireRepositoryCustomImpl implements FormulaireRepositoryCusto
 
     /**
      * Met à jour un formulaire
-     *
-     * @param id Son identifiant
-     * @param nom Le nom de la personne
-     * @param prenom le prénom de la personne
-     * @param dateNaissance Sa date de naissance
-     * @param ville Sa ville
-     * @param codePostal Son code postal
-     * @param pays Son pays
-     * @param mail Son mail
-     * @param genre Son genre
-     * @param numTelephone Son numéro de téléphone
-     * @param boursier Son statut de boursier
-     * @param souhait Son souhait d'appartement
-     * @param pmr Son statut pmr
-     * @param commentaireVe Ses commentaires de l'admin
-     * @param validation Sa validation
-     * @return Le formulaire mis à jour
      */
     @Override
     public Formulaire update(int id, String nom, String prenom, Date dateNaissance, String ville, String codePostal, int pays, String mail, int genre, String numTelephone,
-            String boursier, int souhait, String pmr, String commentaireVe, String commentaireEleve, Boolean validation) {
+            String boursier, int souhait, String pmr, String commentaireVe, String commentaireEleve, Boolean validation, String tel2, int distance, int rang, String international) {
         Formulaire formulaire = repository.getReferenceById(id);
         if (formulaire != null) {
+
+            // Mise à jour noms / prénoms (dans Personne)
             personneRepository.updateNoms(formulaire.getPersonneId().getPersonneId(), nom, prenom);
 
+            // Date naissance
             if (dateNaissance != null) {
                 formulaire.setDateDeNaissance(dateNaissance);
             }
+
+            // Ville
             if (ville != null) {
                 ville = ville.trim();
                 if (!ville.isEmpty()) {
                     formulaire.setVille(ville);
                 }
             }
+
+            // Code postal
             if (codePostal != null) {
                 codePostal = codePostal.trim();
                 formulaire.setCodePostal(codePostal);
             }
-            Pays paysId = paysRepository.getReferenceById(pays);
-            if (paysId != null) {
-                formulaire.setPaysId(paysId);
-                // La référence inverse n'est pas utilisée donc pas mise à jour
+
+            // Pays
+            if (pays > 0) {
+                Pays paysId = paysRepository.getReferenceById(pays);
+                if (paysId != null) {
+                    formulaire.setPaysId(paysId);
+                }
             }
+
+            // Mail
             if (mail != null) {
                 mail = mail.trim().toLowerCase();
                 formulaire.setMail(mail);
             }
-            
-            Genre genreId = genreRepository.getReferenceById(genre);
-            if (genreId != null) {
-                formulaire.setGenreId(genreId);
+
+            // Genre
+            if (genre > 0) {
+                Genre genreId = genreRepository.getReferenceById(genre);
+                if (genreId != null) {
+                    formulaire.setGenreId(genreId);
+                }
             }
 
+            // Téléphone 1
             if (numTelephone != null) {
                 numTelephone = numTelephone.trim();
                 formulaire.setNumeroTel(numTelephone);
             }
+            if (tel2 != null) {
+                tel2 = tel2.trim();
+                formulaire.setTel2(tel2);
+            }
+            
+            if (distance > 0) {
+                formulaire.setDistance(distance);
+            } else {
+                formulaire.setDistance(null);
+            }
+            
+            if (rang > 0) {
+                formulaire.setRang(rang);
+            } else {
+                formulaire.setRang(null);
+            }
+            
+            switch (international) {
+                case "true":
+                    formulaire.setInternational(true);
+                    break;
+                case "false":
+                    formulaire.setInternational(false);
+                    break;
+                default:
+                    formulaire.setInternational(null);
+                    break;
+            }
+
             if (souhait > 0) {
                 Souhait souhaitId = souhaitRepository.getReferenceById(souhait);
                 if (souhaitId != null) {
                     formulaire.setSouhaitId(souhaitId);
                 }
+            } else {
+                formulaire.setSouhaitId(null);
             }
+
+            // Commentaires
             formulaire.setCommentairesVe(commentaireVe);
             formulaire.setCommentairesEleve(commentaireEleve);
 
+            // PMR
             switch (pmr) {
                 case "true":
                     formulaire.setEstPmr(true);
@@ -184,6 +216,7 @@ public class FormulaireRepositoryCustomImpl implements FormulaireRepositoryCusto
                     break;
             }
 
+            // Boursier
             switch (boursier) {
                 case "true":
                     formulaire.setEstBoursier(true);
@@ -196,8 +229,8 @@ public class FormulaireRepositoryCustomImpl implements FormulaireRepositoryCusto
                     break;
             }
 
+            // Validation
             if (validation != null) {
-                // Validé ou refusé
                 formulaire.setEstConforme(validation);
                 formulaire.setEstValide(validation);
             }
@@ -209,30 +242,28 @@ public class FormulaireRepositoryCustomImpl implements FormulaireRepositoryCusto
     }
 
     /**
-     * Vide et valide un formulaire (en cas de problème pour remplir un
-     * formulaire par un élève)
-     *
-     * @param id l'identifiant du formulaire
-     * @return Le formulaire mis à jour
+     * Vide et valide un formulaire (en cas de problème pour remplir un formulaire par un élève)
      */
     @Override
     public Formulaire viderEtValider(int id) {
-        //on recuperre le formulaire
         Formulaire formulaire = repository.getReferenceById(id);
         if (formulaire != null) {
-            //on enleve les champs problematiques
             formulaire.setGenreId(formulaire.getGenreAttendu());
             formulaire.setNumeroTel(null);
+            formulaire.setNumeroTel2(null);     // ✅ nouveau
             formulaire.setSouhaitId(null);
             formulaire.setEstBoursier(null);
             formulaire.setEstPmr(null);
+            formulaire.setDistance(null);       // ✅ nouveau
+            formulaire.setEstInternational(null); // ✅ nouveau
+            formulaire.setRang(null);           // ✅ nouveau
+
             Date dateValidation = new Date();
             formulaire.setCommentairesEleve(null);
             formulaire.setDateValidation(dateValidation);
-            
-            //On transmet
+
             formulaire.setEstValide(true);
-            //On sauvegarde
+
             repository.saveAndFlush(formulaire);
             return formulaire;
         }
@@ -258,7 +289,7 @@ public class FormulaireRepositoryCustomImpl implements FormulaireRepositoryCusto
 
     @Override
     public Formulaire getByEmail(String mail) {
-        if ((mail != null) && (! mail.isEmpty())) {
+        if ((mail != null) && (!mail.isEmpty())) {
             Collection<Formulaire> result = repository.findByEmailNoCase(mail);
             if ((result != null) && (result.size() == 1)) {
                 return result.iterator().next();
@@ -266,10 +297,10 @@ public class FormulaireRepositoryCustomImpl implements FormulaireRepositoryCusto
         }
         return null;
     }
-    
+
     @Override
     public Formulaire getBySCEI(String scei) {
-        if ((scei != null) && (! scei.isEmpty())) {
+        if ((scei != null) && (!scei.isEmpty())) {
             Collection<Formulaire> result = repository.findByNumeroScei(scei);
             if ((result != null) && (result.size() == 1)) {
                 return result.iterator().next();

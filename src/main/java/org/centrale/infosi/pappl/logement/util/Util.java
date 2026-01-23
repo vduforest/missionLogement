@@ -26,6 +26,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.MissingResourceException;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,9 +66,54 @@ public class Util {
     public static String getInfo(String typeFile) {
         String packageClassName = Util.class.getPackage().getName();
         String resourceName = packageClassName + ".config." + CONFIGFILENAME;
-        ResourceBundle theResource = ResourceBundle.getBundle(resourceName);
+        try {
+            // Prefer an explicit resource lookup through the webapp ClassLoader.
+            // This avoids surprising ResourceBundle lookup issues in some servlet containers.
+            String resourcePath = resourceName.replace('.', '/') + ".properties";
+            ClassLoader cl = Util.class.getClassLoader();
+            try (InputStream in = (cl != null) ? cl.getResourceAsStream(resourcePath) : null) {
+                if (in != null) {
+                    Properties props = new Properties();
+                    props.load(in);
+                    String v = props.getProperty(typeFile);
+                    if (v != null) {
+                        return v.trim();
+                    }
+                }
+            }
 
-        return theResource.getString(typeFile);
+            // Fallback to ResourceBundle (legacy behavior)
+            ResourceBundle theResource = ResourceBundle.getBundle(resourceName);
+            return theResource.getString(typeFile);
+        } catch (MissingResourceException ex) {
+            // Fail-safe: don't crash the whole app if config is missing in the deployed WAR.
+            // This happens often when Tomcat is running an older deployment.
+            Logger.getLogger(Util.class.getName()).log(
+                    Level.SEVERE,
+                    "Missing ResourceBundle '" + resourceName + "'. " +
+                    "Expected a file like 'org/centrale/infosi/pappl/logement/util/config/config.properties' on the classpath.",
+                    ex
+            );
+
+            // Best-effort fallback: use project-local folders (works for local dev setups).
+            String baseDir = System.getProperty("missionlogement.baseDir");
+            if ((baseDir == null) || baseDir.isBlank()) {
+                baseDir = System.getProperty("user.dir", ".");
+            }
+            baseDir = baseDir.replace('\\', '/');
+
+            return switch (typeFile) {
+                case UTILERREUR -> baseDir + "/fichierLogement/logs";
+                case UTILEXPORT -> baseDir + "/fichierLogement/export";
+                case UTILBOURSE -> baseDir + "/fichierLogement/bourses";
+                case UTILTEMP -> baseDir + "/fichierLogement/temp";
+                case UTILNOMRAPPORT -> "exception";
+                default -> "";
+            };
+        } catch (Exception ex) {
+            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, "Error reading config for key: " + typeFile, ex);
+            return "";
+        }
     }
 
     public static String buildBourseFileName(String scei, String ext) {
@@ -571,33 +618,33 @@ public class Util {
      * @param validation
      * @param formulaireRepository
      */
-    public static void enregistrementFormulaire(HttpServletRequest request, int formulaireId, Boolean validation,
-            FormulaireRepository formulaireRepository) {
-        // Récupération des attributs
+   public static void enregistrementFormulaire(HttpServletRequest request, int formulaireId, Boolean validation,
+        FormulaireRepository formulaireRepository) {
+
         Formulaire formulaire = formulaireRepository.getReferenceById(formulaireId);
 
-        String nom = Util.getStringFromRequest(request, "nom"); // Obligatoire tous formulaires
+        String nom = Util.getStringFromRequest(request, "nom");
+        String prenom = Util.getStringFromRequest(request, "prenom");
 
-        String prenom = Util.getStringFromRequest(request, "prenom"); // Obligatoire tous formulaires
-
-        String dateNaissanceStr = Util.getStringFromRequest(request, "dateDeNaissance"); // Obligatoire tous formulaires
+        String dateNaissanceStr = Util.getStringFromRequest(request, "dateDeNaissance");
         Date dateNaissance = Util.isDate(dateNaissanceStr);
 
-        String ville = Util.getStringFromRequest(request, "ville"); // Obligatoire tous formulaires
+        String ville = Util.getStringFromRequest(request, "ville");
+        String codePostal = Util.getStringFromRequest(request, "codePostal");
 
-        String codePostal = Util.getStringFromRequest(request, "codePostal"); // Obligatoire tous formulaires
-
-        String paysStr = Util.getStringFromRequest(request, "pays"); // Obligatoire tous formulaires
+        String paysStr = Util.getStringFromRequest(request, "pays");
         int pays = getIntFromString(paysStr);
 
-        String mail = Util.getStringFromRequest(request, "mail"); // Obligatoire tous formulaires
+        String mail = Util.getStringFromRequest(request, "mail");
 
+        // Commentaires VE
         String commentaireVe = formulaire.getCommentairesVe();
         if (Util.hasRequestParameter(request, "commentairesVe")) {
             commentaireVe = Util.getStringFromRequest(request, "commentairesVe");
             commentaireVe = StringEscapeUtils.escapeHtml4(commentaireVe);
         }
 
+        // Commentaires Eleve
         String commentairesEleve = formulaire.getCommentairesEleve();
         if (Util.hasRequestParameter(request, "commentairesEleve")) {
             commentairesEleve = Util.getStringFromRequest(request, "commentairesEleve");
@@ -607,17 +654,26 @@ public class Util {
             commentairesEleve = StringEscapeUtils.escapeHtml4(commentairesEleve);
         }
 
+        // Genre
         int genre = formulaire.getGenreId().getGenreId();
         if (Util.hasRequestParameter(request, "Genre")) {
             String genreStr = Util.getStringFromRequest(request, "Genre");
             genre = getIntFromString(genreStr);
         }
 
+        // Téléphone 1
         String numTelephone = formulaire.getNumeroTel();
         if (Util.hasRequestParameter(request, "tel")) {
             numTelephone = Util.getStringFromRequest(request, "tel");
         }
 
+        // Téléphone 2 (JSP: name="tel2")
+        String numTelephone2 = formulaire.getNumeroTel2();
+        if (Util.hasRequestParameter(request, "tel2")) {
+            numTelephone2 = Util.getStringFromRequest(request, "tel2");
+        }
+
+        // Souhait
         int souhait = -1;
         if (formulaire.getSouhaitId() != null) {
             souhait = formulaire.getSouhaitId().getSouhaitId();
@@ -627,6 +683,7 @@ public class Util {
             souhait = getIntFromString(souhaitStr);
         }
 
+        // PMR
         String pmr = "null";
         if (formulaire.getEstPmr() != null) {
             pmr = formulaire.getEstPmr().toString().toLowerCase();
@@ -635,21 +692,49 @@ public class Util {
             pmr = Util.getStringFromRequest(request, "pmr");
         }
 
+        // Boursier (JSP: name="boursier")
         String boursier = "null";
         if (formulaire.getEstBoursier() != null) {
             boursier = formulaire.getEstBoursier().toString().toLowerCase();
         }
-        if (Util.hasRequestParameter(request, "bourse")) {
-            String bourse = Util.getStringFromRequest(request, "bourse");
-            boursier = Boolean.valueOf(Boolean.parseBoolean(bourse)).toString().toLowerCase();
-        } else if (Util.hasRequestParameter(request, "boursier")) {
-            boursier = Util.getStringFromRequest(request, "boursier");
+        if (Util.hasRequestParameter(request, "boursier")) {
+            boursier = Util.getStringFromRequest(request, "boursier"); // "true" / "false" / "null"
         }
 
+        // Distance (JSP: name="distance")
+        Double distance = formulaire.getDistance();
+        if (Util.hasRequestParameter(request, "distance")) {
+            String distStr = Util.getStringFromRequest(request, "distance");
+            if (distStr != null && !distStr.trim().isEmpty()) {
+                distance = Double.valueOf(distStr);
+            } else {
+                distance = null;
+            }
+        }
+
+        // International (JSP: name="international")
+        Boolean estInternational = formulaire.getEstInternational();
+        if (Util.hasRequestParameter(request, "international")) {
+            String intlStr = Util.getStringFromRequest(request, "international"); // "true" / "false" / ""
+            if (intlStr != null && !intlStr.trim().isEmpty()) {
+                estInternational = Boolean.parseBoolean(intlStr);
+            } else {
+                estInternational = null;
+            }
+        }
+
+        // Rang calculé automatiquement
+        Integer rang = Util.calculerRang(estInternational, boursier, distance, ville);
+
+        // ⚠️ ICI tu dois avoir un update(...) adapté dans ton repository
         formulaireRepository.update(formulaireId,
-                nom, prenom, dateNaissance, ville, codePostal, pays, mail, genre, numTelephone,
-                boursier, souhait, pmr, commentaireVe, commentairesEleve, validation);
+                nom, prenom, dateNaissance, ville, codePostal, pays, mail, genre,
+                numTelephone, numTelephone2,
+                distance, estInternational, rang,
+                boursier, souhait, pmr,
+                commentaireVe, commentairesEleve, validation);
     }
+
 
     public static ResponseEntity<InputStreamResource> sendFile(String fileName, File theFile, MediaType mediaType) {
         if ((fileName != null) && (!fileName.isEmpty()) && (theFile != null) && (mediaType != null)) {
@@ -664,4 +749,28 @@ public class Util {
         }
         return ResponseEntity.unprocessableEntity().body((InputStreamResource) null);
     }
+        public static Integer calculerRang(Boolean estInternational, String boursier, Double distance, String ville) {
+
+            if (distance == null) return null;
+
+            boolean isInternational = Boolean.TRUE.equals(estInternational);
+            boolean isBoursier = "true".equalsIgnoreCase(boursier) || "oui".equalsIgnoreCase(boursier);
+            boolean isNantes = ville != null && ville.toLowerCase().contains("nantes");
+
+            // Rang 4 : Nantes (même boursier), sauf international
+            if (isNantes && !isInternational) return 4;
+
+            // Rang 1 : international OU boursier (hors Nantes) OU distance > 400
+            if (isInternational || isBoursier || distance > 400) return 1;
+
+            // Rang 2 : 200-399
+            if (distance >= 200 && distance <= 399) return 2;
+
+            // Rang 3 : < 200
+            if (distance < 200) return 3;
+
+            return null;
+        }
+
+
 }

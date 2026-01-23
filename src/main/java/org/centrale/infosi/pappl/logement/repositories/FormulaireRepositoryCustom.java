@@ -4,13 +4,11 @@
  */
 package org.centrale.infosi.pappl.logement.repositories;
 
-
 import java.util.Date;
 import org.centrale.infosi.pappl.logement.items.Formulaire;
 import org.centrale.infosi.pappl.logement.items.Genre;
 import org.centrale.infosi.pappl.logement.items.Pays;
 import org.centrale.infosi.pappl.logement.items.Personne;
-
 
 /**
  * Interface du repository custom des formulaires
@@ -18,9 +16,6 @@ import org.centrale.infosi.pappl.logement.items.Personne;
  */
 public interface FormulaireRepositoryCustom {
 
-    //public Formulaire enregistrer(Formulaire form);
-
-    
     /**
      * Cree un nouveau formulaire à l'import des nouvelles donnees
      * @param personne
@@ -34,7 +29,7 @@ public interface FormulaireRepositoryCustom {
      * @return le formulaire cree
      */
     public Formulaire createNewForm(
-            Personne personne, String ville, String mail, String scei, Date dateDeNaissance, 
+            Personne personne, String ville, String mail, String scei, Date dateDeNaissance,
             String codePostal, Genre genreId, Pays paysId);
 
     /**
@@ -49,6 +44,10 @@ public interface FormulaireRepositoryCustom {
      * @param mail Son mail
      * @param genre Son genre
      * @param numTelephone Son numéro de téléphone
+     * @param numTelephone2 Son numéro de téléphone 2
+     * @param distance Distance en km
+     * @param estInternational Statut international
+     * @param rang Rang calculé
      * @param boursier Son statut de boursier
      * @param souhait Son souhait d'appartement
      * @param pmr Son statut pmr
@@ -58,7 +57,7 @@ public interface FormulaireRepositoryCustom {
      * @return Le formulaire mis à jour
      */
     public Formulaire update(int Id, String nom, String prenom, Date dateNaissance ,String ville, String codePostal, int pays, String mail, int genre, String numTelephone,
-            String boursier, int souhait, String pmr, String commentaireVe, String commentaireEleve, Boolean validation);
+            String boursier, int souhait, String pmr, String commentaireVe, String commentaireEleve, Boolean validation, String tel2, int distance, int rang, String international);
     
     /**
      * Vide et valide un formulaire (en cas de problème pour remplir un formulaire par un élève)
@@ -66,25 +65,25 @@ public interface FormulaireRepositoryCustom {
      * @return Le formulaire mis à jour
      */
     public Formulaire viderEtValider(int Id);
-    
+
     /**
      * Soumettre un formulaire (par un candidat)
      * @param id
-     * @param soumission 
+     * @param soumission
      */
     public void soumettre(int id, boolean soumission);
-    
+
     /**
      * Get by mail
      * @param mail
-     * @return 
+     * @return
      */
     public Formulaire getByEmail(String mail);
-    
+
     /**
      * Get by scei
      * @param scei
-     * @return 
+     * @return
      */
     public Formulaire getBySCEI(String scei);
 }

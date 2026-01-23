@@ -1,0 +1,15 @@
+Informations techniques
+- Serveur Tomcat 10
+- Serveur Postgresql >=15
+
+Liaison avec la base de données
+	dans src /main/resources/META-INF/persistence.xml
+	Définir
+		url = jdbc:postgresql://serveur/basededonnées
+		user = login connexion bd
+		password = password connexion bd
+	bd logement vide créée sur appli-pfe.ec-nantes.fr
+		base = logement
+		login = logement
+		password = logement
+		

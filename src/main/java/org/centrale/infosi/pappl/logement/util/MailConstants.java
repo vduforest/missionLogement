@@ -18,4 +18,6 @@ public class MailConstants {
     public static final int SIGNATURE = 10;
     public static final int NB = 11;
     public static final int MSGRESET = 12;
+    public static final int MSGDOSSIERINCOMPLET = 14;
+    public static final int MSGDOSSIERCOMPLET = 13;
 }

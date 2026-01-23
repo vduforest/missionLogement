@@ -14,7 +14,11 @@ function verifMail(id1, id2) {
   let mail1 = document.getElementById(id1);
   let mail2 = document.getElementById(id2);
   if (mail1.value !== mail2.value) {
-    alert("Mails différents, verifiez le premier mail !");
+    mail2.setCustomValidity("Les adresses mail ne correspondent pas.");
+    mail2.style.borderColor = "red";
+  } else {
+    mail2.setCustomValidity("");
+    mail2.style.borderColor = "green";
   }
 }
 
@@ -62,6 +66,18 @@ function openRecursive(anyRef) {
 function openForm(id) {
   var formVE = document.getElementById(id);
   openRecursive(formVE);
+}
+
+function messageCommVide(id){
+    const comm = document.getElementById("commentairesVe").content;
+    if((comm===null)||(comm.trim()==="")){
+        alert("Vous ne pouvez pas refuser un dossier sans expliquer la raison, veuillez remplir la case de commentaires à transmettre au candidat.");
+        return false;
+    }
+    else{
+    openForm(id);
+    return true;
+    }
 }
 
 function message() {

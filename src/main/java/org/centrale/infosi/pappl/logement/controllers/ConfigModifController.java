@@ -122,11 +122,11 @@ public class ConfigModifController {
         if (status == MissionLogementStatus.FINISHED) {
             returned = true;
             /*
-            Collection<Alerte> toBeProccessed = alerteRepository.findAllToBeProcess();
-            if (toBeProccessed.isEmpty()) {
-                returned = true;
-            }
-            */
+             * Collection<Alerte> toBeProccessed = alerteRepository.findAllToBeProcess();
+             * if (toBeProccessed.isEmpty()) {
+             * returned = true;
+             * }
+             */
         }
         return returned;
     }
@@ -181,7 +181,7 @@ public class ConfigModifController {
 
         // On déconnecte
         connexionRepository.deleteAllExceptConnectedId(connection.getPersonneId());
-        
+
         // On supprime les étudiants
         alerteRepository.truncateTable();
         formulaireRepository.deleteAll();
@@ -203,44 +203,47 @@ public class ConfigModifController {
         Connexion connection = connectionService.checkAccess(request, "Admin");
         if (connection != null) {
             /*
-            String dateDeb = getLast("date_debut");
-            String dateFin = getLast("date_fin");
-            String connexion = getLast("message_pge_connexion");
-            String info = getLast("message_page_informations");
-            String attente = getLast("message_page_attente");
-            String missionFermee = getLast("message_mission_fermee");
-            String contact = getLast("message_contact");
-            String messageMail = getLast("adresse_mail_envoyeur");
-
-            int status = missionStatusRepository.findById(MissionLogementStatus.MISSIONID).get().getStatus();
-            boolean canEmptyData = false;
-            if (status == MissionLogementStatus.INPROGRESS) {
-                List<Alerte> toBeProccessed = new ArrayList<Alerte>(alerteRepository.findAllToBeProcess());
-                Collections.sort(toBeProccessed, Alerte.getComparator());
-                if (toBeProccessed.isEmpty()) {
-                    canEmptyData = true;
-                }
-            }
+             * String dateDeb = getLast("date_debut");
+             * String dateFin = getLast("date_fin");
+             * String connexion = getLast("message_pge_connexion");
+             * String info = getLast("message_page_informations");
+             * String attente = getLast("message_page_attente");
+             * String missionFermee = getLast("message_mission_fermee");
+             * String contact = getLast("message_contact");
+             * String messageMail = getLast("adresse_mail_envoyeur");
+             * 
+             * int status =
+             * missionStatusRepository.findById(MissionLogementStatus.MISSIONID).get().
+             * getStatus();
+             * boolean canEmptyData = false;
+             * if (status == MissionLogementStatus.INPROGRESS) {
+             * List<Alerte> toBeProccessed = new
+             * ArrayList<Alerte>(alerteRepository.findAllToBeProcess());
+             * Collections.sort(toBeProccessed, Alerte.getComparator());
+             * if (toBeProccessed.isEmpty()) {
+             * canEmptyData = true;
+             * }
+             * }
              */
 
             return buildConfigScreen(connection);
             /*
-            connectionService.prepareModelAndView(connection, "configuration");
-            if (returned != null) {
-                returned.addObject("dateDebut", dateDeb);
-                returned.addObject("dateFin", dateFin);
-
-                returned.addObject("missionStatus", status);
-
-                returned.addObject("messageConnexion", connexion);
-                returned.addObject("messageInfo", info);
-                returned.addObject("messageAttente", attente);
-                returned.addObject("messageMissionFermee", missionFermee);
-                returned.addObject("messageAuthentification", contact);
-                returned.addObject("mailEnvoyeur", messageMail);
-                returned.addObject("canEmptyData", canEmptyData);
-                return returned;
-            }
+             * connectionService.prepareModelAndView(connection, "configuration");
+             * if (returned != null) {
+             * returned.addObject("dateDebut", dateDeb);
+             * returned.addObject("dateFin", dateFin);
+             * 
+             * returned.addObject("missionStatus", status);
+             * 
+             * returned.addObject("messageConnexion", connexion);
+             * returned.addObject("messageInfo", info);
+             * returned.addObject("messageAttente", attente);
+             * returned.addObject("messageMissionFermee", missionFermee);
+             * returned.addObject("messageAuthentification", contact);
+             * returned.addObject("mailEnvoyeur", messageMail);
+             * returned.addObject("canEmptyData", canEmptyData);
+             * return returned;
+             * }
              */
         }
         return new ModelAndView("redirect");
@@ -270,6 +273,25 @@ public class ConfigModifController {
     public void initializeStatus() {
         if (missionStatusRepository.count() == 0) {
             missionStatusRepository.save(new MissionLogementStatus(0)); // Default: Avant mission
+        }
+        initializeTypeModifs();
+    }
+
+    private void initializeTypeModifs() {
+        String[] tooltips = {
+                "tooltip_nom", "tooltip_prenom", "tooltip_date_naissance",
+                "tooltip_ville", "tooltip_code_postal", "tooltip_pays",
+                "tooltip_mail", "tooltip_confirm_mail", "tooltip_genre",
+                "tooltip_tel", "tooltip_bourse", "tooltip_souhait",
+                "tooltip_pmr", "tooltip_infos"
+        };
+
+        for (String tooltip : tooltips) {
+            if (typeRepository.findByNom(tooltip).isEmpty()) {
+                TypeModif newType = new TypeModif();
+                newType.setNom(tooltip);
+                typeRepository.save(newType);
+            }
         }
     }
 
@@ -306,7 +328,7 @@ public class ConfigModifController {
     @RequestMapping(value = "supprimerDonnees.do", method = RequestMethod.POST)
     public ModelAndView SupprimerDonnes(HttpServletRequest request) {
         Connexion connection = connectionService.checkAccess(request, "Admin");
-        //connection = connectionService.checkMissionStatus(connection, 2);
+        // connection = connectionService.checkMissionStatus(connection, 2);
         if (connection != null) {
             if (this.canEmptyData()) {
                 viderDataBase(connection);

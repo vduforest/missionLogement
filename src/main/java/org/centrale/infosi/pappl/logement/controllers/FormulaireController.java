@@ -31,15 +31,19 @@ import org.centrale.infosi.pappl.logement.items.Genre;
 import org.centrale.infosi.pappl.logement.items.Pays;
 import org.centrale.infosi.pappl.logement.items.Souhait;
 import org.centrale.infosi.pappl.logement.repositories.AlerteRepository;
+import org.centrale.infosi.pappl.logement.repositories.ConfigModifRepository;
 import org.centrale.infosi.pappl.logement.repositories.FormulaireRepository;
 import org.centrale.infosi.pappl.logement.repositories.GenreRepository;
 import org.centrale.infosi.pappl.logement.repositories.PaysRepository;
+
+import org.centrale.infosi.pappl.logement.repositories.AlerteRepository;
+import org.centrale.infosi.pappl.logement.repositories.PersonneRepository;
+import org.centrale.infosi.pappl.logement.repositories.SouhaitRepository;
+
 import org.centrale.infosi.pappl.logement.util.Util;
 import org.centrale.infosi.pappl.logement.items.ConfigModif;
 import org.centrale.infosi.pappl.logement.items.Personne;
-import org.centrale.infosi.pappl.logement.repositories.ConfigModifRepository;
-import org.centrale.infosi.pappl.logement.repositories.PersonneRepository;
-import org.centrale.infosi.pappl.logement.repositories.SouhaitRepository;
+
 import org.centrale.infosi.pappl.logement.util.PasswordUtils;
 import static org.centrale.infosi.pappl.logement.util.Util.getIntFromString;
 
@@ -82,6 +86,10 @@ public class FormulaireController {
 
     @Lazy
     @Autowired
+    private MailController mailController;
+
+    @Lazy
+    @Autowired
     private AlerteRepository alerteRepository;
 
     @Lazy
@@ -96,8 +104,17 @@ public class FormulaireController {
     @Lazy
     private SouhaitRepository souhaitRepository;
 
+    private String getLast(String TypeModifName) {
+        Optional<ConfigModif> optionalConfig = configModifRepository.findTopByTypeNomOrderByModifIdDesc(TypeModifName);
+        if (optionalConfig.isPresent()) {
+            ConfigModif config = optionalConfig.get();
+            return config.getContenu();
+        }
+        return "";
+    }
+
     private File findBourseFile(Formulaire formulaire) {
-        String[] extList = {"png", "pdf"};
+        String[] extList = { "png", "pdf" };
         File bourseFile = null;
         for (String ext1 : extList) {
             File cible = new File(Util.buildBourseFilePath(formulaire.getNumeroScei(), ext1));
@@ -117,7 +134,20 @@ public class FormulaireController {
         returned.addObject("bourseFile", bourseFile);
         returned.addObject("error", erreur);
         returned.addObject("souhaitsList", souhaitRepository.findAll(Sort.by(Sort.Direction.ASC, "souhaitOrdre")));
+        returned.addObject("souhaitsList", souhaitRepository.findAll(Sort.by(Sort.Direction.ASC, "souhaitOrdre")));
         returned.addObject("genresList", genreRepository.findAll(Sort.by(Sort.Direction.ASC, "genreOrdre")));
+
+        // Tooltips
+        String[] tooltips = {
+                "tooltip_nom", "tooltip_prenom", "tooltip_date_naissance",
+                "tooltip_ville", "tooltip_code_postal", "tooltip_pays",
+                "tooltip_mail", "tooltip_confirm_mail", "tooltip_genre",
+                "tooltip_tel", "tooltip_bourse", "tooltip_souhait",
+                "tooltip_pmr", "tooltip_infos"
+        };
+        for (String tooltip : tooltips) {
+            returned.addObject(tooltip, getLast(tooltip));
+        }
 
         return returned;
     }
@@ -132,9 +162,11 @@ public class FormulaireController {
     public ModelAndView handleFormGet(HttpServletRequest request) {
         ModelAndView returned = null;
         Connexion connexion = connectionService.checkAccess(request, "Eleve");
-        Connexion connection = connectionService.checkMissionStatus(connexion, 1); // 1 corresponds to "Mission en cours"
+        Connexion connection = connectionService.checkMissionStatus(connexion, 1); // 1 corresponds to "Mission en
+                                                                                   // cours"
         if (connection == null) {
-            Optional<ConfigModif> configInformationPopUpOpt = configModifRepository.findTopByTypeNomOrderByModifIdDesc("message_mission_fermee");
+            Optional<ConfigModif> configInformationPopUpOpt = configModifRepository
+                    .findTopByTypeNomOrderByModifIdDesc("message_mission_fermee");
             ConfigModif configInformationPopUp = configInformationPopUpOpt.get();
             String texteInformationPopUp = configInformationPopUp.getContenu();
             texteInformationPopUp = texteInformationPopUp.replaceAll("\n", "<br/>");
@@ -172,7 +204,7 @@ public class FormulaireController {
                 }
 
                 // Remove possible old files from bourse folder
-                String[] extList = {"png", "pdf"};
+                String[] extList = { "png", "pdf" };
                 for (String ext1 : extList) {
                     File cible = new File(Util.buildBourseFilePath(formulaire.getNumeroScei(), ext1));
                     if (cible.exists()) {
@@ -202,7 +234,7 @@ public class FormulaireController {
      *
      * @param request La requête http
      * @return La page de formulaire si enregistrementFormulaire, la page
-     * d'accueil si validation
+     *         d'accueil si validation
      */
     @RequestMapping(value = "SauvegardeFormulaire.do", method = RequestMethod.POST)
     public ModelAndView handleEnregistrerForm(HttpServletRequest request) {
@@ -218,7 +250,8 @@ public class FormulaireController {
             }
 
             if (instruction > 0) {
-                Collection<Formulaire> formulaireObjet = formulaireRepository.findByPersonneId(connection.getPersonneId());
+                Collection<Formulaire> formulaireObjet = formulaireRepository
+                        .findByPersonneId(connection.getPersonneId());
                 Formulaire formulaire = null;
                 if (!formulaireObjet.isEmpty()) {
                     formulaire = formulaireObjet.iterator().next();
@@ -295,137 +328,148 @@ public class FormulaireController {
     }
 
     /*
-public ModelAndView Sauvegardeformulaire(HttpServletRequest request) {
-        ModelAndView returned;
-        Connexion connection = connectionService.checkAccess(request, "Eleve");
-        connection = connectionService.checkMissionStatus(connection, 1);
-        if (connection == null) {
-            return null;
-        }
-
-        int instruction = 0;
-        if (Util.getStringFromRequest(request, "enregistrer") != null) {
-            instruction = 1;
-        } else if (Util.getStringFromRequest(request, "soumettre") != null) {
-            instruction = 2;
-        }
-
-        if (instruction > 0) {
-            Collection<Formulaire> formulaireObjet = formulaireRepository.findByPersonneId(connection.getPersonneId());
-            Formulaire formulaire = null;
-            if (!formulaireObjet.isEmpty()) {
-                formulaire = formulaireObjet.iterator().next();
-            }
-
-            if (formulaire != null) {
-                String msg = "";
-
-                String mail = Util.getStringFromRequest(request, "mail");
-                String genre = Util.getStringFromRequest(request, "Genre");
-                String telephone = Util.getStringFromRequest(request, "tel");
-                String bourse = Util.getStringFromRequest(request, "bourse");
-                String souhaitAppartement = Util.getStringFromRequest(request, "Souhait");
-                String infoSupplementaires = Util.getStringFromRequest(request, "infoSupplementaires");
-                infoSupplementaires = StringEscapeUtils.escapeHtml4(infoSupplementaires);
-                String pmr = Util.getStringFromRequest(request, "pmr");
-
-                //mise en place du genre
-                int genreId = Integer.parseInt(genre);
-                Optional<Genre> genreobj = genreRepository.findById(genreId);
-                Genre genreobjet = genreobj.orElse(null);
-                boolean boursebool = Boolean.parseBoolean(bourse);
-                boolean pmrBool = Boolean.parseBoolean(pmr);
-
-                formulaire.setMail(mail);
-                formulaire.setEstBoursier(boursebool);
-                formulaire.setEstPmr(pmrBool);
-                formulaire.setGenreId(genreobjet);
-                formulaire.setNumeroTel(telephone);
-
-                File bourseFile = null;
-                if (boursebool) {
-                    // Save bourse file (remove old one)
-                    bourseFile = this.findBourseFile(formulaire);
-                    
-                    String[] extList = {"png", "pdf"};
-                    String pathwayFichier = Util.getInfo(Util.UTILBOURSE);
-
-                    File file = Util.getFileFromRequest(request, "preuveBourse");
-                    if ((file != null) && (file.exists()) && (file.isFile())) {
-                        String currentFileName = file.getName();
-                        String ext = "xxx";
-                        int index = currentFileName.lastIndexOf(".");
-                        if (index > 0) {
-                            ext = currentFileName.substring(index + 1);
-                        }
-
-                        // Remove possible old files from bourse folder
-                        for (String ext1 : extList) {
-                            File cible = new File(Util.buildBourseFilePath(formulaire.getNumeroScei(), ext1));
-                            if (cible.exists()) {
-                                cible.delete();
-                            }
-                        }
-
-                        // Set new file (move downloaded file to bourse folder
-                        String newFilePath = Util.buildBourseFilePath(formulaire.getNumeroScei(), ext);
-                        try {
-                            Files.move(Paths.get(file.getAbsolutePath()), Paths.get(newFilePath), REPLACE_EXISTING);
-                        } catch (IOException ex) {
-                            Logger.getLogger(FormulaireController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        bourseFile = file;
-                    } else {
-                        // Check file exists
-                        bourseFile = this.findBourseFile(formulaire);
-                    }
-                }
-
-                //Mise en place du logement 
-                Souhait souhait = new Souhait();
-                int logementId = Integer.parseInt(souhaitAppartement);
-                souhait.setSouhaitId(logementId);
-                formulaire.setSouhaitId(souhait);
-                formulaire.setCommentairesEleve(infoSupplementaires);
-                if (instruction == 1) {
-                    formulaire.setEstValide(java.lang.Boolean.FALSE);
-                } else {
-                    formulaire.setEstValide(java.lang.Boolean.TRUE);
-                    formulaire.setDateValidation(new Date());
-                }
-                formulaireRepository.saveAndFlush(formulaire);
-
-                // Can it be submitted ?
-                boolean isInAlert = true;
-                if ((!pmrBool)
-                        && ((!boursebool) || (bourseFile == null))
-                        && (genreobjet == formulaire.getGenreId())) {
-                    isInAlert = false;
-                }
-
-                if ((instruction == 2) && (isInAlert)) {
-                    // When ask for submission and submission is ok, we create a new line in Alerte
-                    alerteRepository.create(formulaire);
-                }
-
-                int formulaireId = formulaire.getFormulaireId();
-                Collection<Formulaire> form = formulaireRepository.findByFormulaireId(formulaireId);
-                if (form.size() == 1) {
-                    Formulaire formulaireTemp = form.iterator().next();
-                    returned = displayFormulaire(connection, formulaireTemp);
-                    if (instruction == 1) {
-                        returned.addObject("confirmationMessage", "Le formulaire a bien été enregistré !");
-                    } else {
-                        returned.addObject("confirmationMessage", "Le formulaire a bien été soumis vous ne pouvez plus le modifier !");
-                    }
-                    return returned;
-                }
-            }
-        }
-
-        returned = connectionService.prepareModelAndView(connection, "accueilEtudiant");
-        return returned;
-    }
+     * public ModelAndView Sauvegardeformulaire(HttpServletRequest request) {
+     * ModelAndView returned;
+     * Connexion connection = connectionService.checkAccess(request, "Eleve");
+     * connection = connectionService.checkMissionStatus(connection, 1);
+     * if (connection == null) {
+     * return null;
+     * }
+     * 
+     * int instruction = 0;
+     * if (Util.getStringFromRequest(request, "enregistrer") != null) {
+     * instruction = 1;
+     * } else if (Util.getStringFromRequest(request, "soumettre") != null) {
+     * instruction = 2;
+     * }
+     * 
+     * if (instruction > 0) {
+     * Collection<Formulaire> formulaireObjet =
+     * formulaireRepository.findByPersonneId(connection.getPersonneId());
+     * Formulaire formulaire = null;
+     * if (!formulaireObjet.isEmpty()) {
+     * formulaire = formulaireObjet.iterator().next();
+     * }
+     * 
+     * if (formulaire != null) {
+     * String msg = "";
+     * 
+     * String mail = Util.getStringFromRequest(request, "mail");
+     * String genre = Util.getStringFromRequest(request, "Genre");
+     * String telephone = Util.getStringFromRequest(request, "tel");
+     * String bourse = Util.getStringFromRequest(request, "bourse");
+     * String souhaitAppartement = Util.getStringFromRequest(request, "Souhait");
+     * String infoSupplementaires = Util.getStringFromRequest(request,
+     * "infoSupplementaires");
+     * infoSupplementaires = StringEscapeUtils.escapeHtml4(infoSupplementaires);
+     * String pmr = Util.getStringFromRequest(request, "pmr");
+     * 
+     * //mise en place du genre
+     * int genreId = Integer.parseInt(genre);
+     * Optional<Genre> genreobj = genreRepository.findById(genreId);
+     * Genre genreobjet = genreobj.orElse(null);
+     * boolean boursebool = Boolean.parseBoolean(bourse);
+     * boolean pmrBool = Boolean.parseBoolean(pmr);
+     * 
+     * formulaire.setMail(mail);
+     * formulaire.setEstBoursier(boursebool);
+     * formulaire.setEstPmr(pmrBool);
+     * formulaire.setGenreId(genreobjet);
+     * formulaire.setNumeroTel(telephone);
+     * 
+     * File bourseFile = null;
+     * if (boursebool) {
+     * // Save bourse file (remove old one)
+     * bourseFile = this.findBourseFile(formulaire);
+     * 
+     * String[] extList = {"png", "pdf"};
+     * String pathwayFichier = Util.getInfo(Util.UTILBOURSE);
+     * 
+     * File file = Util.getFileFromRequest(request, "preuveBourse");
+     * if ((file != null) && (file.exists()) && (file.isFile())) {
+     * String currentFileName = file.getName();
+     * String ext = "xxx";
+     * int index = currentFileName.lastIndexOf(".");
+     * if (index > 0) {
+     * ext = currentFileName.substring(index + 1);
+     * }
+     * 
+     * // Remove possible old files from bourse folder
+     * for (String ext1 : extList) {
+     * File cible = new File(Util.buildBourseFilePath(formulaire.getNumeroScei(),
+     * ext1));
+     * if (cible.exists()) {
+     * cible.delete();
+     * }
+     * }
+     * 
+     * // Set new file (move downloaded file to bourse folder
+     * String newFilePath = Util.buildBourseFilePath(formulaire.getNumeroScei(),
+     * ext);
+     * try {
+     * Files.move(Paths.get(file.getAbsolutePath()), Paths.get(newFilePath),
+     * REPLACE_EXISTING);
+     * } catch (IOException ex) {
+     * Logger.getLogger(FormulaireController.class.getName()).log(Level.SEVERE,
+     * null, ex);
+     * }
+     * bourseFile = file;
+     * } else {
+     * // Check file exists
+     * bourseFile = this.findBourseFile(formulaire);
+     * }
+     * }
+     * 
+     * //Mise en place du logement
+     * Souhait souhait = new Souhait();
+     * int logementId = Integer.parseInt(souhaitAppartement);
+     * souhait.setSouhaitId(logementId);
+     * formulaire.setSouhaitId(souhait);
+     * formulaire.setCommentairesEleve(infoSupplementaires);
+     * if (instruction == 1) {
+     * formulaire.setEstValide(java.lang.Boolean.FALSE);
+     * } else {
+     * formulaire.setEstValide(java.lang.Boolean.TRUE);
+     * formulaire.setDateValidation(new Date());
+     * }
+     * formulaireRepository.saveAndFlush(formulaire);
+     * 
+     * // Can it be submitted ?
+     * boolean isInAlert = true;
+     * if ((!pmrBool)
+     * && ((!boursebool) || (bourseFile == null))
+     * && (genreobjet == formulaire.getGenreId())) {
+     * isInAlert = false;
+     * }
+     * 
+     * if ((instruction == 2) && (isInAlert)) {
+     * // When ask for submission and submission is ok, we create a new line in
+     * Alerte
+     * alerteRepository.create(formulaire);
+     * }
+     * 
+     * int formulaireId = formulaire.getFormulaireId();
+     * Collection<Formulaire> form =
+     * formulaireRepository.findByFormulaireId(formulaireId);
+     * if (form.size() == 1) {
+     * Formulaire formulaireTemp = form.iterator().next();
+     * returned = displayFormulaire(connection, formulaireTemp);
+     * if (instruction == 1) {
+     * returned.addObject("confirmationMessage",
+     * "Le formulaire a bien été enregistré !");
+     * } else {
+     * returned.addObject("confirmationMessage",
+     * "Le formulaire a bien été soumis vous ne pouvez plus le modifier !");
+     * }
+     * return returned;
+     * }
+     * }
+     * }
+     * 
+     * returned = connectionService.prepareModelAndView(connection,
+     * "accueilEtudiant");
+     * return returned;
+     * }
      */
     private ModelAndView manageFormulaireVe(Connexion connection, Formulaire formulaire) {
         if (formulaire != null) {
@@ -451,7 +495,7 @@ public ModelAndView Sauvegardeformulaire(HttpServletRequest request) {
     public ModelAndView handleFormVeGet(HttpServletRequest request) {
         ModelAndView returned;
 
-        //Check de la connexion
+        // Check de la connexion
         Connexion connection = connectionService.checkAccess(request, "Admin");
         if (connection == null) {
             connection = connectionService.checkAccess(request, "Assistant");
@@ -460,7 +504,7 @@ public ModelAndView Sauvegardeformulaire(HttpServletRequest request) {
             }
         }
 
-        //Récupération du formulaire
+        // Récupération du formulaire
         String idStr = Util.getStringFromRequest(request, "formulaireId");
         int id = Util.getIntFromString(idStr);
         Optional<Formulaire> form = formulaireRepository.findById(id);
@@ -483,7 +527,7 @@ public ModelAndView Sauvegardeformulaire(HttpServletRequest request) {
     @RequestMapping(value = "ValiderFormVe.do", method = RequestMethod.POST)
     public ModelAndView handleValiderForm(HttpServletRequest request) {
         ModelAndView returned = null;
-        //Check de la connexion
+        // Check de la connexion
         Connexion connectionAdmin = connectionService.checkAccess(request, "Admin");
         Connexion connectionAssistant = connectionService.checkAccess(request, "Assistant");
         if ((connectionAdmin != null) || (connectionAssistant != null)) {
@@ -491,14 +535,24 @@ public ModelAndView Sauvegardeformulaire(HttpServletRequest request) {
             int formulaireId = getIntFromString(formulaireIdStr);
 
             Util.enregistrementFormulaire(request, formulaireId, true, formulaireRepository);
-            //TO DO : envoi du mail quand ce sera possible
+            // Save validation author
+            Formulaire formulaire = formulaireRepository.getReferenceById(formulaireId);
+            if (connectionAdmin != null) {
+                formulaire.setAssistant(connectionAdmin.getPersonneId());
+            } else if (connectionAssistant != null) {
+                formulaire.setAssistant(connectionAssistant.getPersonneId());
+            }
+            formulaireRepository.save(formulaire);
+
+            // Envoi du mail de validation du dossier
+            mailController.envoiMailDossierComplet(request);
             String idStr = Util.getStringFromRequest(request, "id");
             int id = Util.getIntFromString(idStr);
             alerteRepository.update(formulaireRepository.getReferenceById(id), "Traitée");
             List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
             Collections.sort(forms, Formulaire.getComparator());
 
-            //Redirection
+            // Redirection
             if (connectionAdmin != null) {
                 returned = connectionService.prepareModelAndView(connectionAdmin, "pageDossiers");
             } else {
@@ -524,7 +578,7 @@ public ModelAndView Sauvegardeformulaire(HttpServletRequest request) {
     public ModelAndView handleEnregistrerFormVe(HttpServletRequest request) {
         ModelAndView returned;
 
-        //Check de la connexion
+        // Check de la connexion
         int connexionType = 1;
         Connexion connection = connectionService.checkAccess(request, "Admin");
         if (connection == null) {
@@ -538,11 +592,12 @@ public ModelAndView Sauvegardeformulaire(HttpServletRequest request) {
 
             Util.enregistrementFormulaire(request, formulaireId, null, formulaireRepository);
 
-            //Redirection
+            // Redirection
             List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
             Collections.sort(forms, Formulaire.getComparator());
 
-            returned = connectionService.prepareModelAndView(connection, (connexionType == 1 ? "pageDossiers" : "pageDossiersAssist"));
+            returned = connectionService.prepareModelAndView(connection,
+                    (connexionType == 1 ? "pageDossiers" : "pageDossiersAssist"));
             if (returned != null) {
                 returned.addObject("forms", forms);
             }
@@ -562,7 +617,7 @@ public ModelAndView Sauvegardeformulaire(HttpServletRequest request) {
     @RequestMapping(value = "RefuserFormVe.do", method = RequestMethod.POST)
     public ModelAndView handleRefuserForm(HttpServletRequest request) {
         ModelAndView returned = null;
-        //Check de la connexion
+        // Check de la connexion
         Connexion connectionAdmin = connectionService.checkAccess(request, "Admin");
         Connexion connectionAssistant = connectionService.checkAccess(request, "Assistant");
         if (connectionAdmin != null || connectionAssistant != null) {
@@ -570,10 +625,20 @@ public ModelAndView Sauvegardeformulaire(HttpServletRequest request) {
             int formulaireId = getIntFromString(formulaireIdStr);
 
             Util.enregistrementFormulaire(request, formulaireId, false, formulaireRepository);
-            //envoi du mail quand ce sera possible
+
+            // Gestion de l'envoi du mail
+            String comm = Util.getStringFromRequest(request, "commentairesVe");
+
+            // Tester que le commentaire n'est pas vide
+            if (comm != null && !comm.trim().isEmpty()) {
+                mailController.envoiMailDossierIncomplet(request);
+            } else {
+                // envoyer javascript
+            }
+
             List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
             Collections.sort(forms, Formulaire.getComparator());
-            //Redirection
+            // Redirection
             if (connectionAdmin != null) {
                 returned = connectionService.prepareModelAndView(connectionAdmin, "pageDossiers");
             } else {
@@ -606,7 +671,8 @@ public ModelAndView Sauvegardeformulaire(HttpServletRequest request) {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
 
-        String filename = "bourse_" + year + "_" + nom.replace(' ', '_') + "_" + prenom.replace(' ', '_') + "_SCEI_" + scei;
+        String filename = "bourse_" + year + "_" + nom.replace(' ', '_') + "_" + prenom.replace(' ', '_') + "_SCEI_"
+                + scei;
 
         File theFile = formulaire.getBourseFile();
         MediaType mime = null;
@@ -626,7 +692,7 @@ public ModelAndView Sauvegardeformulaire(HttpServletRequest request) {
     @RequestMapping(value = "AnnulerPwd.do", method = RequestMethod.POST)
     public ModelAndView handleAnnulerPwd(HttpServletRequest request) {
         ModelAndView returned = null;
-        //Check de la connexion
+        // Check de la connexion
         Connexion connectionAdmin = connectionService.checkAccess(request, "Admin");
         Connexion connectionAssistant = connectionService.checkAccess(request, "Assistant");
         if (connectionAdmin != null || connectionAssistant != null) {
@@ -640,22 +706,28 @@ public ModelAndView Sauvegardeformulaire(HttpServletRequest request) {
             personneRepository.resetPassword(personne);
 
             formulaire = formulaireRepository.getReferenceById(formulaireId);
-            //envoi du mail quand ce sera possible
+
+            // Envoi du mail
+
+            // envoi du mail quand ce sera possible
             /*
-            List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
-            Collections.sort(forms, Formulaire.getComparator());
-            
-            //Redirection
-            if (connectionAdmin != null) {
-                returned = connectionService.prepareModelAndView(connectionAdmin, "pageDossiers");
-            } else {
-                returned = connectionService.prepareModelAndView(connectionAssistant, "pageDossiersAssist");
-            }
-            if (returned != null) {
-                returned.addObject("forms", forms);
-            }
-            */
-            
+             * List<Formulaire> forms = new
+             * ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
+             * Collections.sort(forms, Formulaire.getComparator());
+             * 
+             * //Redirection
+             * if (connectionAdmin != null) {
+             * returned = connectionService.prepareModelAndView(connectionAdmin,
+             * "pageDossiers");
+             * } else {
+             * returned = connectionService.prepareModelAndView(connectionAssistant,
+             * "pageDossiersAssist");
+             * }
+             * if (returned != null) {
+             * returned.addObject("forms", forms);
+             * }
+             */
+
             if (connectionAdmin != null) {
                 returned = manageFormulaireVe(connectionAdmin, formulaire);
             } else {
@@ -666,12 +738,11 @@ public ModelAndView Sauvegardeformulaire(HttpServletRequest request) {
             return new ModelAndView("redirect");
         }
     }
-    
 
     @RequestMapping(value = "AnnulerPwd2.do", method = RequestMethod.POST)
     public ModelAndView handleAnnulerPwd2(HttpServletRequest request) {
         ModelAndView returned = null;
-        //Check de la connexion
+        // Check de la connexion
         Connexion connectionAdmin = connectionService.checkAccess(request, "Admin");
         Connexion connectionAssistant = connectionService.checkAccess(request, "Assistant");
         if (connectionAdmin != null || connectionAssistant != null) {

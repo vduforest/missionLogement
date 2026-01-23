@@ -12,7 +12,6 @@
     <script src="bootstrap/js/bootstrap.js" type="text/javascript"></script>
     <script src="js/alerte.js" type="text/javascript"></script>
     <link href="bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet"/>
-
     <!--Local-->
     <link href="css/default.css" type="text/css" rel="stylesheet"/>
     <link href="css/pageDossiers.css" type="text/css" rel="stylesheet"/>
