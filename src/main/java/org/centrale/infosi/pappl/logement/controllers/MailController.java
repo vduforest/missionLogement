@@ -62,6 +62,9 @@ public class MailController {
     @Autowired
     private MailService mailService;
 
+    @Autowired
+    private FirstConnectionController firstConnection;
+
     @Lazy
     @Autowired
     private ConfigModifRepository configmodifrepository;
