@@ -14,25 +14,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
+import org.centrale.infosi.pappl.logement.util.MailConstants;
 import org.centrale.infosi.pappl.logement.items.ConfigModif;
 import org.centrale.infosi.pappl.logement.items.Connexion;
+import org.centrale.infosi.pappl.logement.items.Formulaire;
 import org.centrale.infosi.pappl.logement.items.Personne;
 import org.centrale.infosi.pappl.logement.repositories.ConfigModifRepository;
 import org.centrale.infosi.pappl.logement.repositories.FormulaireRepository;
 import org.centrale.infosi.pappl.logement.repositories.PersonneRepository;
 import org.centrale.infosi.pappl.logement.controllers.MailService;
 import org.centrale.infosi.pappl.logement.util.Util;
-import org.centrale.infosi.pappl.logement.util.MailConstants;
 import static org.centrale.infosi.pappl.logement.util.Util.getIntFromString;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMethod;
-import java.util.Date;
-import java.util.Calendar;
-import org.centrale.infosi.pappl.logement.items.Formulaire;
-import org.centrale.infosi.pappl.logement.util.PasswordUtils;
 
 /**
  * Cette classe permet l'envoie automatique du premier mail pour la connexion;
@@ -62,17 +61,14 @@ public class MailController {
     @Autowired
     private MailService mailService;
 
-    @Autowired
-    private FirstConnectionController firstConnection;
-
     @Lazy
     @Autowired
     private ConfigModifRepository configmodifrepository;
 
-    private static final int MSGPREMIERCONTACT = 7;
-    private static final int MSGPFIN = 9;
-    private static final int MAILCONTACT = 8;
-    private static final int MSGRESET = 10;
+    @Autowired
+    private FirstConnectionController firstConnection;
+
+    // Constants are now imported from MailConstants
 
     /**
      * Méthode permettant d'envoyer un message de premier connexion à tous les
@@ -89,12 +85,12 @@ public class MailController {
 
             // Il faut créer une liste avec l'adress mail de tous les utilisateurs.
             Optional<ConfigModif> contenuMsg = configmodifrepository.getLastTypeId(messageType);
-            Optional<ConfigModif> envoyeurMsg = configmodifrepository.getLastTypeId(MAILCONTACT);
+            Optional<ConfigModif> envoyeurMsg = configmodifrepository.getLastTypeId(MailConstants.MAILCONTACT);
             if ((contenuMsg.isPresent()) && (envoyeurMsg.isPresent())) {
                 ConfigModif messageToSend = contenuMsg.get();
                 ConfigModif envoyeur = envoyeurMsg.get();
                 switch (messageType) {
-                    case MSGPREMIERCONTACT:
+                    case MailConstants.MSGPREMIERCONTACT:
                         List<String> tousLesTokens = personneRepository.findAllTokenVague();
                         Collection<String> tousLesMails = formulaireRepository.findAllEmailsVague();
                         int compteur = 0;
@@ -117,7 +113,7 @@ public class MailController {
                             returned.addObject("confirmationMessage", "Emails envoyés avec succès ! ");
                         }
                         break;
-                    case MSGRESET:
+                    case MailConstants.MSGRESET:
                         returned = connectionService.prepareModelAndView(connection, "accueil_admin");
                         /* on reçoit l'id du formulaire et de la personne */
                         Integer id = Integer.parseInt(request.getParameter("id"));
@@ -171,7 +167,7 @@ public class MailController {
      */
     @RequestMapping(value = "envoiemail.do", method = RequestMethod.POST)
     public ModelAndView Envoi(HttpServletRequest request) {
-        return envoyerMessage(request, MSGPREMIERCONTACT);
+        return envoyerMessage(request, MailConstants.MSGPREMIERCONTACT);
     }
 
     /**
@@ -206,7 +202,7 @@ public class MailController {
      */
     @RequestMapping(value = "envoiemailfin.do", method = RequestMethod.POST)
     public ModelAndView EnvoiFin(HttpServletRequest request) {
-        return envoyerMessage(request, MSGPFIN);
+        return envoyerMessage(request, MailConstants.MSGPFIN);
     }
 
     /**
@@ -217,11 +213,11 @@ public class MailController {
      */
     @RequestMapping(value = "envoiemailresetperso.do", method = RequestMethod.POST)
     public ModelAndView EnvoiReset(HttpServletRequest request) {
-        return envoyerMessage(request, MSGRESET);
+        return envoyerMessage(request, MailConstants.MSGRESET);
     }
 
     public void genererToken(Personne personne) {
-        String token = generateUniqueToken(); // Generate a secure token
+        String token = firstConnection.generateUniqueToken(); // Generate a secure token
         personne.setFirstConnectionToken(token); // Set the token in the user record
         Date dateNow = new Date();
         Calendar cal = Calendar.getInstance();
@@ -234,18 +230,5 @@ public class MailController {
         // to java.sql.Date
         personne.setFirstConnectionTokenExpiry(expiryDate);
         personneRepository.save(personne);
-    }
-
-    private String generateUniqueToken() {
-        String token;
-        boolean isTokenUnique = false;
-
-        do {
-            token = PasswordUtils.generateToken(); // Generate a secure token
-            isTokenUnique = !personneRepository.existsByFirstConnectionToken(token); // Check if the token already
-                                                                                     // exists in the database
-        } while (!isTokenUnique); // If the token already exists, generate a new one
-
-        return token;
     }
 }
