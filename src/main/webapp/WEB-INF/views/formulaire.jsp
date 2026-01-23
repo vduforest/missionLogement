@@ -175,6 +175,55 @@
                                 </td>
                               </tr>
                               <tr>
+                                <th scope="col">Deuxième numéro de téléphone <c:if test="${not empty tooltip_tel2}">
+                                    <span class="tooltip-icon">i<span class="tooltip-text">${tooltip_tel2}</span></span>
+                                  </c:if>
+                                </th>
+                                <td>
+                                  <input type="text" name="tel2" value="<c:if test=" ${not empty
+                                    item.tel2}">${item.tel2}</c:if>" size="15" <c:if test="${item.estValide == true}">
+                                    readonly="readonly"</c:if> />
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Distance <c:if test="${not empty tooltip_distance}"><span
+                                      class="tooltip-icon">i<span class="tooltip-text">${tooltip_distance}</span></span>
+                                  </c:if>
+                                </th>
+                                <td>
+                                  <input type="number" name="distance" value="${item.distance}" <c:if
+                                    test="${item.estValide == true}">readonly="readonly"</c:if> />
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="col">International <c:if test="${not empty tooltip_international}"><span
+                                      class="tooltip-icon">i<span
+                                        class="tooltip-text">${tooltip_international}</span></span>
+                                  </c:if>
+                                </th>
+                                <td>
+                                  <c:choose>
+                                    <c:when test="${item.estValide == true}">
+                                      <input type="radio" name="international" id="ouiI" value="true"
+                                        ${item.international=='true' ? 'checked="checked"' : '' } disabled="disabled" />
+                                      <label for="ouiI">Oui</label>
+                                      <br /><input type="radio" name="international" id="nonI" value="false"
+                                        ${item.international=='false' ? 'checked="checked"' : '' }
+                                        disabled="disabled" />
+                                      <label for="nonI">Non</label>
+                                    </c:when>
+                                    <c:otherwise>
+                                      <input type="radio" name="international" id="ouiI" value="true"
+                                        ${item.international=='true' ? 'checked="checked"' : '' } />
+                                      <label for="ouiI">Oui</label>
+                                      <br /><input type="radio" name="international" id="nonI" value="false"
+                                        ${item.international=='false' ? 'checked="checked"' : '' } />
+                                      <label for="nonI">Non</label>
+                                    </c:otherwise>
+                                  </c:choose>
+                                </td>
+                              </tr>
+                              <tr>
                                 <th scope="col">Êtes-vous boursier ? (si le dépôt de fichier n'apparait pas rappuyer sur
                                   oui, vérifiez bien que le fichier est présent lors de la validation du formulaire)
                                   <c:if test="${not empty tooltip_bourse}"><span class="tooltip-icon">i<span
@@ -318,8 +367,8 @@
         </div>
         <script>
           window.onload = function () {
-            var message = "<%= request.getAttribute("confirmationMessage")%>";
-            if (message && message.trim() !== "null") {
+            var message = "${confirmationMessage}";
+            if (message) {
               alert(message);
             }
           };

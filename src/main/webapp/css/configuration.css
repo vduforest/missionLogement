@@ -90,3 +90,62 @@ img.mails{
     height:20px;
     width:20px;
 }
+
+/* ===== Bouton Enregistrer / Sauvegarder ===== */
+button.Enregistrer{
+  margin: 5px;
+  padding: 6px 10px;
+  border-radius: 5px;
+
+  background-color: lightgreen;   /* important: rendre l'effet visible */
+  border: 1px solid rgba(0,0,0,0.12);
+
+  cursor: pointer;
+  transition: filter .15s ease, transform .15s ease, box-shadow .15s ease;
+}
+
+/* main aussi sur l'icône */
+button.Enregistrer *{
+  cursor: pointer;
+}
+
+/* hover */
+button.Enregistrer:hover{
+  filter: brightness(1.12);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  transform: translateY(-1px);
+}
+
+/* l'icône s'éclaire aussi */
+button.Enregistrer:hover img{
+  filter: brightness(1.2);
+}
+
+/* TEST + style visible pour vérifier que ça s'applique */
+button.Enregistrer{
+  background: #7CFC90 !important;
+  border: 1px solid rgba(0,0,0,0.2) !important;
+  padding: 8px 14px !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+
+  transition: filter .15s ease, transform .15s ease, box-shadow .15s ease !important;
+}
+
+button.Enregistrer:hover{
+  filter: brightness(1.10) !important;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* main aussi sur l'image */
+button.Enregistrer img{
+  cursor: pointer !important;
+}
+
+

@@ -26,6 +26,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.MissingResourceException;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,9 +66,54 @@ public class Util {
     public static String getInfo(String typeFile) {
         String packageClassName = Util.class.getPackage().getName();
         String resourceName = packageClassName + ".config." + CONFIGFILENAME;
-        ResourceBundle theResource = ResourceBundle.getBundle(resourceName);
+        try {
+            // Prefer an explicit resource lookup through the webapp ClassLoader.
+            // This avoids surprising ResourceBundle lookup issues in some servlet containers.
+            String resourcePath = resourceName.replace('.', '/') + ".properties";
+            ClassLoader cl = Util.class.getClassLoader();
+            try (InputStream in = (cl != null) ? cl.getResourceAsStream(resourcePath) : null) {
+                if (in != null) {
+                    Properties props = new Properties();
+                    props.load(in);
+                    String v = props.getProperty(typeFile);
+                    if (v != null) {
+                        return v.trim();
+                    }
+                }
+            }
 
-        return theResource.getString(typeFile);
+            // Fallback to ResourceBundle (legacy behavior)
+            ResourceBundle theResource = ResourceBundle.getBundle(resourceName);
+            return theResource.getString(typeFile);
+        } catch (MissingResourceException ex) {
+            // Fail-safe: don't crash the whole app if config is missing in the deployed WAR.
+            // This happens often when Tomcat is running an older deployment.
+            Logger.getLogger(Util.class.getName()).log(
+                    Level.SEVERE,
+                    "Missing ResourceBundle '" + resourceName + "'. " +
+                    "Expected a file like 'org/centrale/infosi/pappl/logement/util/config/config.properties' on the classpath.",
+                    ex
+            );
+
+            // Best-effort fallback: use project-local folders (works for local dev setups).
+            String baseDir = System.getProperty("missionlogement.baseDir");
+            if ((baseDir == null) || baseDir.isBlank()) {
+                baseDir = System.getProperty("user.dir", ".");
+            }
+            baseDir = baseDir.replace('\\', '/');
+
+            return switch (typeFile) {
+                case UTILERREUR -> baseDir + "/fichierLogement/logs";
+                case UTILEXPORT -> baseDir + "/fichierLogement/export";
+                case UTILBOURSE -> baseDir + "/fichierLogement/bourses";
+                case UTILTEMP -> baseDir + "/fichierLogement/temp";
+                case UTILNOMRAPPORT -> "exception";
+                default -> "";
+            };
+        } catch (Exception ex) {
+            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, "Error reading config for key: " + typeFile, ex);
+            return "";
+        }
     }
 
     public static String buildBourseFileName(String scei, String ext) {
@@ -646,9 +693,41 @@ public class Util {
             boursier = Util.getStringFromRequest(request, "boursier");
         }
 
+        String tel2 = formulaire.getTel2();
+        if (Util.hasRequestParameter(request, "tel2")) {
+            tel2 = Util.getStringFromRequest(request, "tel2");
+        }
+
+        int distance = -1;
+        if (formulaire.getDistance() != null) {
+            distance = formulaire.getDistance();
+        }
+        if (Util.hasRequestParameter(request, "distance")) {
+            String distanceStr = Util.getStringFromRequest(request, "distance");
+            distance = getIntFromString(distanceStr);
+        }
+
+        int rang = -1;
+        if (formulaire.getRang() != null) {
+            rang = formulaire.getRang();
+        }
+        if (Util.hasRequestParameter(request, "rang")) {
+            String rangStr = Util.getStringFromRequest(request, "rang");
+            rang = getIntFromString(rangStr);
+        }
+
+        String international = "null";
+        if (formulaire.getInternational() != null) {
+            international = formulaire.getInternational().toString().toLowerCase();
+        }
+        if (Util.hasRequestParameter(request, "international")) {
+            international = Util.getStringFromRequest(request, "international");
+        }
+
+
         formulaireRepository.update(formulaireId,
                 nom, prenom, dateNaissance, ville, codePostal, pays, mail, genre, numTelephone,
-                boursier, souhait, pmr, commentaireVe, commentairesEleve, validation);
+                boursier, souhait, pmr, commentaireVe, commentairesEleve, validation, tel2, distance, rang, international);
     }
 
     public static ResponseEntity<InputStreamResource> sendFile(String fileName, File theFile, MediaType mediaType) {
