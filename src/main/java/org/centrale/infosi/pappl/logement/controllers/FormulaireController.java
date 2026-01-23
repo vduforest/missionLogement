@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.centrale.infosi.pappl.logement.items.Traitement;
+import org.centrale.infosi.pappl.logement.repositories.TraitementRepository;
+import java.util.Date;
 import org.apache.commons.text.StringEscapeUtils;
 
 import org.centrale.infosi.pappl.logement.items.Connexion;
@@ -72,6 +75,9 @@ public class FormulaireController {
     @Autowired
     @Lazy
     private ConfigModifRepository configModifRepository;
+
+    @Autowired
+    private TraitementRepository traitementRepository;
 
     @Lazy
     @Autowired
@@ -537,11 +543,24 @@ public class FormulaireController {
             Util.enregistrementFormulaire(request, formulaireId, true, formulaireRepository);
             // Save validation author
             Formulaire formulaire = formulaireRepository.getReferenceById(formulaireId);
+            Personne validator = null;
             if (connectionAdmin != null) {
-                formulaire.setAssistant(connectionAdmin.getPersonneId());
+                validator = connectionAdmin.getPersonneId();
             } else if (connectionAssistant != null) {
-                formulaire.setAssistant(connectionAssistant.getPersonneId());
+                validator = connectionAssistant.getPersonneId();
             }
+
+            if (validator != null) {
+                formulaire.setAssistant(validator);
+
+                // Create History Record
+                Traitement traitement = new Traitement();
+                traitement.setFormulaireId(formulaire);
+                traitement.setPersonneId(validator);
+                traitement.setDateTraitement(new Date());
+                traitementRepository.save(traitement);
+            }
+
             formulaireRepository.save(formulaire);
 
             // Envoi du mail de validation du dossier

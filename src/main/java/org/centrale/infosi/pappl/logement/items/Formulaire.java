@@ -86,6 +86,9 @@ public class Formulaire implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "formulaireId")
     private Collection<Alerte> alerteCollection;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formulaireId")
+    private Collection<Traitement> traitementCollection;
+
     @JoinColumn(name = "genre_id", referencedColumnName = "genre_id")
     @ManyToOne(optional = false)
     private Genre genreId;
@@ -635,5 +638,22 @@ public class Formulaire implements Serializable {
                 }
             }
         };
+    }
+
+    public Collection<Traitement> getTraitementCollection() {
+        return traitementCollection;
+    }
+
+    public void setTraitementCollection(Collection<Traitement> traitementCollection) {
+        this.traitementCollection = traitementCollection;
+    }
+
+    public Traitement getLastTraitement() {
+        if (traitementCollection == null || traitementCollection.isEmpty()) {
+            return null;
+        }
+        return traitementCollection.stream()
+                .max(Comparator.comparing(Traitement::getDateTraitement))
+                .orElse(null);
     }
 }

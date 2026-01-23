@@ -373,7 +373,14 @@
                               <c:choose>
                                 <c:when test="${item.estConforme}">
                                   <p>Le formulaire à déjà été validé</p>
-                                  <c:if test="${!empty item.assistant}">
+                                  <c:if test="${!empty item.lastTraitement}">
+                                    <p>Validé par ${item.lastTraitement.personneId.prenom}
+                                      ${item.lastTraitement.personneId.nom} le
+                                      <fmt:formatDate value="${item.lastTraitement.dateTraitement}"
+                                        pattern="dd/MM/yyyy HH:mm" />
+                                    </p>
+                                  </c:if>
+                                  <c:if test="${empty item.lastTraitement and !empty item.assistant}">
                                     <p>Validé par ${item.assistant.prenom} ${item.assistant.nom}</p>
                                   </c:if>
                                   <c:if test="${(! empty connexion) && (connexion.isAdmin())}">

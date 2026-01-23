@@ -18,6 +18,7 @@
     <class>org.centrale.infosi.pappl.logement.items.Genre</class>
     <class>org.centrale.infosi.pappl.logement.items.Statut</class>
     <class>org.centrale.infosi.pappl.logement.items.Pays</class>
+    <class>org.centrale.infosi.pappl.logement.items.Traitement</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://appli-pfe.ec-nantes.fr:5432/logement"/>
