@@ -53,6 +53,11 @@ public class InformationsElevesController {
         String connectionIdStr = Util.getStringFromRequest(request, "connexionId");
         ModelAndView returned = connectionService.prepareModelAndView(connection, "informationEleves");
         returned.addObject("texteInfo", texteInformation);
+        // HIDE BACK BUTTON
+        returned.addObject("hideBackButton", true);
+
+        // ENSURE LOGO RELOADS THIS PAGE
+        returned.addObject("homeLink", "informations.do");
         return returned;
 
     }

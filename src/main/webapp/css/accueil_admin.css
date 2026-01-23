@@ -1,71 +1,40 @@
-img.show{
-    height:25px;
-    width:25px;
+img.show {
+  height: 25px;
+  width: 25px;
 }
 
-.export{
-    position:absolute;
-    font-size: 150%;
-    left: 50%;
-    padding:5px;
-    transform: translateX(-50%);
-    text-align: center;
-    border-width: 2px;
-    border-style:solid;
-    border-radius:10px;
-    border-color: grey;
-    box-shadow: 6px 6px 6px lightgrey;
+.export {
+  position: absolute;
+  font-size: 150%;
+  left: 50%;
+  padding: 5px;
+  transform: translateX(-50%);
+  text-align: center;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 10px;
+  border-color: grey;
+  box-shadow: 6px 6px 6px lightgrey;
 }
+
 /* ====== Boutons du menu (Configuration / Dossiers / Assistants) ====== */
-button.redirect{
-  cursor: pointer;                 /* main */
+button.redirect {
+  cursor: pointer;
+  /* main */
   border: none;
   padding: 10px 16px;
   border-radius: 10px;
   transition: filter .15s ease, box-shadow .15s ease, transform .15s ease;
 }
 
-button.redirect:hover{
-  filter: brightness(1.15);        /* éclaircit */
-  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+button.redirect:hover {
+  filter: brightness(1.15);
+  /* éclaircit */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
   transform: translateY(-1px);
 }
 
-
-/* ====== Bouton sortie (en haut à droite) ====== */
-/* zone stable (évite le flash) */
-button.exit-btn{
-  background: transparent;
-  border: 0;
-  width: 48px;
-  height: 48px;
-  padding: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Bonus: si tu veux aussi la main sur TOUS les boutons bootstrap de cette page */
+button.btn {
   cursor: pointer;
 }
-
-/* effet sur l'icône uniquement */
-button.exit-btn img.sortie{
-  display: block;
-  transition: filter .15s ease, transform .15s ease;
-}
-
-button.exit-btn:hover img.sortie{
-  filter: brightness(1.25);
-  transform: scale(1.08);
-}
-
-/* enlève le contour/focus chelou possible */
-button.exit-btn:focus{
-  outline: none;
-  box-shadow: none;
-}
-
-/* Bonus: si tu veux aussi la main sur TOUS les boutons bootstrap */
-button.btn{
-  cursor: pointer;
-}
-
-
