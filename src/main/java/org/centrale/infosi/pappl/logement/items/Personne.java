@@ -28,22 +28,23 @@ import java.util.Comparator;
 
 /**
  * Classe d'une personne générée automatiquement
+ * 
  * @author samer
  *
  */
 @Entity
 @Table(name = "personne")
 @NamedQueries({
-    @NamedQuery(name = "Personne.findAll", query = "SELECT p FROM Personne p"),
-    @NamedQuery(name = "Personne.findByPersonneId", query = "SELECT p FROM Personne p WHERE p.personneId = :personneId"),
-    @NamedQuery(name = "Personne.findByRoleId", query = "SELECT p FROM Personne p WHERE p.roleId = :roleId"),
-    @NamedQuery(name = "Personne.findByNom", query = "SELECT p FROM Personne p WHERE p.nom = :nom"),
-    @NamedQuery(name = "Personne.findByPrenom", query = "SELECT p FROM Personne p WHERE p.prenom = :prenom"),
-    @NamedQuery(name = "Personne.findByLogin", query = "SELECT p FROM Personne p WHERE p.login = :login"),
-    @NamedQuery(name = "Personne.findByPassword", query = "SELECT p FROM Personne p WHERE p.password = :password"),
-    @NamedQuery(name = "Personne.findByFirstConnectionToken", query = "SELECT p FROM Personne p WHERE p.firstConnectionToken = :firstConnectionToken"),
-    @NamedQuery(name="Personne.findAllTokenVague", query = "SELECT p.firstConnectionToken FROM Personne p JOIN p.formulaireCollection f WHERE f.vague=false"),
-    @NamedQuery(name = "Personne.findByFirstConnectionTokenExpiry", query = "SELECT p FROM Personne p WHERE p.firstConnectionTokenExpiry = :firstConnectionTokenExpiry")})
+        @NamedQuery(name = "Personne.findAll", query = "SELECT p FROM Personne p"),
+        @NamedQuery(name = "Personne.findByPersonneId", query = "SELECT p FROM Personne p WHERE p.personneId = :personneId"),
+        @NamedQuery(name = "Personne.findByRoleId", query = "SELECT p FROM Personne p WHERE p.roleId = :roleId"),
+        @NamedQuery(name = "Personne.findByNom", query = "SELECT p FROM Personne p WHERE p.nom = :nom"),
+        @NamedQuery(name = "Personne.findByPrenom", query = "SELECT p FROM Personne p WHERE p.prenom = :prenom"),
+        @NamedQuery(name = "Personne.findByLogin", query = "SELECT p FROM Personne p WHERE p.login = :login"),
+        @NamedQuery(name = "Personne.findByPassword", query = "SELECT p FROM Personne p WHERE p.password = :password"),
+        @NamedQuery(name = "Personne.findByFirstConnectionToken", query = "SELECT p FROM Personne p WHERE p.firstConnectionToken = :firstConnectionToken"),
+        @NamedQuery(name = "Personne.findAllTokenVague", query = "SELECT p.firstConnectionToken FROM Personne p JOIN p.formulaireCollection f WHERE f.vague=false"),
+        @NamedQuery(name = "Personne.findByFirstConnectionTokenExpiry", query = "SELECT p FROM Personne p WHERE p.firstConnectionTokenExpiry = :firstConnectionTokenExpiry") })
 public class Personne implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,25 +60,25 @@ public class Personne implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "nom")
     private String nom;
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "prenom")
     private String prenom;
-    
+
     @Size(max = 255)
     @Column(name = "login")
     private String login;
-    
+
     @Size(max = 255)
     @Column(name = "password")
     private String password;
-    
+
     @Size(max = 255)
     @Column(name = "first_connection_token")
     private String firstConnectionToken;
-    
+
     @Column(name = "first_connection_token_expiry")
     @Temporal(TemporalType.TIMESTAMP)
     private Date firstConnectionTokenExpiry;
@@ -112,7 +113,6 @@ public class Personne implements Serializable {
     public void setPersonneId(Integer personneId) {
         this.personneId = personneId;
     }
-
 
     public String getFirstConnectionToken() {
         return firstConnectionToken;
@@ -165,7 +165,7 @@ public class Personne implements Serializable {
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
-    
+
     public String getNomPrenom() {
         return (nom + " " + prenom).trim();
     }
@@ -185,7 +185,7 @@ public class Personne implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     public boolean isAdmin() {
         Role role = this.getRoleId();
         if (role == null) {
@@ -194,7 +194,7 @@ public class Personne implements Serializable {
             return role.isAdmin();
         }
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -209,7 +209,8 @@ public class Personne implements Serializable {
             return false;
         }
         Personne other = (Personne) object;
-        if ((this.personneId == null && other.personneId != null) || (this.personneId != null && !this.personneId.equals(other.personneId))) {
+        if ((this.personneId == null && other.personneId != null)
+                || (this.personneId != null && !this.personneId.equals(other.personneId))) {
             return false;
         }
         return true;
@@ -219,6 +220,7 @@ public class Personne implements Serializable {
     public String toString() {
         return "centrale.org.pappl.mission_logement.Personne[ personneId=" + personneId + " ]";
     }
+
     public Collection<Formulaire> getFormulaireCollection() {
         return formulaireCollection;
     }
@@ -226,15 +228,16 @@ public class Personne implements Serializable {
     public int compareTo(Object object) {
         if (object == null) {
             return 1;
-        } else if (! (object instanceof Personne)) {
+        } else if (!(object instanceof Personne)) {
             return 1;
         } else {
-            return this.getNomPrenom().toUpperCase().compareTo(((Personne)object).getNomPrenom().toUpperCase());
+            return this.getNomPrenom().toUpperCase().compareTo(((Personne) object).getNomPrenom().toUpperCase());
         }
     }
 
     /**
-     * Return Comparator for sorting tools 
+     * Return Comparator for sorting tools
+     * 
      * @return
      */
     public static Comparator<Personne> getComparator() {

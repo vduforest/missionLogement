@@ -19,21 +19,22 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Size;
 
-/** 
+/**
  * Classe d'une connexion générée automatiquement
+ * 
  * @author samer
  * 
  */
 @Entity
 @Table(name = "connexion")
 @NamedQueries({
-    @NamedQuery(name = "Connexion.findAll", query = "SELECT c FROM Connexion c"),
-    @NamedQuery(name = "Connexion.findByConnexionId", query = "SELECT c FROM Connexion c WHERE c.connexionId = :connexionId"),
-    @NamedQuery(name = "Connexion.findByExpiration", query = "SELECT c FROM Connexion c WHERE c.expiration = :expiration")})
+        @NamedQuery(name = "Connexion.findAll", query = "SELECT c FROM Connexion c"),
+        @NamedQuery(name = "Connexion.findByConnexionId", query = "SELECT c FROM Connexion c WHERE c.connexionId = :connexionId"),
+        @NamedQuery(name = "Connexion.findByExpiration", query = "SELECT c FROM Connexion c WHERE c.expiration = :expiration") })
 public class Connexion implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @Basic(optional = false)
     @Size(min = 1, max = 255)
@@ -79,7 +80,6 @@ public class Connexion implements Serializable {
         this.personneId = personneId;
     }
 
-    
     public boolean isAdmin() {
         return this.getPersonneId().isAdmin();
     }
@@ -98,7 +98,8 @@ public class Connexion implements Serializable {
             return false;
         }
         Connexion other = (Connexion) object;
-        if ((this.connexionId == null && other.connexionId != null) || (this.connexionId != null && !this.connexionId.equals(other.connexionId))) {
+        if ((this.connexionId == null && other.connexionId != null)
+                || (this.connexionId != null && !this.connexionId.equals(other.connexionId))) {
             return false;
         }
         return true;
@@ -108,5 +109,5 @@ public class Connexion implements Serializable {
     public String toString() {
         return "org.centrale.infosi.pappl.logement.items.Connexion[ connexionId=" + connexionId + " ]";
     }
-    
+
 }
