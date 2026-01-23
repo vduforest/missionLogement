@@ -1,10 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-  <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-    <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
-      <!DOCTYPE html>
-      <html lang="fr-fr">
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<!DOCTYPE html>
+<html lang="fr-fr">
 
-      <head>
+        <head>
         <title>FORMULAIRE_VE</title>
         <meta charset="UTF-8" />
         <link href="bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
@@ -408,33 +408,32 @@
                                     Valider <img src="img/coche.png" class="icon" alt="Valider" />
                                   </button>
 
-                                  <button onclick="openForm('formVe')" formaction="RefuserFormVe.do" type="submit"
-                                    name="refuser" class="btn btn-danger" value="refuser" <c:if
-                                    test="${(! item.estValide) && (! empty item.commentairesVe)}">disabled="disabled"
-                                    </c:if>>
-                                    Refuser <img src="img/refuse.png" class="icon" alt="Refuser" />
-                                  </button>
-                                </c:otherwise>
-                              </c:choose>
-                            </div>
-                          </div>
+                              <button onclick="messageCommVide('formVe')" 
+                                      formaction="RefuserFormVe.do" type="submit" name="refuser" class="btn btn-danger" value="refuser" <c:if test="${!(item.estConforme)|| (empty item.commentairesVe)}">disabled="disabled"</c:if>>
+                                        Refuser <img src="img/refuse.png" class="icon" alt="Refuser"/>
+                                      </button>
+                            </c:otherwise>
+                          </c:choose>
                         </div>
-                      </form>
+                       </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
-        <script>
-          window.onload = function () {
-            var message = "<%= request.getAttribute("confirmationMessage")%>";
-            if (message && message.trim() !== "null") {
-              alert(message);
-            }
-          };
-        </script>
-      </body>
+      </div>
+    </div>
 
-      </html>
+    <script>
+      window.onload = function () {
+        var message = "<%= request.getAttribute("confirmationMessage")%>";
+        if (message && message.trim() !== "null") {
+          alert(message);
+        }
+      };
+    </script>
+  </body>
+</html>
