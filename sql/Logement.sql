@@ -175,7 +175,12 @@ CREATE TABLE public.formulaire (
     est_conforme boolean DEFAULT false NOT NULL,
     date_validation timestamp without time zone,
     code_postal character varying,
-    genre_attendu integer
+    genre_attendu integer,
+    distance integer,
+    rang integer,
+    international boolean,
+    tel_2 character varying(16),
+    assistant_id integer
 );
 
 --

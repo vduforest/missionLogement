@@ -107,14 +107,8 @@ public class FormulaireRepositoryCustomImpl implements FormulaireRepositoryCusto
      * Met à jour un formulaire
      */
     @Override
-    public Formulaire update(int id,
-            String nom, String prenom, Date dateNaissance, String ville, String codePostal,
-            int pays, String mail, int genre,
-            String numTelephone, String numTelephone2,
-            Double distance, Boolean estInternational, Integer rang,
-            String boursier, int souhait, String pmr,
-            String commentaireVe, String commentaireEleve, Boolean validation) {
-
+    public Formulaire update(int id, String nom, String prenom, Date dateNaissance, String ville, String codePostal, int pays, String mail, int genre, String numTelephone,
+            String boursier, int souhait, String pmr, String commentaireVe, String commentaireEleve, Boolean validation, String tel2, int distance, int rang, String international) {
         Formulaire formulaire = repository.getReferenceById(id);
         if (formulaire != null) {
 
@@ -167,28 +161,35 @@ public class FormulaireRepositoryCustomImpl implements FormulaireRepositoryCusto
                 numTelephone = numTelephone.trim();
                 formulaire.setNumeroTel(numTelephone);
             }
-
-            // Téléphone 2 (NOUVEAU)
-            if (numTelephone2 != null) {
-                numTelephone2 = numTelephone2.trim();
-                if (numTelephone2.isEmpty()) {
-                    numTelephone2 = null;
-                }
-                formulaire.setNumeroTel2(numTelephone2);
+            if (tel2 != null) {
+                tel2 = tel2.trim();
+                formulaire.setTel2(tel2);
+            }
+            
+            if (distance > 0) {
+                formulaire.setDistance(distance);
             } else {
-                formulaire.setNumeroTel2(null);
+                formulaire.setDistance(null);
+            }
+            
+            if (rang > 0) {
+                formulaire.setRang(rang);
+            } else {
+                formulaire.setRang(null);
+            }
+            
+            switch (international) {
+                case "true":
+                    formulaire.setInternational(true);
+                    break;
+                case "false":
+                    formulaire.setInternational(false);
+                    break;
+                default:
+                    formulaire.setInternational(null);
+                    break;
             }
 
-            // Distance (NOUVEAU)
-            formulaire.setDistance(distance);
-
-            // International (NOUVEAU)
-            formulaire.setEstInternational(estInternational);
-
-            // Rang (NOUVEAU)
-            formulaire.setRang(rang);
-
-            // Souhait
             if (souhait > 0) {
                 Souhait souhaitId = souhaitRepository.getReferenceById(souhait);
                 if (souhaitId != null) {

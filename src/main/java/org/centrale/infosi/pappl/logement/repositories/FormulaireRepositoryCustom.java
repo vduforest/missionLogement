@@ -56,14 +56,9 @@ public interface FormulaireRepositoryCustom {
      * @param validation Sa validation
      * @return Le formulaire mis à jour
      */
-    public Formulaire update(int Id,
-            String nom, String prenom, Date dateNaissance, String ville, String codePostal,
-            int pays, String mail, int genre,
-            String numTelephone, String numTelephone2,
-            Double distance, Boolean estInternational, Integer rang,
-            String boursier, int souhait, String pmr,
-            String commentaireVe, String commentaireEleve, Boolean validation);
-
+    public Formulaire update(int Id, String nom, String prenom, Date dateNaissance ,String ville, String codePostal, int pays, String mail, int genre, String numTelephone,
+            String boursier, int souhait, String pmr, String commentaireVe, String commentaireEleve, Boolean validation, String tel2, int distance, int rang, String international);
+    
     /**
      * Vide et valide un formulaire (en cas de problème pour remplir un formulaire par un élève)
      * @param Id l'identifiant du formulaire

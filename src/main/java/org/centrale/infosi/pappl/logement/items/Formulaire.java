@@ -37,32 +37,32 @@ import org.centrale.infosi.pappl.logement.util.Util;
 @Entity
 @Table(name = "formulaire")
 @NamedQueries({
-    @NamedQuery(name = "Formulaire.findAll", query = "SELECT f FROM Formulaire f"),
-    @NamedQuery(name = "Formulaire.findByFormulaireId", query = "SELECT f FROM Formulaire f WHERE f.formulaireId = :formulaireId"),
-    @NamedQuery(name = "Formulaire.findByPersonneId", query = "SELECT f FROM Formulaire f WHERE f.personneId = :personneId"),
-    @NamedQuery(name = "Formulaire.findByGenreId", query = "SELECT f FROM Formulaire f WHERE f.genreId = :genreId"),
-    @NamedQuery(name = "Formulaire.findByPaysId", query = "SELECT f FROM Formulaire f WHERE f.paysId = :paysId"),
-    @NamedQuery(name = "Formulaire.findByNumeroScei", query = "SELECT f FROM Formulaire f WHERE f.numeroScei = :numeroScei"),
-    @NamedQuery(name = "Formulaire.findByDateDeNaissance", query = "SELECT f FROM Formulaire f WHERE f.dateDeNaissance = :dateDeNaissance"),
-    @NamedQuery(name = "Formulaire.findByVille", query = "SELECT f FROM Formulaire f WHERE f.ville = :ville"),
-    @NamedQuery(name = "Formulaire.findByCodePostal", query = "SELECT f FROM Formulaire f WHERE f.codePostal = :codePostal"),
-    @NamedQuery(name = "Formulaire.findByMail", query = "SELECT f FROM Formulaire f WHERE f.mail = :mail"),
-    @NamedQuery(name = "Formulaire.findByNumeroTel", query = "SELECT f FROM Formulaire f WHERE f.numeroTel = :numeroTel"),
-    @NamedQuery(name = "Formulaire.findByCommentairesVe", query = "SELECT f FROM Formulaire f WHERE f.commentairesVe = :commentairesVe"),
-    @NamedQuery(name = "Formulaire.findByCommentairesEleve", query = "SELECT f FROM Formulaire f WHERE f.commentairesEleve = :commentairesEleve"),
-    @NamedQuery(name = "Formulaire.findByEstBoursier", query = "SELECT f FROM Formulaire f WHERE f.estBoursier = :estBoursier"),
-    @NamedQuery(name = "Formulaire.findByEstPmr", query = "SELECT f FROM Formulaire f WHERE f.estPmr = :estPmr"),
-    @NamedQuery(name = "Formulaire.findByNumeroLogement", query = "SELECT f FROM Formulaire f WHERE f.numeroLogement = :numeroLogement"),
-    @NamedQuery(name = "Formulaire.findBySouhaitId", query = "SELECT f FROM Formulaire f WHERE f.souhaitId = :souhaitId"),
-    @NamedQuery(name = "Formulaire.findAllEmails", query = "SELECT f.mail FROM Formulaire f"),
-    @NamedQuery(name = "Formulaire.findByEstValide", query = "SELECT f FROM Formulaire f WHERE f.estValide = :estValide"),
-    @NamedQuery(name = "Formulaire.findAllEMailsVague", query = "SELECT f.mail FROM Formulaire f where f.vague= false"),
-    @NamedQuery(name = "Formulaire.findMailByToken", query = "SELECT f.mail FROM Formulaire f JOIN f.personneId p WHERE p.firstConnectionToken = ?1"),
-    @NamedQuery(name = "Formulaire.findSCEIByToken", query = "SELECT f.numeroScei FROM Formulaire f JOIN f.personneId p WHERE p.firstConnectionToken = ?1"),
-    @NamedQuery(name = "Formulaire.updateVague", query="UPDATE Formulaire f SET f.vague=true where f.vague=false"),
-    @NamedQuery(name = "Formulaire.findBySceiAndMail", query="SELECT f FROM Formulaire f WHERE f.numeroScei = :numeroScei AND UPPER(f.mail) = UPPER(:mail)"),
-    @NamedQuery(name = "Formulaire.findByEstConforme", query = "SELECT f FROM Formulaire f WHERE f.estConforme = :estConforme")
-})
+        @NamedQuery(name = "Formulaire.findAll", query = "SELECT f FROM Formulaire f"),
+        @NamedQuery(name = "Formulaire.findByFormulaireId", query = "SELECT f FROM Formulaire f WHERE f.formulaireId = :formulaireId"),
+        @NamedQuery(name = "Formulaire.findByPersonneId", query = "SELECT f FROM Formulaire f WHERE f.personneId = :personneId"),
+        @NamedQuery(name = "Formulaire.findByGenreId", query = "SELECT f FROM Formulaire f WHERE f.genreId = :genreId"),
+        @NamedQuery(name = "Formulaire.findByPaysId", query = "SELECT f FROM Formulaire f WHERE f.paysId = :paysId"),
+        @NamedQuery(name = "Formulaire.findByNumeroScei", query = "SELECT f FROM Formulaire f WHERE f.numeroScei = :numeroScei"),
+        @NamedQuery(name = "Formulaire.findByDateDeNaissance", query = "SELECT f FROM Formulaire f WHERE f.dateDeNaissance = :dateDeNaissance"),
+        @NamedQuery(name = "Formulaire.findByVille", query = "SELECT f FROM Formulaire f WHERE f.ville = :ville"),
+        @NamedQuery(name = "Formulaire.findByCodePostal", query = "SELECT f FROM Formulaire f WHERE f.codePostal = :codePostal"),
+        @NamedQuery(name = "Formulaire.findByMail", query = "SELECT f FROM Formulaire f WHERE f.mail = :mail"),
+        @NamedQuery(name = "Formulaire.findByNumeroTel", query = "SELECT f FROM Formulaire f WHERE f.numeroTel = :numeroTel"),
+        @NamedQuery(name = "Formulaire.findByCommentairesVe", query = "SELECT f FROM Formulaire f WHERE f.commentairesVe = :commentairesVe"),
+        @NamedQuery(name = "Formulaire.findByCommentairesEleve", query = "SELECT f FROM Formulaire f WHERE f.commentairesEleve = :commentairesEleve"),
+        @NamedQuery(name = "Formulaire.findByEstBoursier", query = "SELECT f FROM Formulaire f WHERE f.estBoursier = :estBoursier"),
+        @NamedQuery(name = "Formulaire.findByEstPmr", query = "SELECT f FROM Formulaire f WHERE f.estPmr = :estPmr"),
+        @NamedQuery(name = "Formulaire.findByNumeroLogement", query = "SELECT f FROM Formulaire f WHERE f.numeroLogement = :numeroLogement"),
+        @NamedQuery(name = "Formulaire.findBySouhaitId", query = "SELECT f FROM Formulaire f WHERE f.souhaitId = :souhaitId"),
+        @NamedQuery(name = "Formulaire.findAllEmails", query = "SELECT f.mail FROM Formulaire f"),
+        @NamedQuery(name = "Formulaire.findByEstValide", query = "SELECT f FROM Formulaire f WHERE f.estValide = :estValide"),
+        @NamedQuery(name = "Formulaire.findAllEMailsVague", query = "SELECT f.mail FROM Formulaire f where f.vague= false"),
+        @NamedQuery(name = "Formulaire.findMailByToken", query = "SELECT f.mail FROM Formulaire f JOIN f.personneId p WHERE p.firstConnectionToken = ?1"),
+        @NamedQuery(name = "Formulaire.findSCEIByToken", query = "SELECT f.numeroScei FROM Formulaire f JOIN f.personneId p WHERE p.firstConnectionToken = ?1"),
+        @NamedQuery(name = "Formulaire.updateVague", query = "UPDATE Formulaire f SET f.vague=true where f.vague=false"),
+        @NamedQuery(name = "Formulaire.findBySceiAndMail", query = "SELECT f FROM Formulaire f WHERE f.numeroScei = :numeroScei AND UPPER(f.mail) = UPPER(:mail)"),
+        @NamedQuery(name = "Formulaire.findByEstConforme", query = "SELECT f FROM Formulaire f WHERE f.estConforme = :estConforme") })
+
 public class Formulaire implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -174,8 +174,66 @@ public class Formulaire implements Serializable {
     @Column(name = "vague")
     private boolean vague;
 
-    // getters/setters
+    @Column(name = "distance")
+    private Integer distance;
 
+    @Column(name = "rang")
+    private Integer rang;
+
+    @Column(name = "international")
+    private Boolean international;
+
+    @Size(max = 16)
+    @Column(name = "tel_2")
+    private String tel2;
+
+    @JoinColumn(name = "assistant_id", referencedColumnName = "personne_id")
+    @ManyToOne
+    private Personne assistant;
+
+    public Personne getAssistant() {
+        return assistant;
+    }
+
+    public void setAssistant(Personne assistant) {
+        this.assistant = assistant;
+    }
+
+    public Integer getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Integer distance) {
+        this.distance = distance;
+    }
+
+    public Integer getRang() {
+        return rang;
+    }
+
+    public void setRang(Integer rang) {
+        this.rang = rang;
+    }
+
+    public Boolean getInternational() {
+        return international;
+    }
+
+    public void setInternational(Boolean international) {
+        this.international = international;
+    }
+
+    public String getTel2() {
+        return tel2;
+    }
+
+    public void setTel2(String tel2) {
+        this.tel2 = tel2;
+    }
+
+    /**
+     *
+     */
     public Formulaire() {
     }
 
@@ -401,19 +459,25 @@ public class Formulaire implements Serializable {
     }
 
     public File getBourseFile() {
-        String[] extList = {"png", "pdf"};
-        File bourseFile = null;
-        for (String ext1 : extList) {
-            File cible = new File(Util.buildBourseFilePath(this.getNumeroScei(), ext1));
-            if (cible.exists()) {
-                bourseFile = cible;
-                break;
+        try {
+            String[] extList = { "png", "pdf" };
+            File bourseFile = null;
+            for (String ext1 : extList) {
+                File cible = new File(Util.buildBourseFilePath(this.getNumeroScei(), ext1));
+                if (cible.exists()) {
+                    bourseFile = cible;
+                    break;
+                }
             }
-        }
-        if ((bourseFile == null) || (!bourseFile.exists())) {
+            if ((bourseFile == null) || (!bourseFile.exists())) {
+                return null;
+            } else {
+                return bourseFile;
+            }
+        } catch (RuntimeException ex) {
+            // Never fail page rendering just because the filesystem config is
+            // missing/misconfigured.
             return null;
-        } else {
-            return bourseFile;
         }
     }
 
@@ -429,6 +493,10 @@ public class Formulaire implements Serializable {
         this.vague = vague;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int hashCode() {
         int hash = 0;
