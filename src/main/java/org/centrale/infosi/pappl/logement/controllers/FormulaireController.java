@@ -528,6 +528,16 @@ public class FormulaireController {
             int formulaireId = getIntFromString(formulaireIdStr);
 
             Util.enregistrementFormulaire(request, formulaireId, true, formulaireRepository);
+
+            // Save validation author
+            Formulaire formulaire = formulaireRepository.getReferenceById(formulaireId);
+            if (connectionAdmin != null) {
+                formulaire.setAssistant(connectionAdmin.getPersonneId());
+            } else if (connectionAssistant != null) {
+                formulaire.setAssistant(connectionAssistant.getPersonneId());
+            }
+            formulaireRepository.save(formulaire);
+
             // TO DO : envoi du mail quand ce sera possible
             String idStr = Util.getStringFromRequest(request, "id");
             int id = Util.getIntFromString(idStr);
