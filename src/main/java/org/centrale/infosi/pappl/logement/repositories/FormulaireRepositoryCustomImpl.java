@@ -107,8 +107,11 @@ public class FormulaireRepositoryCustomImpl implements FormulaireRepositoryCusto
      * Met à jour un formulaire
      */
     @Override
-    public Formulaire update(int id, String nom, String prenom, Date dateNaissance, String ville, String codePostal, int pays, String mail, int genre, String numTelephone,
-            String boursier, int souhait, String pmr, String commentaireVe, String commentaireEleve, Boolean validation, String tel2, int distance, int rang, String international) {
+
+    public Formulaire update(int id, String nom, String prenom, Date dateNaissance, String ville, String codePostal,
+            int pays, String mail, int genre, String numTelephone, String numTelephone2,
+            Double distance, Boolean estInternational, Integer rang, String boursier, int souhait, String pmr,
+            String commentaireVe, String commentaireEleve, Boolean validation) {
         Formulaire formulaire = repository.getReferenceById(id);
         if (formulaire != null) {
 
@@ -161,34 +164,28 @@ public class FormulaireRepositoryCustomImpl implements FormulaireRepositoryCusto
                 numTelephone = numTelephone.trim();
                 formulaire.setNumeroTel(numTelephone);
             }
-            if (tel2 != null) {
-                tel2 = tel2.trim();
-                formulaire.setTel2(tel2);
+
+            // Téléphone 2
+            if (numTelephone2 != null) {
+                numTelephone2 = numTelephone2.trim();
+                formulaire.setTel2(numTelephone2);
             }
-            
-            if (distance > 0) {
+
+            // Distance
+            if (distance != null) {
                 formulaire.setDistance(distance);
             } else {
                 formulaire.setDistance(null);
             }
-            
-            if (rang > 0) {
+
+            // Rang
+            if (rang != null && rang > 0) {
                 formulaire.setRang(rang);
             } else {
                 formulaire.setRang(null);
             }
-            
-            switch (international) {
-                case "true":
-                    formulaire.setInternational(true);
-                    break;
-                case "false":
-                    formulaire.setInternational(false);
-                    break;
-                default:
-                    formulaire.setInternational(null);
-                    break;
-            }
+
+            formulaire.setEstInternational(estInternational);
 
             if (souhait > 0) {
                 Souhait souhaitId = souhaitRepository.getReferenceById(souhait);
@@ -242,7 +239,8 @@ public class FormulaireRepositoryCustomImpl implements FormulaireRepositoryCusto
     }
 
     /**
-     * Vide et valide un formulaire (en cas de problème pour remplir un formulaire par un élève)
+     * Vide et valide un formulaire (en cas de problème pour remplir un formulaire
+     * par un élève)
      */
     @Override
     public Formulaire viderEtValider(int id) {
@@ -250,13 +248,13 @@ public class FormulaireRepositoryCustomImpl implements FormulaireRepositoryCusto
         if (formulaire != null) {
             formulaire.setGenreId(formulaire.getGenreAttendu());
             formulaire.setNumeroTel(null);
-            formulaire.setNumeroTel2(null);     // ✅ nouveau
+            formulaire.setNumeroTel2(null); // ✅ nouveau
             formulaire.setSouhaitId(null);
             formulaire.setEstBoursier(null);
             formulaire.setEstPmr(null);
-            formulaire.setDistance(null);       // ✅ nouveau
+            formulaire.setDistance(null); // ✅ nouveau
             formulaire.setEstInternational(null); // ✅ nouveau
-            formulaire.setRang(null);           // ✅ nouveau
+            formulaire.setRang(null); // ✅ nouveau
 
             Date dateValidation = new Date();
             formulaire.setCommentairesEleve(null);

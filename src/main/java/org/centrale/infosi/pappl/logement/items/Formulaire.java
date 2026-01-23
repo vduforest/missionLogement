@@ -177,19 +177,6 @@ public class Formulaire implements Serializable {
     @Column(name = "vague")
     private boolean vague;
 
-    @Column(name = "distance")
-    private Integer distance;
-
-    @Column(name = "rang")
-    private Integer rang;
-
-    @Column(name = "international")
-    private Boolean international;
-
-    @Size(max = 16)
-    @Column(name = "tel_2")
-    private String tel2;
-
     @JoinColumn(name = "assistant_id", referencedColumnName = "personne_id")
     @ManyToOne
     private Personne assistant;
@@ -202,11 +189,11 @@ public class Formulaire implements Serializable {
         this.assistant = assistant;
     }
 
-    public Integer getDistance() {
+    public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(Integer distance) {
+    public void setDistance(Double distance) {
         this.distance = distance;
     }
 
@@ -219,19 +206,19 @@ public class Formulaire implements Serializable {
     }
 
     public Boolean getInternational() {
-        return international;
+        return estInternational;
     }
 
     public void setInternational(Boolean international) {
-        this.international = international;
+        this.estInternational = international;
     }
 
     public String getTel2() {
-        return tel2;
+        return numeroTel2;
     }
 
     public void setTel2(String tel2) {
-        this.tel2 = tel2;
+        this.numeroTel2 = tel2;
     }
 
     /**
@@ -289,28 +276,12 @@ public class Formulaire implements Serializable {
         this.numeroTel2 = numeroTel2;
     }
 
-    public Double getDistance() {
-        return distance;
-    }
-
-    public void setDistance(Double distance) {
-        this.distance = distance;
-    }
-
     public Boolean getEstInternational() {
         return estInternational;
     }
 
     public void setEstInternational(Boolean estInternational) {
         this.estInternational = estInternational;
-    }
-
-    public Integer getRang() {
-        return rang;
-    }
-
-    public void setRang(Integer rang) {
-        this.rang = rang;
     }
 
     public String getCommentairesVe() {
