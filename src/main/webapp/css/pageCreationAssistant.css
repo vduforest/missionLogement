@@ -1,8 +1,50 @@
-input.mdp{
-    width:100%;
+/* --- PAGE CREATION ASSISTANT STYLES --- */
+
+/* Form Container similar to Formulaire */
+.form-container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-input{
-    height: 35px;
-    border-radius: 10px;
+/* Input Fields */
+input,
+input.mdp {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: white;
+    transition: border 0.3s;
+    font-size: 1rem;
+    height: auto;
+    /* Allow auto height */
+    margin-bottom: 15px;
+}
+
+input:focus {
+    border-color: var(--brand-blue);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(14, 39, 72, 0.1);
+}
+
+/* Submit Button */
+button[type="submit"] {
+    background-color: var(--brand-blue);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--brand-yellow);
+    color: var(--brand-blue);
 }

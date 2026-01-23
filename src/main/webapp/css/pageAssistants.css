@@ -1,10 +1,33 @@
-img.icon{
-    height:25px !important;
-    width:25px !important;
+/* --- PAGE ASSISTANTS STYLES --- */
+
+img.icon {
+    height: 18px !important;
+    width: 18px !important;
+    vertical-align: middle;
 }
 
-button.creation{
-    width:90%;
-    padding:5px;
-    border-radius: 10px;
+/* "Créer un nouvel assistant" Button */
+button.creation,
+button[name="create"] {
+    background-color: var(--brand-blue);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    display: block;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 1rem;
+}
+
+button.creation:hover,
+button[name="create"]:hover {
+    background-color: var(--brand-yellow);
+    color: var(--brand-blue);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }

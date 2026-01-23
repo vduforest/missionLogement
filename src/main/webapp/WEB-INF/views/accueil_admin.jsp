@@ -20,44 +20,31 @@
 
       <body>
 
-        <!-- HEADER (comme configuration.jsp) -->
         <div id="header">
           <nav class="navbar navbar-expand-md navbar-dark bg-dark">
             <div class="container">
-
               <form method="POST" class="w-100">
                 <input type="hidden" name="connexionId" value="${connexionId}" />
-
                 <div class="d-flex align-items-center justify-content-between w-100">
-
-                  <!-- LEFT: return + Centrale logo -->
                   <div class="d-flex align-items-center">
                     <button class="p-0 ml-3 bg-transparent border-0" formaction="adminDashboard.do"
                       style="display:flex; align-items:center;">
                       <img src="img/ecn_blanc.png" alt="logo" class="logo" />
                     </button>
                   </div>
-
-                  <!-- CENTER: title -->
                   <h1 class="m-0 text-warning text-center flex-grow-1">
                     Plateforme Mission Logement
                   </h1>
-
-                  <!-- RIGHT: exit -->
                   <button class="p-0 bg-transparent border-0 exit-btn" formaction="index.do"
                     style="display:flex; align-items:center; justify-content:center;">
                     <img src="img/porteOuverte.png" alt="sortie" class="sortie" />
                   </button>
-
-
                 </div>
               </form>
-
             </div>
           </nav>
         </div>
 
-        <!-- CONTENU PAGE (ton code inchangé) -->
         <div id="main">
           <div class="py-3">
             <div class="container">
@@ -103,7 +90,6 @@
                       </c:when>
                       <c:otherwise />
                     </c:choose>
-
                   </div>
                 </div>
               </div>
@@ -115,7 +101,6 @@
               style="display: block; position: fixed; bottom: 20px; left: 20px; background-color: #4CAF50; color: white; padding: 10px; border-radius: 5px;">
               ${confirmationMessage}
             </div>
-
             <script type="text/javascript">
               setTimeout(function () {
                 document.getElementById("popupMessage").style.display = 'none';
@@ -126,14 +111,17 @@
           <div id="liste">
             <div class="py-3">
               <div class="container">
-                <div class="row">
-                  <div class="col-md-12">
-                    <h2 class="" style="position:relative">Liste des dossiers en alerte
-                      <form method="post" action="adminDashboard.do" style="position:absolute;right:0px;top:0px">
-                        <input type="hidden" name="connexionId" value="${connexionId}" />
-                        <button class="btn">Refresh</button>
-                      </form>
-                    </h2>
+
+                <div class="row mb-2 align-items-end">
+                  <div class="col-md-12 d-flex justify-content-between align-items-center">
+                    <h2 class="m-0">Liste des dossiers en alerte</h2>
+
+                    <form method="post" action="adminDashboard.do" class="m-0">
+                      <input type="hidden" name="connexionId" value="${connexionId}" />
+                      <button class="refresh-btn" title="Rafraîchir">
+                        <img src="img/refresh.png" alt="Refresh" class="refresh-icon" />
+                      </button>
+                    </form>
                   </div>
                 </div>
 
@@ -152,7 +140,6 @@
                             <th scope="col" class="text-center">Action</th>
                           </tr>
                         </thead>
-
                         <tbody>
                           <c:forEach var="alertes" items="${Alertes}">
                             <tr>
@@ -172,7 +159,6 @@
                                   </c:choose>
                                 </c:if>
                               </td>
-
                               <td class="text-center">
                                 <c:if
                                   test="${(! empty alertes.formulaireId.estBoursier) && (alertes.formulaireId.estBoursier)}">
@@ -182,10 +168,12 @@
                                   </c:if>
                                 </c:if>
                                 <c:if test="${(! empty alertes.formulaireId.estPmr) && (alertes.formulaireId.estPmr)}">
-                                  Nécessite aménagement<br /></c:if>
+                                  Nécessite aménagement<br />
+                                </c:if>
                                 <c:if
                                   test="${(! empty alertes.formulaireId.paysId) && (alertes.formulaireId.paysId.paysId != 1)}">
-                                  Localisation : ${alertes.formulaireId.paysId.paysNom}<br /></c:if>
+                                  Localisation : ${alertes.formulaireId.paysId.paysNom}<br />
+                                </c:if>
                                 <c:if test="${(empty alertes.formulaireId.dateDeNaissance)}"><span
                                     class="text-danger">Date de naissance manquante</span><br /></c:if>
                                 <c:if test="${(empty alertes.formulaireId.genreId)}"><span class="text-danger">Genre non
@@ -204,13 +192,13 @@
                                     incorrect</span><br /></c:if>
                                 <c:if test="${(empty alertes.formulaireId.souhaitId)}"><span class="text-danger">Souhait
                                     non formulé</span><br /></c:if>
-                                <c:if test="${(! empty alertes.formulaireId.dateValidation)}"><span
-                                    class="text-primary">Soumis le :
+                                <c:if test="${(! empty alertes.formulaireId.dateValidation)}">
+                                  <span class="text-primary">Soumis le :
                                     <fmt:formatDate value='${alertes.formulaireId.dateValidation}'
                                       pattern='dd/MM/yyyy HH:mm:ss' />
-                                  </span><br /></c:if>
+                                  </span><br />
+                                </c:if>
                               </td>
-
                               <td class="text-center">
                                 <form action="formulaireVe.do" method="POST">
                                   <input type="hidden" name="connexionId" value="${connexionId}" />
@@ -223,18 +211,14 @@
                             </tr>
                           </c:forEach>
                         </tbody>
-
                       </table>
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
-
         </div>
-
       </body>
 
       </html>

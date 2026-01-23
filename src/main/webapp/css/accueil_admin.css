@@ -1,40 +1,168 @@
-img.show {
-  height: 25px;
-  width: 25px;
-}
+/* --- ACCUEIL ADMIN STYLES --- */
 
-.export {
-  position: absolute;
-  font-size: 150%;
-  left: 50%;
-  padding: 5px;
-  transform: translateX(-50%);
-  text-align: center;
-  border-width: 2px;
-  border-style: solid;
-  border-radius: 10px;
-  border-color: grey;
-  box-shadow: 6px 6px 6px lightgrey;
-}
-
-/* ====== Boutons du menu (Configuration / Dossiers / Assistants) ====== */
-button.redirect {
-  cursor: pointer;
-  /* main */
+/* REFRESH BUTTON (ADDED) */
+.refresh-btn {
+  background-color: transparent;
   border: none;
-  padding: 10px 16px;
-  border-radius: 10px;
-  transition: filter .15s ease, box-shadow .15s ease, transform .15s ease;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: transform 0.3s ease, background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.refresh-icon {
+  height: 35px;
+  width: 35px;
+  display: block;
+}
+
+/* Hover Effect */
+.refresh-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  /* Subtle grey circle on hover */
+  transform: rotate(90deg);
+  /* Nice rotation effect */
+}
+
+
+/* --- NAVIGATION BUTTONS --- */
+button.redirect {
+  background-color: white;
+  color: var(--brand-blue);
+  border: 1px solid #e2e8f0;
+  padding: 15px 30px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(14, 39, 72, 0.05);
 }
 
 button.redirect:hover {
-  filter: brightness(1.15);
-  /* éclaircit */
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
-  transform: translateY(-1px);
+  background-color: var(--brand-blue);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(14, 39, 72, 0.15);
 }
 
-/* Bonus: si tu veux aussi la main sur TOUS les boutons bootstrap de cette page */
-button.btn {
+/* --- MESSAGES (Success / Error) --- */
+.export {
+  margin: 20px auto;
+  padding: 15px 25px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 600;
+  max-width: 600px;
+  position: relative;
+  left: auto;
+  transform: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Success style override */
+.export[style*="green"] {
+  background-color: #d4edda !important;
+  border: 1px solid #c3e6cb !important;
+  color: #155724 !important;
+}
+
+.export[style*="green"] p {
+  color: #155724 !important;
+  margin: 0;
+}
+
+/* Error style override */
+.export[style*="red"] {
+  background-color: #f8d7da !important;
+  border: 1px solid #f5c6cb !important;
+  color: #721c24 !important;
+}
+
+.export[style*="red"] p {
+  color: #721c24 !important;
+  margin: 0;
+}
+
+
+/* --- DATA TABLE STYLING --- */
+#liste table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+}
+
+#liste thead th {
+  background-color: var(--brand-blue);
+  color: white;
+  padding: 15px;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  border: none;
+}
+
+#liste tbody tr {
+  transition: background-color 0.2s;
+}
+
+#liste tbody tr:hover {
+  background-color: rgba(250, 181, 0, 0.05);
+}
+
+#liste tbody td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+  color: var(--text-dark);
+}
+
+#liste tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* STATUS ICONS */
+img.icon {
+  height: 20px;
+  width: 20px;
+  vertical-align: middle;
+}
+
+/* SHOW BUTTON */
+img.show {
+  height: 24px;
+  width: 24px;
+  transition: transform 0.2s;
+}
+
+button[name="edit"] {
+  background: transparent;
+  border: none;
   cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+}
+
+button[name="edit"]:hover {
+  background-color: #f0f0f0;
+}
+
+button[name="edit"]:hover img.show {
+  transform: scale(1.1);
+}
+
+/* --- ALERTS & NOTIFICATIONS --- */
+#popupMessage {
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
 }

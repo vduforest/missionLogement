@@ -1,85 +1,119 @@
-body{
-    background-color:whitesmoke;
-}
-h2{
-    padding: 20px;
-    background-color: rgba(14,39,72,255);
-    color: rgba(250,181,0,255);
-    font-size: 35px;
-    font-weight: bold;
-    border-radius: 2px;
-}
+/* --- FIRST CONNEXION 1 STYLES --- */
 
-h1{
-	margin: 0 0 10px;
-    background-color: rgba(14,39,72,255);
-    font-size: 50px;
-    font-weight: bolder;
+/* Inherits body from default.css */
+
+h1 {
+    margin: 0 0 20px;
+    background-color: transparent !important;
+    font-size: 2.5rem;
+    font-weight: 700;
     text-align: center;
-    border-radius: 5px;
-    color:rgba(250,181,0,255);
+    color: var(--brand-blue) !important;
+    border-bottom: 3px solid var(--brand-yellow);
+    display: block;
+    padding-bottom: 10px;
 }
 
-p.space{
-    height: 1px;
+h2 {
+    font-size: 1.5rem;
+    color: var(--brand-blue);
+    text-align: center;
+    margin-bottom: 2rem;
+    background: transparent !important;
+    padding: 0;
 }
 
+p.space {
+    height: 10px;
+}
+
+/* Input Fields */
 input {
-	display: block;
-    left:2%;
-	  width: 95%;
-    height: 40px;
-    margin: 0 0 10px;
-	padding: 2px;
-	border: 1px solid rgba(0,0,0,.15);
-	box-shadow: 0 1px 2px rgba(0,0,0,.1) inset;
-	border-radius: 3px;
-	font-size: 14px;
-	&:invalid:not(:focus) {
-		border-color: red;
-	}
+    display: block;
+    width: 100%;
+    height: auto;
+    padding: 12px 15px;
+    margin: 0 0 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: white;
+    transition: border 0.3s;
+    box-sizing: border-box;
+    /* Fix width issues */
 }
 
-button{
-  display: block;
-	width: 100%;
-	padding: 2px auto;
-	background-color: green;
-	color:white;
-	border: 1px solid green;
-	border-radius: 10px;
-	font-size: 14px;
-	cursor: pointer;
-	text-align: center;
+input:focus {
+    border-color: var(--brand-blue);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(14, 39, 72, 0.1);
 }
 
+input:invalid:not(:focus) {
+    border-color: #dc3545;
+}
 
-#messageAttention{
-    margin: 0 0 10px;
-    background-color: firebrick;
+/* Submit Button */
+button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    /* Green for first connection usually implies successful start */
     color: white;
-    font-size: 20px;
-    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+}
+
+/* Alerts and Messages */
+#messageAttention {
+    margin: 0 0 20px;
+    background-color: #f8d7da;
+    color: #721c24;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #f5c6cb;
+}
+
+div.erreur,
+#erreur {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #dc3545;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
     text-align: center;
 }
 
-
-div.erreur{
-    font-size: 14px;
-    font-weight: bold;
-    color: red;
-}
-
-#centrage{
-    position:absolute;
-    top:100px;
-    left:50%;
-    transform: translateX(-50%);
-    width: 400px;
-}
-
-#erreur{
-    font-size:14px;
-    font-weight: bold;
-    color:red;
+/* Container Centering */
+#centrage {
+    position: relative;
+    top: 50px;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 450px;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transform: none;
+    /* Remove legacy transform */
+    left: auto;
 }

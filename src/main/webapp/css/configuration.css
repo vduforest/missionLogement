@@ -1,91 +1,128 @@
+/* --- CONFIGURATION PAGE STYLES --- */
+
+/* Table Layout Fixes */
 th {
-  width: 450px;
+  width: 300px;
+  /* Reduced specific width to allow flex */
+  background-color: #f8fafc;
+  color: var(--brand-blue);
+  font-weight: 600;
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-/* Styles des boutons spécifiques à la config */
+td {
+  padding: 15px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Textareas */
+textarea {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+textarea:focus {
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 2px rgba(14, 39, 72, 0.1);
+}
+
+/* Status Highlight */
+td[style*="background-color:yellow"] {
+  background-color: rgba(250, 181, 0, 0.15) !important;
+  /* Brand yellow tint */
+  color: var(--text-dark) !important;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+/* --- BUTTONS --- */
+button {
+  cursor: pointer;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+button img.icon {
+  height: 18px;
+  width: 18px;
+}
+
+/* Save / Enregistrer (Primary Action) */
 button.Enregistrer {
-  margin: 5px;
-  padding: 5px;
-  border-radius: 5px;
-}
-
-button.Confirmer {
-  margin: 5px;
-  padding: 5px;
-  border-radius: 5px;
-  background-color: rgb(0, 174, 0);
-  color: white;
-}
-
-button.Import {
-  margin: 5px;
-  padding: 5px;
-  border-radius: 5px;
-  background-color: rgb(79, 112, 255);
-  color: white;
-}
-
-button.Supprimer {
-  margin: 5px;
-  padding: 5px;
-  border-radius: 5px;
-  background-color: tomato;
-  color: white;
-}
-
-button.EnvoiMails {
-  margin: 5px;
-  padding: 5px;
-  border-radius: 5px;
-  background-color: lightskyblue;
-  color: white;
-}
-
-/* Icones spécifiques */
-img.icon {
-  height: 20px;
-  width: 20px;
-}
-
-img.avion {
-  height: 20px;
-  width: 20px;
-}
-
-img.import {
-  height: 20px;
-  width: 20px;
-}
-
-img.mails {
-  height: 20px;
-  width: 20px;
-}
-
-/* ===== Bouton Enregistrer / Sauvegarder (Effets modernes) ===== */
-button.Enregistrer {
-  background: #7CFC90 !important;
-  /* Force le vert clair */
-  border: 1px solid rgba(0, 0, 0, 0.2) !important;
-  padding: 8px 14px !important;
-  border-radius: 8px !important;
-  font-weight: 600 !important;
-
-  cursor: pointer !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-
-  transition: filter .15s ease, transform .15s ease, box-shadow .15s ease !important;
+  background-color: var(--brand-blue) !important;
+  color: white !important;
+  box-shadow: 0 2px 5px rgba(14, 39, 72, 0.2);
 }
 
 button.Enregistrer:hover {
-  filter: brightness(1.10) !important;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18) !important;
-  transform: translateY(-1px) !important;
+  background-color: var(--brand-yellow) !important;
+  /* Yellow hover like navbar */
+  color: var(--brand-blue) !important;
+  transform: translateY(-1px);
 }
 
-/* main aussi sur l'image */
-button.Enregistrer img {
-  cursor: pointer !important;
+/* Confirm (Green) */
+button.Confirmer {
+  background-color: #28a745 !important;
+  color: white !important;
+}
+
+button.Confirmer:hover {
+  background-color: #218838 !important;
+}
+
+/* Import (Blue-ish) */
+button.Import {
+  background-color: #007bff !important;
+  color: white !important;
+}
+
+button.Import:hover {
+  background-color: #0069d9 !important;
+}
+
+/* Delete (Red) */
+button.Supprimer {
+  background-color: #dc3545 !important;
+  color: white !important;
+}
+
+button.Supprimer:hover {
+  background-color: #c82333 !important;
+}
+
+/* Send Mails (Info/Sky) */
+button.EnvoiMails {
+  background-color: #17a2b8 !important;
+  color: white !important;
+}
+
+button.EnvoiMails:hover {
+  background-color: #138496 !important;
+}
+
+
+/* --- ICONS --- */
+img.icon,
+img.avion,
+img.import,
+img.mails {
+  height: 18px;
+  width: 18px;
+  display: inline-block;
+  vertical-align: middle;
 }
