@@ -69,10 +69,21 @@
               <table id="StudentList" class="table table-striped table-md sortable">
                 <thead>
                   <tr>
+                   <th style="display:none">priority</th>
                     <th scope="col" class="text-center">Numero SCEI</th>
                     <th scope="col" class="text-center">Nom</th>
                     <th scope="col" class="text-center">Prenom</th>
-                    <th scope="col" class="text-center">Etat</th>
+                    <th scope="col" class="text-center">Etat
+                      <div style="display:inline-block;position:relative;">
+                        <button id="etatFilterBtn" type="button" class="btn btn-sm" style="margin-left:6px;padding:2px 6px;">---</button>
+                        <div id="etatFilterDropdown" style="display:none;position:absolute;right:0;background:#fff;border:1px solid #ccc;padding:8px;z-index:1000;min-width:140px;">
+                          <label><input type="checkbox" class="etat-checkbox" value="traite_complet" checked/> Traitement complet</label><br/>
+                          <label><input type="checkbox" class="etat-checkbox" value="dossier_non_conforme" checked/> Dossier non conforme</label><br/>
+                          <label><input type="checkbox" class="etat-checkbox" value="a_traiter" checked/> A traiter</label><br/>
+                          <label><input type="checkbox" class="etat-checkbox" value="non_transmis" checked/> Non transmis</label>
+                        </div>
+                      </div>
+                    </th>
                     <th scope="col" class="text-center">Informations</th>
                     <th scope="col" class="text-center">Actions</th>
                   </tr>
@@ -81,22 +92,37 @@
                   <!-- Loop through Formulaire objects -->
                   <c:forEach var="formulaire" items="${forms}">
                     <tr>
+                      <td style="display:none" class="priority">1</td>
                       <td class="text-center">${formulaire.numeroScei}</td>
                       <td class="text-center">${formulaire.personneId.nom}</td>
                       <td class="text-center">${formulaire.personneId.prenom}</td>
-                      <td class="text-center">
+                       <c:choose>
+                        <c:when test="${formulaire.estConforme}">
+                          <c:set var="etat" value="traite_complet" />
+                        </c:when>
+                        <c:when test="${(!formulaire.estValide) && (! empty formulaire.commentairesVe)}">
+                          <c:set var="etat" value="dossier_non_conforme" />
+                        </c:when>
+                        <c:when test="${(formulaire.estPmr) || (formulaire.estBoursier) || (formulaire.genreId.genreId!=formulaire.genreAttendu.genreId)}">
+                          <c:set var="etat" value="a_traiter" />
+                        </c:when>
+                        <c:otherwise>
+                          <c:set var="etat" value="non_transmis" />
+                        </c:otherwise>
+                      </c:choose>
+                        <td class="text-center" data-etat="${etat}" data-search="${etat == 'traite_complet' ? 'traite complet' : (etat == 'dossier_non_conforme' ? 'non conforme' : (etat == 'a_traiter' ? 'a traiter' : 'non transmis'))}">
                         <c:choose>
                           <c:when test="${formulaire.estConforme}">
                             <img src="img/coche.png"alt="coche"class="icon"/>
                           </c:when>
                           <c:when test="${(!formulaire.estValide) && (! empty formulaire.commentairesVe)}">
-                            <img onclick="afficherTexte(${formulaire.estBoursier},${formulaire.estPmr},${formulaire.genreId.genreId},${formulaire.genreAttendu.genreId});" src="img/red-x-icon.png"alt="refus"class="icon"/>
+                            <img onclick="afficherTexte('${formulaire.estBoursier}','${formulaire.estPmr}','${formulaire.genreId.genreId}','${formulaire.genreAttendu.genreId}');" src="img/red-x-icon.png"alt="refus"class="icon"/>
                           </c:when>
                           <c:when test="${(formulaire.estPmr) || (formulaire.estBoursier) || (formulaire.genreId.genreId!=formulaire.genreAttendu.genreId)}">
-                            <img onclick="afficherTexte(${formulaire.estBoursier},${formulaire.estPmr},${formulaire.genreId.genreId},${formulaire.genreAttendu.genreId});" src="img/warning.png"alt="warning"class="icon"/>
+                            A traiter
                           </c:when>
                           <c:otherwise>
-                            A traiter
+                            Non transmis
                           </c:otherwise>
                         </c:choose>
                       </td>
@@ -106,7 +132,7 @@
                             <span class="text-danger">Preuve manquante</span><br/>
                           </c:if>
                         </c:if>
-                        <c:if test="${(! empty formulaire.estPmr) && (formulaire.estPmr)}">Nécessite aménagement<br/></c:if>
+                       <c:if test="${(! empty formulaire.estPmr) && (formulaire.estPmr)}">Nécessite aménagement<br/></c:if>
                         <c:if test="${(! empty formulaire.paysId) && (formulaire.paysId.paysId != 1)}">Localisation : ${formulaire.paysId.paysNom}<br/></c:if>
                         <c:if test="${(empty formulaire.dateDeNaissance)}"><span class="text-danger">Date de naissance manquante</span><br/></c:if>
                         <c:if test="${(empty formulaire.genreId)}"><span class="text-danger">Genre non indiqué</span><br/></c:if>
@@ -202,6 +228,58 @@
          });
          */
       });
+
     </script>
+    <script type="text/javascript">
+ $(document).ready(function () {
+    var table = $('#StudentList').DataTable({
+        columnDefs: [
+            { targets: 0, visible: false } 
+        ],
+        order: [[0, 'asc'], [2, 'asc']] 
+    });
+
+    function applySorting() {
+        var selectedEtats = $('.etat-checkbox:checked').map(function () {
+            return $(this).val();
+        }).get();
+
+        table.rows().every(function () {
+            var row = this.node();
+            var etat = $(row).find('td[data-etat]').attr('data-etat');
+            
+            var index = selectedEtats.indexOf(etat);
+            
+           
+            var priorityValue = (index !== -1) ? index : 99;
+
+            table.cell(this.index(), 0).data(priorityValue);
+        });
+
+        table.draw();
+    }
+
+    $('#etatFilterBtn').on('click', function (e) {
+        e.stopPropagation();
+        $('#etatFilterDropdown').toggle();
+    });
+
+    $(document).on('click', function () {
+        $('#etatFilterDropdown').hide();
+    });
+
+    $('#etatFilterDropdown').on('click', function (e) {
+        e.stopPropagation(); // EmpÃªche la fermeture quand on clique sur un label
+    });
+
+    // Trigger quand on coche/dÃ©coche
+    $('.etat-checkbox').on('change', function () {
+        applySorting();
+    });
+
+    // Appel initial
+    applySorting();
+});
+  </script>
   </body>
 </html>
