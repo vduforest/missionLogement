@@ -198,7 +198,7 @@ public class FormulaireController {
 
     private File createBourseFile(Formulaire formulaire, HttpServletRequest request) {
         File bourseFile = null;
-        if (formulaire.getEstBoursier()) {
+        if (Boolean.TRUE.equals(formulaire.getEstBoursier())) {
             // Save bourse file (remove old ones if necessary)
             File file = Util.getFileFromRequest(request, "preuveBourse");
             if ((file != null) && (file.exists()) && (file.isFile())) {

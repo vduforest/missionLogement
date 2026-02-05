@@ -68,7 +68,8 @@ public class Util {
         String resourceName = packageClassName + ".config." + CONFIGFILENAME;
         try {
             // Prefer an explicit resource lookup through the webapp ClassLoader.
-            // This avoids surprising ResourceBundle lookup issues in some servlet containers.
+            // This avoids surprising ResourceBundle lookup issues in some servlet
+            // containers.
             String resourcePath = resourceName.replace('.', '/') + ".properties";
             ClassLoader cl = Util.class.getClassLoader();
             try (InputStream in = (cl != null) ? cl.getResourceAsStream(resourcePath) : null) {
@@ -86,14 +87,14 @@ public class Util {
             ResourceBundle theResource = ResourceBundle.getBundle(resourceName);
             return theResource.getString(typeFile);
         } catch (MissingResourceException ex) {
-            // Fail-safe: don't crash the whole app if config is missing in the deployed WAR.
+            // Fail-safe: don't crash the whole app if config is missing in the deployed
+            // WAR.
             // This happens often when Tomcat is running an older deployment.
             Logger.getLogger(Util.class.getName()).log(
                     Level.SEVERE,
                     "Missing ResourceBundle '" + resourceName + "'. " +
-                    "Expected a file like 'org/centrale/infosi/pappl/logement/util/config/config.properties' on the classpath.",
-                    ex
-            );
+                            "Expected a file like 'org/centrale/infosi/pappl/logement/util/config/config.properties' on the classpath.",
+                    ex);
 
             // Best-effort fallback: use project-local folders (works for local dev setups).
             String baseDir = System.getProperty("missionlogement.baseDir");
@@ -618,8 +619,8 @@ public class Util {
      * @param validation
      * @param formulaireRepository
      */
-   public static void enregistrementFormulaire(HttpServletRequest request, int formulaireId, Boolean validation,
-        FormulaireRepository formulaireRepository) {
+    public static void enregistrementFormulaire(HttpServletRequest request, int formulaireId, Boolean validation,
+            FormulaireRepository formulaireRepository) {
 
         Formulaire formulaire = formulaireRepository.getReferenceById(formulaireId);
 
@@ -692,13 +693,13 @@ public class Util {
             pmr = Util.getStringFromRequest(request, "pmr");
         }
 
-        // Boursier (JSP: name="boursier")
+        // Boursier (JSP: name="bourse")
         String boursier = "null";
         if (formulaire.getEstBoursier() != null) {
             boursier = formulaire.getEstBoursier().toString().toLowerCase();
         }
-        if (Util.hasRequestParameter(request, "boursier")) {
-            boursier = Util.getStringFromRequest(request, "boursier"); // "true" / "false" / "null"
+        if (Util.hasRequestParameter(request, "bourse")) {
+            boursier = Util.getStringFromRequest(request, "bourse"); // "true" / "false" / "null"
         }
 
         // Distance (JSP: name="distance")
@@ -735,7 +736,6 @@ public class Util {
                 commentaireVe, commentairesEleve, validation);
     }
 
-
     public static ResponseEntity<InputStreamResource> sendFile(String fileName, File theFile, MediaType mediaType) {
         if ((fileName != null) && (!fileName.isEmpty()) && (theFile != null) && (mediaType != null)) {
             try {
@@ -749,28 +749,33 @@ public class Util {
         }
         return ResponseEntity.unprocessableEntity().body((InputStreamResource) null);
     }
-        public static Integer calculerRang(Boolean estInternational, String boursier, Double distance, String ville) {
 
-            if (distance == null) return null;
+    public static Integer calculerRang(Boolean estInternational, String boursier, Double distance, String ville) {
 
-            boolean isInternational = Boolean.TRUE.equals(estInternational);
-            boolean isBoursier = "true".equalsIgnoreCase(boursier) || "oui".equalsIgnoreCase(boursier);
-            boolean isNantes = ville != null && ville.toLowerCase().contains("nantes");
-
-            // Rang 4 : Nantes (même boursier), sauf international
-            if (isNantes && !isInternational) return 4;
-
-            // Rang 1 : international OU boursier (hors Nantes) OU distance > 400
-            if (isInternational || isBoursier || distance > 400) return 1;
-
-            // Rang 2 : 200-399
-            if (distance >= 200 && distance <= 399) return 2;
-
-            // Rang 3 : < 200
-            if (distance < 200) return 3;
-
+        if (distance == null)
             return null;
-        }
 
+        boolean isInternational = Boolean.TRUE.equals(estInternational);
+        boolean isBoursier = "true".equalsIgnoreCase(boursier) || "oui".equalsIgnoreCase(boursier);
+        boolean isNantes = ville != null && ville.toLowerCase().contains("nantes");
+
+        // Rang 4 : Nantes (même boursier), sauf international
+        if (isNantes && !isInternational)
+            return 4;
+
+        // Rang 1 : international OU boursier (hors Nantes) OU distance > 400
+        if (isInternational || isBoursier || distance > 400)
+            return 1;
+
+        // Rang 2 : 200-399
+        if (distance >= 200 && distance <= 399)
+            return 2;
+
+        // Rang 3 : < 200
+        if (distance < 200)
+            return 3;
+
+        return null;
+    }
 
 }
