@@ -25,6 +25,8 @@
       <property name="jakarta.persistence.jdbc.user" value="logement"/>
       <property name="jakarta.persistence.jdbc.password" value="logement"/>
       <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <!-- Disable EclipseLink Shared Cache (L2 Cache) to ensure fresh data on every request -->
+      <property name="eclipselink.cache.shared.default" value="false"/>
     </properties>
   </persistence-unit>
 </persistence>

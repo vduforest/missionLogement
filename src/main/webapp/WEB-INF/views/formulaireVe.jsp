@@ -1,10 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
-<!DOCTYPE html>
-<html lang="fr-fr">
+  <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+    <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+      <!DOCTYPE html>
+      <html lang="fr-fr">
 
-        <head>
+      <head>
         <title>FORMULAIRE_VE</title>
         <meta charset="UTF-8" />
         <link href="bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
@@ -83,10 +83,10 @@
                               <tr>
                                 <th scope="col">Date de naissance (DD/MM/YYYY)</th>
                                 <td>
+                                  <fmt:formatDate value="${item.dateDeNaissance}" pattern="dd/MM/yyyy"
+                                    var="formattedDate" />
                                   <input type="text" id="dateNaissance" name="dateDeNaissance" class="dateNaissance"
-                                    value="<c:if test=" ${! empty item.dateDeNaissance}">
-                                  <fmt:formatDate value='${item.dateDeNaissance}' pattern='dd/MM/yyyy' />
-                                  </c:if>" disabled="disabled" required="required"/>
+                                    value="${formattedDate}" disabled="disabled" required="required" />
                                 </td>
                                 <td>
                                   <button type="button" id="locker_dateNaissance" class="btn btn-secondary"
@@ -181,9 +181,8 @@
                               <tr>
                                 <th scope="col">Numéro de téléphone</th>
                                 <td>
-                                  <input id="tel" type="text" name="tel" value="<c:if test=" ${! empty
-                                    item.numeroTel}">${item.numeroTel}</c:if>" disabled="disabled" required="required"
-                                  />
+                                  <input id="tel" type="text" name="tel" value="${item.numeroTel}" disabled="disabled"
+                                    required="required" />
                                 </td>
                                 <td>
                                   <button type="button" id="locker_tel" class="btn btn-secondary"
@@ -195,8 +194,7 @@
                               <tr>
                                 <th scope="col">Deuxième numéro de téléphone</th>
                                 <td>
-                                  <input id="tel2" type="text" name="tel2" value="<c:if test=" ${! empty
-                                    item.tel2}">${item.tel2}</c:if>" disabled="disabled" />
+                                  <input id="tel2" type="text" name="tel2" value="${item.tel2}" disabled="disabled" />
                                 </td>
                                 <td>
                                   <button type="button" id="locker_tel2" class="btn btn-secondary"
@@ -408,32 +406,35 @@
                                     Valider <img src="img/coche.png" class="icon" alt="Valider" />
                                   </button>
 
-                              <button onclick="messageCommVide('formVe')" 
-                                      formaction="RefuserFormVe.do" type="submit" name="refuser" class="btn btn-danger" value="refuser" <c:if test="${!(item.estConforme)|| (empty item.commentairesVe)}">disabled="disabled"</c:if>>
-                                        Refuser <img src="img/refuse.png" class="icon" alt="Refuser"/>
-                                      </button>
-                            </c:otherwise>
-                          </c:choose>
+                                  <button onclick="messageCommVide('formVe')" formaction="RefuserFormVe.do"
+                                    type="submit" name="refuser" class="btn btn-danger" value="refuser" <c:if
+                                    test="${!(item.estConforme)|| (empty item.commentairesVe)}">disabled="disabled"
+                                    </c:if>>
+                                    Refuser <img src="img/refuse.png" class="icon" alt="Refuser" />
+                                  </button>
+                                </c:otherwise>
+                              </c:choose>
+                            </div>
+                          </div>
                         </div>
-                       </div>
+                      </form>
                     </div>
-                  </form>
+                  </div>
                 </div>
+
               </div>
             </div>
-
           </div>
         </div>
-      </div>
-    </div>
 
-    <script>
-      window.onload = function () {
-        var message = "<%= request.getAttribute("confirmationMessage")%>";
-        if (message && message.trim() !== "null") {
-          alert(message);
-        }
-      };
-    </script>
-  </body>
-</html>
+        <script>
+          window.onload = function () {
+            var message = "<%= request.getAttribute("confirmationMessage")%>";
+            if (message && message.trim() !== "null") {
+              alert(message);
+            }
+          };
+        </script>
+      </body>
+
+      </html>
