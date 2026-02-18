@@ -1,32 +1,58 @@
-div.main{
-    top:15%;
+/* --- PAGE DATES STYLES --- */
+
+div.main {
+    margin-top: 50px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-h2{
-    padding: 20px;
-    background-color: rgba(14,39,72,255);
-    color: rgba(250,181,0,255);
-    font-weight: bold;
-    border-radius: 2px;
+h2 {
+    background-color: transparent !important;
+    color: var(--brand-blue) !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    border-bottom: 3px solid var(--brand-yellow);
+    display: inline-block;
+    margin-bottom: 20px;
 }
 
-input{
-    position:relative;
-    width: inherit;
-    padding: 5px;
-    background: whitesmoke;
-    border: 2px solid rgba(0,0,0,.15);
-    box-shadow: 0 5px 10px rgba(0,0,0,.1) inset;
-    border-radius: 5px;
-    font-size:15px;
-    color:rgb(86, 86, 86);
-
+input {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: var(--text-dark);
+    box-shadow: none;
+    transition: border 0.3s;
 }
 
-button{
-    width: 200px;
-    padding:5px;
-    border-radius: 10px;
-    background-color: green;
+input:focus {
+    border-color: var(--brand-blue);
+    box-shadow: 0 0 0 2px rgba(14, 39, 72, 0.1);
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    background-color: var(--brand-blue);
     color: white;
+    border: none;
+    font-weight: 600;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+button:hover {
+    background-color: var(--brand-yellow);
+    color: var(--brand-blue);
+    transform: translateY(-1px);
 }

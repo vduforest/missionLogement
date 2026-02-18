@@ -46,13 +46,14 @@ public class AssistantController {
         ModelAndView returned;
         Connexion connection = connectionService.checkAccess(request, "Assistant");
         if (connection != null) {
-            //Ajout de la liste des formulaires
+            // Ajout de la liste des formulaires
             List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
             Collections.sort(forms, Formulaire.getComparator());
 
             returned = connectionService.prepareModelAndView(connection, "pageDossiersAssist");
             if (returned != null) {
                 returned.addObject("forms", forms);
+                returned.addObject("hideBackButton", true);
             }
             return returned;
         }

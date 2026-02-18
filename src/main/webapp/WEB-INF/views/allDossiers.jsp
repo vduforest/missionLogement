@@ -57,6 +57,7 @@
               <table id="StudentList" class="table table-striped table-md sortable">
                 <thead>
                   <tr>
+                    <th style="display:none">priority</th>
                     <th scope="col" class="text-center">Numero SCEI</th>
                     <th scope="col" class="text-center">Nom</th>
                     <th scope="col" class="text-center">Prenom</th>
@@ -78,6 +79,7 @@
                   <!-- Loop through Formulaire objects -->
                   <c:forEach var="formulaire" items="${forms}">
                     <tr>
+                      <td style="display:none" class="priority">1</td>
                       <td class="text-center">${formulaire.numeroScei}</td>
                       <td class="text-center">${formulaire.personneId.nom}</td>
                       <td class="text-center">${formulaire.personneId.prenom}</td>
@@ -95,7 +97,7 @@
                           <c:set var="etat" value="non_transmis" />
                         </c:otherwise>
                       </c:choose>
-                      <td class="text-center" data-etat="${etat}">
+                      <td class="text-center" data-etat="${etat}" data-search="${etat == 'traite_complet' ? 'traite complet' : (etat == 'dossier_non_conforme' ? 'non conforme' : (etat == 'a_traiter' ? 'a traiter' : 'non transmis'))}">
                         <c:choose>
                           <c:when test="${formulaire.estConforme}">
                             <img src="img/coche.png"alt="coche"class="icon"/>
@@ -137,39 +139,55 @@
       </div>
     </div>
   <script type="text/javascript">
-    $(document).ready(function(){
-      var table = buildTable('StudentList');
+ $(document).ready(function () {
+    var table = $('#StudentList').DataTable({
+        columnDefs: [
+            { targets: 0, visible: false } 
+        ],
+        order: [[0, 'asc'], [2, 'asc']] 
+    });
 
-      var selectedStatuses = ['traite_complet','dossier_non_conforme','a_traiter','non_transmis'];
+    function applySorting() {
+        var selectedEtats = $('.etat-checkbox:checked').map(function () {
+            return $(this).val();
+        }).get();
 
-      function reorderRows(){
-        selectedStatuses = $('.etat-checkbox:checked').map(function(){return $(this).val();}).get();
-        var tbody = $('#StudentList tbody');
-        var nodes = table.rows({order:'applied'}).nodes().toArray();
-        var matched = [], others = [];
-        nodes.forEach(function(row){
-          var status = $(row).find('td[data-etat]').data('etat');
-          if ($.inArray(status, selectedStatuses) !== -1) matched.push(row);
-          else others.push(row);
+        table.rows().every(function () {
+            var row = this.node();
+            var etat = $(row).find('td[data-etat]').attr('data-etat');
+            
+            var index = selectedEtats.indexOf(etat);
+            
+           
+            var priorityValue = (index !== -1) ? index : 99;
+
+            table.cell(this.index(), 0).data(priorityValue);
         });
-        // append matched first, then others (moving DOM nodes)
-        matched.concat(others).forEach(function(r){ tbody.append(r); });
-        // redraw table display without resetting paging
-        table.rows().invalidate().draw(false);
-      }
 
-      $('#etatFilterBtn').on('click', function(e){
+        table.draw();
+    }
+
+    $('#etatFilterBtn').on('click', function (e) {
         e.stopPropagation();
         $('#etatFilterDropdown').toggle();
-      });
-
-      $(document).on('click', function(){ $('#etatFilterDropdown').hide(); });
-
-      $('.etat-checkbox').on('change', function(){ reorderRows(); });
-
-      // initial ordering
-      reorderRows();
     });
+
+    $(document).on('click', function () {
+        $('#etatFilterDropdown').hide();
+    });
+
+    $('#etatFilterDropdown').on('click', function (e) {
+        e.stopPropagation(); // Empêche la fermeture quand on clique sur un label
+    });
+
+    // Trigger quand on coche/décoche
+    $('.etat-checkbox').on('change', function () {
+        applySorting();
+    });
+
+    // Appel initial
+    applySorting();
+});
   </script>
       </body>
 </html>

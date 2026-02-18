@@ -164,6 +164,13 @@ public class LoginController {
                             }
                             returned = connectionService.prepareModelAndView(connection, "informationEleves");
                             returned.addObject("texteInfo", texteInformation);
+
+                            // HIDES THE BACK BUTTON
+                            returned.addObject("hideBackButton", true);
+
+                            // SETS LOGO DESTINATION TO INFORMATIONS
+                            returned.addObject("homeLink", "informations.do");
+
                             return returned;
 
                         case 2: // Admin
@@ -172,6 +179,10 @@ public class LoginController {
 
                             returned = connectionService.prepareModelAndView(connection, "accueil_admin");
                             returned.addObject("Alertes", alertes);
+
+                            // SETS LOGO DESTINATION TO ADMIN DASHBOARD
+                            returned.addObject("homeLink", "adminDashboard.do");
+
                             return returned;
 
                         case 3: // Assistant
@@ -185,6 +196,10 @@ public class LoginController {
                             returned = connectionService.prepareModelAndView(connection, "pageDossiersAssist");
                             returned.addObject("forms", forms);
                             returned.addObject("alertes", formsAlerte);
+
+                            // SETS LOGO DESTINATION TO DASHBOARD
+                            returned.addObject("homeLink", "dashboard.do");
+
                             return returned;
 
                         default:

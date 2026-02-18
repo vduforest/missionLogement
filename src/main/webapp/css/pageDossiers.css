@@ -1,80 +1,105 @@
-img.icon{
-    height:25px;
-    width:25px;
-}
-.logo {
-    height: 16px;      /* 👈 choose 24–36px */
-    width: auto;
-    display: block;
-}
-.return-btn {
-    background-color: #FFD200;
-    border: none;
-    border-radius: 6px;
+/* --- PAGE DOSSIERS STYLES --- */
 
-    padding: 2px;
-    margin-right: 15px;
-
-    height: 28px;
-    width: 28px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
+img.icon {
+  height: 20px;
+  width: 20px;
+  vertical-align: middle;
 }
 
-
-.return-btn:hover {
-    background-color: #ffea70;
-    cursor: pointer;
-}
-
-.return-img {
-    height: 16px;
-    width: 16px; 
-    max-height: 16px;
-    max-width: 16px;
-    display: block;
-}
-
-button.edit{
-    padding: 5px;
-    border-color: rgba(128,128,128,.5);
-    border-radius: 5px;
-}
-#export{
-    margin: 5px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: rgb(0, 174, 0) !important;
-    color: white;    
-}
-#allDossiers{
-    margin: 5px;
-    padding: 5px;
-    border-radius: 5px;
-    background-color: rgb(0, 0, 174) !important;
-    color: white;    
-}
-
-/* Boutons footer : Voir tous les dossiers + Exporter */
-#export, #allDossiers{
+/* REFRESH BUTTON (ADDED) */
+.refresh-btn {
+  background-color: transparent;
+  border: none;
   cursor: pointer;
-  transition: filter .15s ease, transform .15s ease, box-shadow .15s ease;
+  padding: 5px;
+  border-radius: 50%;
+  transition: transform 0.3s ease, background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* main même si tu passes sur le texte */
-#export *, #allDossiers *{
+.refresh-icon {
+  height: 35px;
+  width: 35px;
+  display: block;
+}
+
+/* Hover Effect */
+.refresh-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  /* Subtle grey circle on hover */
+  transform: rotate(90deg);
+  /* Nice rotation effect */
+}
+
+/* Edit Button (Eye icon wrapper) */
+button.edit {
+  padding: 6px;
+  border: 1px solid #e2e8f0;
+  border-radius: 50%;
+  background: white;
+  margin: 0 2px;
+  transition: all 0.2s;
+}
+
+button.edit:hover {
+  background-color: #f8fafc;
+  border-color: var(--brand-blue);
+  transform: scale(1.1);
+}
+
+/* Action Buttons Footer */
+.action-buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 2rem;
+}
+
+/* Export Button (Green) */
+#export {
+  background-color: #28a745 !important;
+  color: white !important;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-family: 'Open Sans', sans-serif;
   cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
 }
 
-#export:hover, #allDossiers:hover{
-  filter: brightness(1.12);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+#export:hover {
+  background-color: #218838 !important;
   transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
 }
 
-#export:active, #allDossiers:active{
-  transform: translateY(0);
-  box-shadow: 0 3px 10px rgba(0,0,0,0.18);
+/* All Dossiers Button (Blue) */
+#allDossiers {
+  background-color: var(--brand-blue) !important;
+  color: white !important;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-family: 'Open Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(14, 39, 72, 0.2);
+}
+
+#allDossiers:hover {
+  background-color: var(--brand-yellow) !important;
+  color: var(--brand-blue) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(14, 39, 72, 0.3);
+}
+
+/* Universal pointer fix */
+#export *,
+#allDossiers * {
+  cursor: pointer;
 }

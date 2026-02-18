@@ -1,10 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&family=Open+Sans:wght@400;600&display=swap');
 
-body {
-    background-color: whitesmoke;
-    font-family: 'Open Sans', sans-serif;
+:root {
+    --brand-blue: rgba(14, 39, 72, 1);
+    --brand-yellow: rgba(250, 181, 0, 1);
+    --bg-gray: #f4f6f9;
+    --text-dark: #2c3e50;
 }
 
+body {
+    background-color: var(--bg-gray);
+    font-family: 'Open Sans', sans-serif;
+    color: var(--text-dark);
+    margin: 0;
+    padding-bottom: 50px;
+}
+
+/* Typography Defaults */
 h1,
 h2,
 h3,
@@ -12,100 +23,165 @@ h4,
 h5,
 h6 {
     font-family: 'Titillium Web', sans-serif;
+    color: var(--brand-blue);
+    margin-top: 0;
 }
 
+/* --- FIXING THE HEADERS --- */
 
+/* Removed absolute positioning that was breaking the header layout */
 h1 {
-    position: absolute;
-    font-size: 225%;
-    left: 50%;
-    top: 25%;
-    transform: translateX(-50%);
-    color: rgba(250, 181, 0, 255);
+    font-size: 2.5rem;
+    color: var(--brand-yellow);
     text-align: center;
-    font-weight: bold;
+    font-weight: 700;
+    margin: 0;
+    padding: 20px 0;
+    /* If this H1 is inside the header.jsp, it will now flow naturally */
 }
 
+/* Modern Heading Style (No more ugly banner box) */
 h2 {
-    padding: 20px;
-    background-color: rgba(14, 39, 72, 255);
-    color: rgba(250, 181, 0, 255);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--brand-blue);
+    background-color: transparent;
+    /* Removed block color */
+    padding: 0 0 15px 0;
+    margin-bottom: 25px;
+    border-bottom: 3px solid var(--brand-yellow);
+    /* Subtle underline accent */
+    display: inline-block;
+}
+
+/* --- LAYOUT & CARD --- */
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    /* Changed from center to allow scrolling if content is long */
+    padding: 3rem 1rem;
+    min-height: 80vh;
+}
+
+.info-card {
+    background-color: white;
+    padding: 3rem;
+    /* More breathing room */
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(14, 39, 72, 0.08);
+    /* Soft, modern shadow */
+    max-width: 900px;
+    width: 100%;
+    border-top: 5px solid var(--brand-blue);
+    /* Branding accent on top */
+}
+
+/* --- CONTENT STYLING --- */
+
+.informations-content {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #4a5568;
+}
+
+/* Making the lists look like "Steps" automatically */
+.informations-content ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1.5rem;
+}
+
+.informations-content li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 12px;
+}
+
+/* Custom bullet points */
+/* .informations-content li::before {
+    content: "•";
+    color: var(--brand-yellow);
     font-weight: bold;
-    border-radius: 2px;
-}
-
-img.sortie {
+    font-size: 1.5rem;
     position: absolute;
-    right: 5%;
-    height: 50px;
-    width: 50px;
-    padding: 1%;
-    border-radius: 5px;
-    background-color: white;
+    left: 5px;
+    top: -5px;
+} */
+
+/* Links inside content */
+.informations-content a {
+    color: var(--brand-blue);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px dotted var(--brand-blue);
+    transition: all 0.2s;
 }
 
-img.logo {
-    position: relative;
-    left: 5%;
-    height: 50px;
-    width: 100px;
-    padding: 1%;
-    border-radius: 5px;
-    background-color: white;
+.informations-content a:hover {
+    background-color: var(--brand-blue);
+    color: white;
 }
 
-button.redirect {
-    background-color: rgb(189, 189, 189);
-    padding: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    border-radius: 5px;
+/* --- FORMS & BUTTONS --- */
+
+/* Sleek Modern Button */
+.custom-button {
+    background: var(--brand-blue);
+    color: white;
+    padding: 16px 48px;
+    font-size: 1.1rem;
+    font-family: 'Titillium Web', sans-serif;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    /* Pill shape */
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(14, 39, 72, 0.3);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
-input {
-    position: relative;
-    width: inherit;
-    padding: 5px;
-    background: whitesmoke;
-    border: 2px solid rgba(0, 0, 0, .15);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, .1) inset;
-    border-radius: 5px;
-    font-size: 15px;
-    color: rgb(86, 86, 86);
-
+.custom-button:hover {
+    background-color: var(--brand-yellow);
+    color: var(--brand-blue);
+    transform: translateY(-3px);
+    /* Lift effect */
+    box-shadow: 0 8px 25px rgba(250, 181, 0, 0.4);
 }
 
-textarea {
-    position: relative;
-    width: max-content;
-    padding: 5px;
-    background: whitesmoke;
-    border: 2px solid rgba(0, 0, 0, .15);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, .1) inset;
-    border-radius: 5px;
-    font-size: 15px;
-    color: rgb(86, 86, 86);
-
+.custom-button:active {
+    transform: translateY(-1px);
 }
 
+/* Inputs (Global Reset) */
+input,
+textarea,
 select {
-    position: relative;
-    width: inherit;
-    padding: 5px;
-    background: whitesmoke;
-    border: 2px solid rgba(0, 0, 0, .15);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, .1) inset;
-    border-radius: 5px;
-    font-size: 15px;
-    color: rgb(86, 86, 86);
-
+    width: 100%;
+    padding: 12px 15px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-dark);
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+    /* Fix width issues */
 }
 
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--brand-blue);
+    background: white;
+}
+
+/* --- NAVBAR FIXES --- */
 .navbar {
-    background-color: rgba(14, 39, 72, 255) !important;
-}
-
-.nav-link {
-    border-width: 0;
-    background-color: rgba(14, 39, 72, 255) !important;
+    background-color: var(--brand-blue) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }

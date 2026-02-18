@@ -114,67 +114,260 @@
                               </select>
                             </td>
                             <td>
-                              <button type="button" id="locker_pays" class="btn btn-secondary" onclick="delock('pays')">
-                                <img id="img_pays" src="img/close.png" class="avion" alt="submit"/>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="col">Adresse mail</th>
-                            <td>
-                              <input type="text" id="mail" name="mail" value="${item.mail}" placeholder="insérer votre mail" disabled="disabled" required="required"/>
-                            </td>
-                            <td>
-                              <button type="button" id="locker_mail" class="btn btn-secondary" onclick="delock('mail')">
-                                <img id="img_mail" src="img/close.png" class="avion" alt="submit"/>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="col" <c:if test="${(empty item.genreId) || (item.genreId.genreId > 2) || (item.genreId.genreId != item.genreAttendu.genreId)}">style="background-color:orange"</c:if>>Genre</th>   
-                              <td>
-                                <select id="Genre" name="Genre" disabled="disabled" required="required">
-                                <c:if test="${(empty item.genreId) || (item.genreId.genreId <= 0)}"><option value=0 selected="selected">------------------------------------------------</option></c:if>
-                                <c:forEach var="genre" items="${genresList}"><option value="${genre.genreId}" ${(! empty item.genreId) && (genre.genreId == item.genreId.genreId) ? 'selected="selected"' : ''} readonly="readonly">${genre.genreNom}</option>
-                                </c:forEach>
-                              </select>
-                              <br/>
-                              Initial : ${item.genreAttendu.genreNom}
-                            </td>
-                            <td>
-                              <button type="button" id="locker_Genre" class="btn btn-secondary" onclick="delock('Genre')">
-                                <img id="img_Genre" src="img/close.png" class="avion" alt="submit"/>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="col">Numéro de téléphone</th>
-                            <td>
-                              <input id="tel" type="text"name="tel" value="<c:if test="${! empty item.numeroTel}">${item.numeroTel}</c:if>" disabled="disabled" required="required" />
-                              </td>
-                              <td>
-                                <button type="button" id="locker_tel" class="btn btn-secondary" onclick="delock('tel')">
-                                  <img id="img_tel" src="img/close.png" class="avion" alt="submit"/>
-                                </button>
-                              </td>
-                            </tr>
-                            <tr>
-                              <th scope="col"
-                              <c:choose>
-                                <c:when test="${(! empty item.estBoursier) && ((item.estBoursier) && (! item.hasBourseFile()))}">style="background-color:red"</c:when>
-                                <c:when test="${(! empty item.estBoursier) && (item.estBoursier)}">style="background-color:orange"</c:when>
-                              </c:choose>>Êtes-vous boursier ?</th>
-                            <td>
-                              <select name="boursier" id="boursier" disabled="disabled" required="required">
-                                <c:if test="${(empty item.estBoursier)}"><option value="null" ${empty item.estBoursier ? 'selected="selected"' : ''}>---</option></c:if>
-                                <option value="true" ${item.estBoursier == 'true' ? 'selected="selected"' : ''}>Oui</option>
-                                <option value="false" ${item.estBoursier == 'false' ? 'selected="selected"' : ''}>Non</option>                                                       
-                              </select>
-                              <c:choose>
-                                <c:when test="${item.estBoursier && (! item.hasBourseFile())}">
-                                  <button type="submit" class="btn btn-danger" disabled="disabled">
-                                    Preuve manquante
+                              <button type="button" id="locker_pays" class="btn btn-secondary" onclick="delock('
+                                        pays')">
+                                        <img id="img_pays" src="img/close.png" class="avion" alt="submit" />
+                                        </button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Adresse mail</th>
+                                <td>
+                                  <input type="text" id="mail" name="mail" value="${item.mail}"
+                                    placeholder="insérer votre mail" disabled="disabled" required="required" />
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_mail" class="btn btn-secondary"
+                                    onclick="delock('mail')">
+                                    <img id="img_mail" src="img/close.png" class="avion" alt="submit" />
                                   </button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="col" <c:if
+                                  test="${(empty item.genreId) || (item.genreId.genreId > 2) || (item.genreId.genreId != item.genreAttendu.genreId)}">
+                                  style="background-color:orange"</c:if>>Genre</th>
+                                <td>
+                                  <select id="Genre" name="Genre" disabled="disabled" required="required">
+                                    <c:if test="${(empty item.genreId) || (item.genreId.genreId <= 0)}">
+                                      <option value=0 selected="selected">
+                                        ------------------------------------------------</option>
+                                    </c:if>
+                                    <c:forEach var="genre" items="${genresList}">
+                                      <option value="${genre.genreId}" ${(! empty item.genreId) &&
+                                        (genre.genreId==item.genreId.genreId) ? 'selected="selected"' : '' }
+                                        readonly="readonly">${genre.genreNom}</option>
+                                    </c:forEach>
+                                  </select>
+                                  <br />
+                                  Initial : ${item.genreAttendu.genreNom}
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_Genre" class="btn btn-secondary"
+                                    onclick="delock('Genre')">
+                                    <img id="img_Genre" src="img/close.png" class="avion" alt="submit" />
+                                  </button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Numéro de téléphone</th>
+                                <td>
+                                  <input id="tel" type="text" name="tel" value="${item.numeroTel}" disabled="disabled"
+                                    required="required" />
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_tel" class="btn btn-secondary"
+                                    onclick="delock('tel')">
+                                    <img id="img_tel" src="img/close.png" class="avion" alt="submit" />
+                                  </button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Deuxième numéro de téléphone</th>
+                                <td>
+                                  <input id="tel2" type="text" name="tel2" value="${item.tel2}" disabled="disabled" />
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_tel2" class="btn btn-secondary"
+                                    onclick="delock('tel2')">
+                                    <img id="img_tel2" src="img/close.png" class="avion" alt="submit" />
+                                  </button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Distance</th>
+                                <td>
+                                  <input id="distance" type="number" name="distance" value="${item.distance}"
+                                    disabled="disabled" />
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_distance" class="btn btn-secondary"
+                                    onclick="delock('distance')">
+                                    <img id="img_distance" src="img/close.png" class="avion" alt="submit" />
+                                  </button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Rang</th>
+                                <td>
+                                  <select id="rang" name="rang" disabled="disabled">
+                                    <option value=0 ${item.rang==0 ? 'selected="selected"' : '' }>
+                                      ------------------------------------------------</option>
+                                    <option value=1 ${item.rang==1 ? 'selected="selected"' : '' }>1</option>
+                                    <option value=2 ${item.rang==2 ? 'selected="selected"' : '' }>2</option>
+                                    <option value=3 ${item.rang==3 ? 'selected="selected"' : '' }>3</option>
+                                    <option value=4 ${item.rang==4 ? 'selected="selected"' : '' }>4</option>
+                                  </select>
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_rang" class="btn btn-secondary"
+                                    onclick="delock('rang')">
+                                    <img id="img_rang" src="img/close.png" class="avion" alt="submit" />
+                                  </button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="col">International</th>
+                                <td>
+                                  <select name="international" id="international" disabled="disabled">
+                                    <c:if test="${empty item.international}">
+                                      <option value="null" selected="selected">---</option>
+                                    </c:if>
+                                    <option value="true" ${item.international=='true' ? 'selected="selected"' : '' }>Oui
+                                    </option>
+                                    <option value="false" ${item.international=='false' ? 'selected="selected"' : '' }>
+                                      Non</option>
+                                  </select>
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_international" class="btn btn-secondary"
+                                    onclick="delock('international')">
+                                    <img id="img_international" src="img/close.png" class="avion" alt="submit" />
+                                  </button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="col" <c:choose>
+                                  <c:when
+                                    test="${(! empty item.estBoursier) && ((item.estBoursier) && (! item.hasBourseFile()))}">
+                                    style="background-color:red"</c:when>
+                                  <c:when test="${(! empty item.estBoursier) && (item.estBoursier)}">
+                                    style="background-color:orange"</c:when>
+                                  </c:choose>>Êtes-vous boursier ?
+                                </th>
+                                <td>
+                                  <select name="boursier" id="boursier" disabled="disabled" required="required">
+                                    <c:if test="${(empty item.estBoursier)}">
+                                      <option value="null" ${empty item.estBoursier ? 'selected="selected"' : '' }>---
+                                      </option>
+                                    </c:if>
+                                    <option value="true" ${item.estBoursier=='true' ? 'selected="selected"' : '' }>Oui
+                                    </option>
+                                    <option value="false" ${item.estBoursier=='false' ? 'selected="selected"' : '' }>Non
+                                    </option>
+                                  </select>
+                                  <c:choose>
+                                    <c:when test="${item.estBoursier && (! item.hasBourseFile())}">
+                                      <button type="submit" class="btn btn-danger" disabled="disabled">
+                                        Preuve manquante
+                                      </button>
+                                    </c:when>
+                                    <c:when test="${item.estBoursier}">
+                                      <button formaction="telechargerBourse.do" type="submit" id="telechargement"
+                                        class="btn btn-primary">
+                                        télécharger preuve <img id="img_tel" src="img/export.png" class="icon"
+                                          alt="download proof" />
+                                      </button>
+                                    </c:when>
+                                  </c:choose>
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_boursier" class="btn btn-secondary"
+                                    onclick="delock('boursier')">
+                                    <img id="img_boursier" src="img/close.png" class="avion" alt="submit" />
+                                  </button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Préférence logement</th>
+                                <td>
+                                  <select id="souhait" name="Souhait" <c:if test="${item.estValide}">
+                                    disabled="disabled"</c:if> required="required">
+                                    <option value=0 ${(empty item.souhaitId) || (item.souhaitId.souhaitId <=0)
+                                      ? 'selected="selected"' : '' } readonly="readonly">
+                                      ------------------------------------------------</option>
+                                    <c:forEach var="souhait" items="${souhaitsList}">
+                                      <option value="${souhait.souhaitId}" ${(! empty item.souhaitId) &&
+                                        (souhait.souhaitId==item.souhaitId.souhaitId) ? 'selected="selected"' : '' }
+                                        readonly="readonly">${souhait.souhaitType}</option>
+                                    </c:forEach>
+                                  </select>
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_souhait" class="btn btn-secondary"
+                                    onclick="delock('souhait')">
+                                    <img id="img_souhait" src="img/close.png" class="avion" alt="submit" />
+                                  </button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Avez-vous besoin de dispositions particulières<br />(pmr, traitement
+                                  médical...) ?</th>
+                                <td>
+                                  <select name="pmr" id="pmr" disabled="disabled" required="required">
+                                    <c:if test="${empty item.estPmr}">
+                                      <option value="null" selected="selected">---</option>
+                                    </c:if>
+                                    <option value="true" ${item.estPmr=='true' ? 'selected="selected"' : '' }>Oui
+                                    </option>
+                                    <option value="false" ${item.estPmr=='false' ? 'selected="selected"' : '' }>Non
+                                    </option>
+                                  </select>
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_pmr" class="btn btn-secondary"
+                                    onclick="delock('pmr')">
+                                    <img id="img_pmr" src="img/close.png" class="avion" alt="submit" />
+                                  </button>
+                                </td>
+                              <tr>
+                                <th scope="col" style="color:blue">Commentaire Eleve</th>
+                                <td class="infoSupplementaires" name="infoSupplementaires" style="color:blue">
+                                  ${item.commentairesEleve}</td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <th scope="col" style="color:red">Commentaire Mission Logement<br />(obligatoire en cas
+                                  de refus)<br />(sera transmis à l'étudiant en cas de refus du dossier)</th>
+                                <td>
+                                  <textarea class="commentairesVe" cols="40" rows="5" name="commentairesVe"
+                                    id="commentairesVe" disabled="disabled">${item.commentairesVe}</textarea>
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_commentairesVe" class="btn btn-secondary"
+                                    onclick="delock('commentairesVe')">
+                                    <img id="img_commentairesVe" src="img/close.png" class="avion" alt="submit" />
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="container mt-4 mb-4 text-center">
+                          <div class="row justify-content-center">
+                            <div class="col-md-10">
+                              <input type="hidden" name="id" value="${item.formulaireId}" />
+                              <input type="hidden" name="personneId" value="${item.personneId.personneId}" />
+                              <input type="hidden" name="connexionId" value="${connexionId}" />
+                              <c:choose>
+                                <c:when test="${item.estConforme}">
+                                  <p>Le formulaire à déjà été validé</p>
+                                  <c:if test="${!empty item.lastTraitement}">
+                                    <p>Validé par ${item.lastTraitement.personneId.prenom}
+                                      ${item.lastTraitement.personneId.nom} le
+                                      <fmt:formatDate value="${item.lastTraitement.dateTraitement}"
+                                        pattern="dd/MM/yyyy HH:mm" />
+                                    </p>
+                                  </c:if>
+                                  <c:if test="${empty item.lastTraitement and !empty item.assistant}">
+                                    <p>Validé par ${item.assistant.prenom} ${item.assistant.nom}</p>
+                                  </c:if>
+                                  <c:if test="${(! empty connexion) && (connexion.isAdmin())}">
+                                    <button onclick="openForm('formVe')" formaction="EnregistrerFormVe.do" type="submit"
+                                      name="enregistrer" class="btn btn-primary mr-3" value="enregistrer">
+                                      Forcer la sauvegarde <img src="img/save.png" class="icon" alt="save" />
+                                    </button>
+                                  </c:if>
                                 </c:when>
                                 <c:when test="${item.estBoursier}">
                                   <button formaction="telechargerBourse.do" type="submit" id="telechargement" class="btn btn-primary">
@@ -280,6 +473,7 @@
                     </div>
                   </form> 
                 </div>
+
               </div>
             </div>
           </div>
