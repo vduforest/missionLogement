@@ -185,58 +185,6 @@
                                 </td>
                               </tr>
                               <tr>
-                                <th scope="col">Distance</th>
-                                <td>
-                                  <input id="distance" type="number" name="distance" value="${item.distance}"
-                                    disabled="disabled" />
-                                </td>
-                                <td>
-                                  <button type="button" id="locker_distance" class="btn btn-secondary"
-                                    onclick="delock('distance')">
-                                    <img id="img_distance" src="img/close.png" class="avion" alt="submit" />
-                                  </button>
-                                </td>
-                              </tr>
-                              <tr>
-                                <th scope="col">Rang</th>
-                                <td>
-                                  <select id="rang" name="rang" disabled="disabled">
-                                    <option value=0 ${item.rang==0 ? 'selected="selected"' : '' }>
-                                      ------------------------------------------------</option>
-                                    <option value=1 ${item.rang==1 ? 'selected="selected"' : '' }>1</option>
-                                    <option value=2 ${item.rang==2 ? 'selected="selected"' : '' }>2</option>
-                                    <option value=3 ${item.rang==3 ? 'selected="selected"' : '' }>3</option>
-                                    <option value=4 ${item.rang==4 ? 'selected="selected"' : '' }>4</option>
-                                  </select>
-                                </td>
-                                <td>
-                                  <button type="button" id="locker_rang" class="btn btn-secondary"
-                                    onclick="delock('rang')">
-                                    <img id="img_rang" src="img/close.png" class="avion" alt="submit" />
-                                  </button>
-                                </td>
-                              </tr>
-                              <tr>
-                                <th scope="col">International</th>
-                                <td>
-                                  <select name="international" id="international" disabled="disabled">
-                                    <c:if test="${empty item.international}">
-                                      <option value="null" selected="selected">---</option>
-                                    </c:if>
-                                    <option value="true" ${item.international=='true' ? 'selected="selected"' : '' }>Oui
-                                    </option>
-                                    <option value="false" ${item.international=='false' ? 'selected="selected"' : '' }>
-                                      Non</option>
-                                  </select>
-                                </td>
-                                <td>
-                                  <button type="button" id="locker_international" class="btn btn-secondary"
-                                    onclick="delock('international')">
-                                    <img id="img_international" src="img/close.png" class="avion" alt="submit" />
-                                  </button>
-                                </td>
-                              </tr>
-                              <tr>
                                 <th scope="col" <c:choose>
                                   <c:when
                                     test="${(! empty item.estBoursier) && ((item.estBoursier) && (! item.hasBourseFile()))}">
@@ -340,96 +288,62 @@
                                   </button>
                                 </td>
                               </tr>
+                              <tr>
+                                <th scope="col">Distance</th>
+                                <td>
+                                  <input id="distance" type="number" name="distance" value="${item.distance}"
+                                    disabled="disabled" />
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_distance" class="btn btn-secondary"
+                                    onclick="delock('distance')">
+                                    <img id="img_distance" src="img/close.png" class="avion" alt="submit" />
+                                  </button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="col">Rang</th>
+                                <td>
+                                  <select id="rang" name="rang" disabled="disabled">
+                                    <option value=0 ${item.rang==0 ? 'selected="selected"' : '' }>
+                                      ------------------------------------------------</option>
+                                    <option value=1 ${item.rang==1 ? 'selected="selected"' : '' }>1</option>
+                                    <option value=2 ${item.rang==2 ? 'selected="selected"' : '' }>2</option>
+                                    <option value=3 ${item.rang==3 ? 'selected="selected"' : '' }>3</option>
+                                    <option value=4 ${item.rang==4 ? 'selected="selected"' : '' }>4</option>
+                                  </select>
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_rang" class="btn btn-secondary"
+                                    onclick="delock('rang')">
+                                    <img id="img_rang" src="img/close.png" class="avion" alt="submit" />
+                                  </button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th scope="col">International</th>
+                                <td>
+                                  <select name="international" id="international" disabled="disabled">
+                                    <c:if test="${empty item.international}">
+                                      <option value="null" selected="selected">---</option>
+                                    </c:if>
+                                    <option value="true" ${item.international=='true' ? 'selected="selected"' : '' }>Oui
+                                    </option>
+                                    <option value="false" ${item.international=='false' ? 'selected="selected"' : '' }>
+                                      Non</option>
+                                  </select>
+                                </td>
+                                <td>
+                                  <button type="button" id="locker_international" class="btn btn-secondary"
+                                    onclick="delock('international')">
+                                    <img id="img_international" src="img/close.png" class="avion" alt="submit" />
+                                  </button>
+                                </td>
+                              </tr>
                             </tbody>
                           </table>
                         </div>
-                        <div class="container mt-4 mb-4 text-center">
-                          <div class="row justify-content-center">
-                            <div class="col-md-10">
-                              <input type="hidden" name="id" value="${item.formulaireId}" />
-                              <input type="hidden" name="personneId" value="${item.personneId.personneId}" />
-                              <input type="hidden" name="connexionId" value="${connexionId}" />
-                              <c:choose>
-                                <c:when test="${item.estConforme}">
-                                  <p>Le formulaire à déjà été validé</p>
-                                  <c:if test="${!empty item.lastTraitement}">
-                                    <p>Validé par ${item.lastTraitement.personneId.prenom}
-                                      ${item.lastTraitement.personneId.nom} le
-                                      <fmt:formatDate value="${item.lastTraitement.dateTraitement}"
-                                        pattern="dd/MM/yyyy HH:mm" />
-                                    </p>
-                                  </c:if>
-                                  <c:if test="${empty item.lastTraitement and !empty item.assistant}">
-                                    <p>Validé par ${item.assistant.prenom} ${item.assistant.nom}</p>
-                                  </c:if>
-                                  <c:if test="${(! empty connexion) && (connexion.isAdmin())}">
-                                    <button onclick="openForm('formVe')" formaction="EnregistrerFormVe.do" type="submit"
-                                      name="enregistrer" class="btn btn-primary mr-3" value="enregistrer">
-                                      Forcer la sauvegarde <img src="img/save.png" class="icon" alt="save" />
-                                    </button>
-                                  </c:if>
-                                </c:when>
-                                <c:when test="${item.estBoursier}">
-                                  <button formaction="telechargerBourse.do" type="submit" id="telechargement" class="btn btn-primary">
-                                    télécharger preuve <img id="img_tel" src="img/export.png" class="icon" alt="download proof"/>
-                                  </button>
-                                </c:when>
-                              </c:choose>
-                            </td>
-                            <td>
-                              <button type="button" id="locker_boursier" class="btn btn-secondary" onclick="delock('boursier')">
-                                <img id="img_boursier" src="img/close.png" class="avion" alt="submit"/>
-                              </button>
-                            </td>   
-                          </tr> 
-                          <tr>
-                            <th scope="col">Préférence logement</th>
-                            <td>
-                              <select id="souhait" name="Souhait"<c:if test="${item.estValide}"> disabled="disabled"</c:if> required="required">
-                                <option value=0 ${(empty item.souhaitId) || (item.souhaitId.souhaitId <=0) ? 'selected="selected"' : ''} readonly="readonly">------------------------------------------------</option>
-                                <c:forEach var="souhait" items="${souhaitsList}"><option value="${souhait.souhaitId}" ${(! empty item.souhaitId) && (souhait.souhaitId == item.souhaitId.souhaitId) ? 'selected="selected"' : ''} readonly="readonly">${souhait.souhaitType}</option>
-                                </c:forEach>
-                              </select> 
-                            </td>
-                            <td>
-                              <button type="button" id="locker_souhait" class="btn btn-secondary" onclick="delock('souhait')">
-                                <img id="img_souhait" src="img/close.png" class="avion" alt="submit"/>
-                              </button>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="col">Avez-vous besoin de dispositions particulières<br/>(pmr, traitement médical...) ?</th>
-                            <td>
-                              <select name="pmr" id="pmr" disabled="disabled" required="required">
-                                <c:if test="${empty item.estPmr}"><option value="null" selected="selected">---</option></c:if>
-                                <option value="true" ${item.estPmr == 'true' ? 'selected="selected"' : ''}>Oui</option>
-                                <option value="false" ${item.estPmr == 'false' ? 'selected="selected"' : ''}>Non</option>                                                       
-                              </select>
-                            </td>
-                            <td>
-                              <button type="button" id="locker_pmr" class="btn btn-secondary" onclick="delock('pmr')">
-                                <img id="img_pmr" src="img/close.png" class="avion" alt="submit"/>
-                              </button>
-                            </td>
-                          <tr>
-                            <th scope="col" style="color:blue">Commentaire Eleve</th>
-                            <td class="infoSupplementaires" name="infoSupplementaires" style="color:blue">${item.commentairesEleve}</td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <th scope="col" style="color:red">Commentaire Mission Logement<br/>(obligatoire en cas de refus)<br/>(sera transmis à l'étudiant en cas de refus du dossier)</th>
-                            <td> 
-                              <textarea class="commentairesVe" cols="40" rows="5" name="commentairesVe" id="commentairesVe" disabled="disabled" >${item.commentairesVe}</textarea> 
-                            </td>
-                            <td>
-                              <button type="button" id="locker_commentairesVe" class="btn btn-secondary" onclick="delock('commentairesVe')">
-                                <img id="img_commentairesVe" src="img/close.png" class="avion" alt="submit"/>
-                              </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>  
+                         
                     <div class="container mt-4 mb-4 text-center">
                       <div class="row justify-content-center">
                         <div class="col-md-10">
@@ -463,8 +377,8 @@
                               </button>
 
                               <button onclick="messageCommVide('formVe')" 
-                                      formaction="RefuserFormVe.do" type="submit" name="refuser" class="btn btn-danger" value="refuser" <c:if test="${(! item.estconforme) || (empty item.commentairesVe)}">disabled="disabled"</c:if>>
-                                        Refuser <img src="img/refuse.png" class="icon" alt="Refuser"/>
+                                      formaction="RefuserFormVe.do" type="submit" name="refuser" class="btn btn-danger" value="refuser">
+                                        Non conforme <img src="img/refuse.png" class="icon" alt="Refuser"/>
                                       </button>
                             </c:otherwise>
                           </c:choose>

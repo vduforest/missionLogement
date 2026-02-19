@@ -50,6 +50,7 @@ public class MailService {
      */
     public void sendFirstConnectionMail(String token, String recipient) {
         String subject = "Première connexion à la plateforme logement";
+        //String link = 
         String link = "http://dtest-mlogement.ec-nantes.fr:8080/MissionLogement_test/creationcompte.do?token=" + token;
 
         String body = getConfigText(MSGPREMIERCONTACT);
@@ -170,10 +171,10 @@ public class MailService {
     public void sendEmail(String recipient, String subject, String body) {
 
         final String mailExpediteur = "noreply@ec-nantes.fr";
-        final String usernameSMTP = "victor.duforest@eleves.ec-nantes.fr";
-        final String passwordSMTP = "";
+        final String usernameSMTP = "smtp.missionlogement";
+        final String passwordSMTP = "u6vSB@qAm49t2Gt";
 
-        final String host = "smtps.nomade.ec-nantes.fr";
+        final String host = "smtps.ec-nantes.fr";
 
         String port = "587";
 

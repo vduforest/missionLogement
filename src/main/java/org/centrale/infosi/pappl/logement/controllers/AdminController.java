@@ -351,11 +351,15 @@ public class AdminController {
 
             File Fichier = Util.getFileFromRequest(request, "file");
             try {
+                Util.EcritureErreurImport("TEST TRY");
                 importerCSV(Fichier, noms, prenoms, numsScei, genres, villes, datesNaissance, codePostaux, pays, mails);
+                Util.EcritureErreurImport("TEST IMPORT CSV");
                 for (int k = 0; k < noms.size(); k++) {
                     //on vérifie que l'élève n'existe pas déja en comparant son num scei
+                    Util.EcritureErreurImport("TEST BOUCLEFOR");
                     Collection<Formulaire> listeFormNumScei = formulaireRepository.findByNumeroScei(numsScei.get(k));
                     if (listeFormNumScei.isEmpty()) {
+                        Util.EcritureErreurImport("TEST ISEMPTY");
                         Personne eleve = personneRepository.createEleve(noms.get(k), prenoms.get(k));
                         if (eleve != null) {
                             formulaireRepository.createNewForm(

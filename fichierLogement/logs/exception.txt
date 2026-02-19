@@ -26,3 +26,32 @@
 2026-01-21 17:28:49 - Creation B Hortense
 2026-01-21 17:28:49 - Creation A Ian- Frederick
 2026-01-21 17:28:49 - Import terminé !
+2026-02-19 08:13:30 - Test_pappl_vague2_2pers.csv : Lecture de l'entête
+2026-02-19 08:13:30 - Test_pappl_vague2_2pers.csv : Lecture des données
+2026-02-19 08:13:30 - Le fichier Test_pappl_vague2_2pers.csv a été lu. 3 lignes analysées.
+2026-02-19 08:13:30 - Import terminé !
+2026-02-19 08:22:57 - Import terminé !
+2026-02-19 08:38:10 - TEST TRY
+2026-02-19 08:38:10 - Test_pappl_vague1_2pers.csv : Lecture de l'entête
+2026-02-19 08:38:10 - Test_pappl_vague1_2pers.csv : Lecture des données
+2026-02-19 08:38:10 - Le fichier Test_pappl_vague1_2pers.csv a été lu. 3 lignes analysées.
+2026-02-19 08:38:10 - TEST IMPORT CSV
+2026-02-19 08:38:10 - TEST BOUCLEFOR
+2026-02-19 08:38:10 - TEST ISEMPTY
+2026-02-19 08:38:10 - Creation B V
+2026-02-19 08:38:10 - TEST BOUCLEFOR
+2026-02-19 08:38:10 - TEST ISEMPTY
+2026-02-19 08:38:10 - Creation A X
+2026-02-19 08:38:10 - Import terminé !
+2026-02-19 09:09:51 - TEST TRY
+2026-02-19 09:09:51 - Test_pappl_vague2_2pers.csv : Lecture de l'entête
+2026-02-19 09:09:51 - Test_pappl_vague2_2pers.csv : Lecture des données
+2026-02-19 09:09:51 - Le fichier Test_pappl_vague2_2pers.csv a été lu. 3 lignes analysées.
+2026-02-19 09:09:51 - TEST IMPORT CSV
+2026-02-19 09:09:51 - TEST BOUCLEFOR
+2026-02-19 09:09:51 - TEST ISEMPTY
+2026-02-19 09:09:52 - Creation B Victor
+2026-02-19 09:09:52 - TEST BOUCLEFOR
+2026-02-19 09:09:52 - TEST ISEMPTY
+2026-02-19 09:09:52 - Creation A Raph
+2026-02-19 09:09:52 - Import terminé !

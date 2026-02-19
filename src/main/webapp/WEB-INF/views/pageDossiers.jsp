@@ -62,7 +62,6 @@
                   <th scope="col" class="text-center">Prenom</th>
                   <th scope="col" class="text-center">Etat</th>
                   <th scope="col" class="text-center">Informations</th>
-                  <th scope="col" class="text-center">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -93,19 +92,19 @@
                           <span class="text-danger">Preuve manquante</span><br />
                         </c:if>
                       </c:if>
-                      <c:if test="${(! empty formulaire.estPmr) && (formulaire.estPmr)}">NÃ©cessite amÃ©nagement<br />
+                      <c:if test="${(! empty formulaire.estPmr) && (formulaire.estPmr)}">Nécessite aménagement<br />
                       </c:if>
                       <c:if test="${(! empty formulaire.paysId) && (formulaire.paysId.paysId != 1)}">Localisation : ${formulaire.paysId.paysNom}<br /></c:if>
                       <c:if test="${(empty formulaire.dateDeNaissance)}"><span class="text-danger">Date de naissance manquante</span><br /></c:if>
-                      <c:if test="${(empty formulaire.genreId)}"><span class="text-danger">Genre non indiquÃ©</span><br /></c:if>
-                      <c:if test="${(empty formulaire.mail)}"><span class="text-danger">Adresse mail non indiquÃ©</span><br /></c:if>
-                      <c:if test="${(empty formulaire.numeroTel)}"><span class="text-danger">NumÃ©ro de tÃ©lÃ©phone non indiquÃ©</span><br /></c:if>
+                      <c:if test="${(empty formulaire.genreId)}"><span class="text-danger">Genre non indiqué</span><br /></c:if>
+                      <c:if test="${(empty formulaire.mail)}"><span class="text-danger">Adresse mail non indiqué</span><br /></c:if>
+                      <c:if test="${(empty formulaire.numeroTel)}"><span class="text-danger">Numéro de téléphone non indiqué</span><br /></c:if>
                       <c:if test="${(empty formulaire.ville)}"><span class="text-danger">Ville manquante</span><br /></c:if>
                       <c:if test="${(empty formulaire.paysId)}"><span class="text-danger">Pays manquant</span><br />
                       </c:if>
                       <c:if test="${(empty formulaire.estBoursier)}"><span class="text-danger">Statut boursier incorrect</span><br /></c:if>
                       <c:if test="${(empty formulaire.estPmr)}"><span class="text-danger">Statut PMR incorrect</span><br /></c:if>
-                      <c:if test="${(empty formulaire.souhaitId)}"><span class="text-danger">Souhait non formulÃ©</span><br /></c:if>
+                      <c:if test="${(empty formulaire.souhaitId)}"><span class="text-danger">Souhait non formulé</span><br /></c:if>
                       <c:if test="${(! empty formulaire.dateValidation)}"><span class="text-primary">Soumis le : <fmt:formatDate value='${formulaire.dateValidation}' pattern='dd/MM/yyyy HH:mm:ss' /></span><br /></c:if>
                     </td>
                     <td class="text-center">
@@ -118,19 +117,6 @@
                               <img src="img/show.png" alt="show" class="icon" />
                             </button>
                           </form>
-                        </div>
-                        <div class="col-md-6">
-                          <form action="AnnulerPwd2.do" id="check_${formulaire.formulaireId}" method="POST">
-                            <input type="hidden" name="connexionId" value="${connexionId}" />
-                            <input type="hidden" name="formulaireId" value="${formulaire.formulaireId}" />
-                            <input type="hidden" name="id" value="${formulaire.formulaireId}" />
-                            <button name="reinitialiser" class="btn btn-danger" onclick="return checkSubmit('check_${formulaire.formulaireId}', 'RÃ©initialiser le mot de passe ?');">
-                              <img src="img/return.png" class="icon" alt="Reinitialiser" />
-                            </button>
-                          </form>
-                          <c:if test="${(! empty connexion) && (connexion.isAdmin())}">
-                            ${formulaire.personneId.login}
-                          </c:if>
                         </div>
                       </div>
                     </td>
