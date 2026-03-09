@@ -156,6 +156,12 @@ h2 {
     transform: translateY(-1px);
 }
 
+.custom-button:focus {
+    outline: 3px solid var(--text-dark);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(250, 181, 0, 0.5);
+}
+
 /* Inputs (Global Reset) */
 input,
 textarea,

@@ -77,6 +77,12 @@ button:hover {
     box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
 }
 
+button:focus {
+    outline: 3px solid #0e2748;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.4);
+}
+
 /* Alerts and Messages */
 #messageAttention {
     margin: 0 0 20px;

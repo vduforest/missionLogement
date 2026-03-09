@@ -71,7 +71,11 @@ button.exit-btn:hover img.sortie {
 }
 
 /* enlève le contour focus */
+/* RESTORE FOCUS INDICATOR */
 button.exit-btn:focus {
-  outline: none;
-  box-shadow: none;
+  outline: 3px solid #fbbf24;
+  /* High contrast warning yellow */
+  outline-offset: 2px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
 }
