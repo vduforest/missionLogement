@@ -608,9 +608,20 @@ public class FormulaireController {
         if (connection != null) {
             String formulaireIdStr = Util.getStringFromRequest(request, "id");
             int formulaireId = getIntFromString(formulaireIdStr);
-
+            //ikram
+            Formulaire formulaireAvant = formulaireRepository.getReferenceById(formulaireId);
+            String ancienCommentaire = formulaireAvant.getCommentairesInternes();
+            String nouveauCommentaire = request.getParameter("commentairesInternes");
+            //fin
             Util.enregistrementFormulaire(request, formulaireId, null, formulaireRepository);
-
+            //ikram
+            if (nouveauCommentaire != null && !nouveauCommentaire.equals(ancienCommentaire)) {
+            // Le texte est différent : l'Assistant 2 a écrit quelque chose.
+            // On recharge l'objet et on met à jour l'auteur.
+            Formulaire formulaireAPresent = formulaireRepository.getReferenceById(formulaireId);
+            formulaireAPresent.setAssistant(connection.getPersonneId());
+            formulaireRepository.save(formulaireAPresent);
+        }
             // Redirection
             List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
             Collections.sort(forms, Formulaire.getComparator());
