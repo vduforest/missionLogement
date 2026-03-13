@@ -52,10 +52,12 @@
                 </c:if>
 
                 <div class="form-group">
-                  <input type="text" name="myLogin" placeholder="Identifiant" class="form-control custom-input" />
+                    <label for="login">Login</label>
+                  <input type="text" id="login" name="myLogin" placeholder="Identifiant" class="form-control custom-input" />
                 </div>
                 <div class="form-group">
-                  <input type="password" name="myPasswd" placeholder="Mot de passe" class="form-control custom-input" />
+                    <label for="password">Mot de passe</label>
+                  <input type="password" id="password" name="myPasswd" placeholder="Mot de passe" class="form-control custom-input" />
                 </div>
 
                 <button type="submit" class="custom-button">Se connecter</button>

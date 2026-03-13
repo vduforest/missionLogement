@@ -53,7 +53,7 @@
                                             <table class="table table-striped">
                                                 <tbody>
                                                     <tr>
-                                                        <th scope="col">Nom</th>
+                                                        <th scope="col"><label for ="nom">Nom</label></th>
                                                         <td>
                                                             <input type="hidden" name="numSCEI" value="${item.numeroScei}" />
                                                             <input type="text" id="nom" name="nom" value="${item.personneId.nom}"
@@ -68,7 +68,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="col">Prenom</th>
+                                                        <th scope="col"><label for ="prenom">Prenom</label></th>
                                                         <td>
                                                             <input type="text" id="prenom" name="prenom" value="${item.personneId.prenom}"
                                                                    disabled="disabled" required="required" />
@@ -81,7 +81,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="col">Date de naissance (DD/MM/YYYY)</th>
+                                                        <th scope="col"><label for ="dateNaissance">Date de Naissance(XX/MM/YYYY)</label>)</th>
                                                         <td>
                                                             <fmt:formatDate value="${item.dateDeNaissance}" pattern="dd/MM/yyyy"
                                                                             var="formattedDate" />
@@ -96,7 +96,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="col">Ville</th>
+                                                        <th scope="col"><label for ="ville">Ville</label></th>
                                                         <td>
                                                             <input type="text" id="ville" name="ville" value="${item.ville}" disabled="disabled"
                                                                    required="required" />
@@ -109,7 +109,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="col">Code Postal</th>
+                                                        <th scope="col"><label for ="codePostal">Code Postal</label></th>
                                                         <td>
                                                             <input type="text" id="codePostal" name="codePostal" value="${item.codePostal}"
                                                                    disabled="disabled" />
@@ -140,7 +140,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="col">Adresse mail</th>
+                                                        <th scope="col"><label for ="mail">Mail</label></th>
                                                         <td>
                                                             <input type="text" id="mail" name="mail" value="${item.mail}"
                                                                    placeholder="insérer votre mail" disabled="disabled" required="required" />
@@ -179,7 +179,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="col">Numéro de téléphone</th>
+                                                        <th scope="col"><label for ="tel">Numéro de téléphone</label></th>
                                                         <td>
                                                             <input id="tel" type="text" name="tel" value="${item.numeroTel}" disabled="disabled"
                                                                    required="required" />
@@ -192,7 +192,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="col">Deuxième numéro de téléphone</th>
+                                                        <th scope="col"><label for ="tel2">Deuxième numéro de téléphone</label></th>
                                                         <td>
                                                             <input id="tel2" type="text" name="tel2" value="${item.tel2}" disabled="disabled" />
                                                         </td>
@@ -204,7 +204,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="col">Distance</th>
+                                                        <th scope="col"><label for ="distance">Distance</label> </th>
                                                         <td>
                                                             <input id="distance" type="number" name="distance" value="${item.distance}"
                                                                    disabled="disabled" />
@@ -217,7 +217,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="col">Rang</th>
+                                                        <th scope="col"><label for ="rang">Rang</label></th>
                                                         <td>
                                                             <select id="rang" name="rang" disabled="disabled">
                                                                 <option value=0 ${item.rang==0 ? 'selected="selected"' : '' }>
@@ -236,7 +236,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="col">International</th>
+                                                        <th scope="col"><label for ="international">International</label></th>
                                                         <td>
                                                             <select name="international" id="international" disabled="disabled">
                                                                 <c:if test="${empty item.international}">
@@ -298,7 +298,7 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="col">Préférence logement</th>
+                                                        <th scope="col"><label for ="souhait">Préférence logement</label></th>
                                                         <td>
                                                             <select id="souhait" name="Souhait" <c:if test="${item.estValide}">
                                                                     disabled="disabled"</c:if> required="required">
@@ -320,8 +320,8 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="col">Avez-vous besoin de dispositions particulières<br />(pmr, traitement
-                                                            médical...) ?</th>
+                                                        <th scope="col"><label for ="pmr">Avez-vous besoin de dispositions particulières<br />(pmr, traitement
+                                                            médical...) ?</label></th>
                                                         <td>
                                                             <select name="pmr" id="pmr" disabled="disabled" required="required">
                                                                 <c:if test="${empty item.estPmr}">
@@ -340,8 +340,8 @@
                                                             </button>
                                                         </td>
                                                     <tr>
-                                                        <th scope="col" style="color:blue">Commentaire Eleve</th>
-                                                        <td class="infoSupplementaires" name="infoSupplementaires" style="color:blue">
+                                                        <th scope="col" style="color:blue"><label for="comEleve">Commentaire Eleve</label></th>
+                                                        <td class="infoSupplementaires" id="comEleve" name="infoSupplementaires" style="color:blue">
                                                             ${item.commentairesEleve}</td>
                                                         <td></td>
                                                     </tr>
@@ -349,6 +349,7 @@
                                                         <th scope="col" style="color:red">Commentaire Mission Logement<br />(obligatoire en cas
                                                             de refus)<br />(sera transmis à l'étudiant en cas de refus du dossier)</th>
                                                         <td>
+                                                            <label for="commentairesVe"> commentaires Ve</label>
                                                             <textarea class="commentairesVe" cols="40" rows="5" name="commentairesVe"
                                                                       id="commentairesVe" disabled="disabled">${item.commentairesVe}</textarea>
                                                         </td>
@@ -375,6 +376,7 @@
                                                             </span>
                                                         </th>
                                                         <td>
+                                                            <label for="commentairesInternes"> commentaires internes</label>
                                                             <textarea class="form-control" cols="40" rows="4" 
                                                                       name="commentairesInternes" id="commentairesInternes" 
                                                                       style="border: 1px solid green;"
