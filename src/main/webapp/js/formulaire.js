@@ -25,17 +25,25 @@ function verifMail(id1, id2) {
 function delock(id) {
   const img = document.getElementById('img_' + id);
   const imput = document.getElementById(id);
-  const parent = img.parentNode;
+  const parent = img.closest('.btn');
+  const textSpan = document.getElementById('text_locker_' + id);
+
   if (imput.disabled) {
+    // Unlock action
     imput.disabled = false;
     img.src = "img/open.png";
-    parent.classList.remove("btn-secondary");
+    parent.classList.remove("btn-outline-dark", "btn-secondary");
     parent.classList.add("btn-success");
+
+    if (textSpan) textSpan.innerText = "Déverrouillé";
   } else {
+    // Lock action
     imput.disabled = true;
     img.src = "img/close.png";
-    parent.classList.add("btn-secondary");
     parent.classList.remove("btn-success");
+    parent.classList.add("btn-outline-dark");
+
+    if (textSpan) textSpan.innerText = "Verrouillé";
   }
 }
 
@@ -68,16 +76,16 @@ function openForm(id) {
   openRecursive(formVE);
 }
 
-function messageCommVide(id){
-    const comm = document.getElementById("commentairesVe").content;
-    if((comm===null)||(comm.trim()==="")){
-        alert("Vous ne pouvez pas refuser un dossier sans expliquer la raison, veuillez remplir la case de commentaires à transmettre au candidat.");
-        return false;
-    }
-    else{
+function messageCommVide(id) {
+  const comm = document.getElementById("commentairesVe").content;
+  if ((comm === null) || (comm.trim() === "")) {
+    alert("Vous ne pouvez pas refuser un dossier sans expliquer la raison, veuillez remplir la case de commentaires à transmettre au candidat.");
+    return false;
+  }
+  else {
     openForm(id);
     return true;
-    }
+  }
 }
 
 function message() {

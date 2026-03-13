@@ -236,3 +236,17 @@ textarea:focus {
         width: 100%;
     }
 }
+
+/* --- FIX FOR ICONS (ADMIN VIEW) --- */
+button img.avion,
+button img.icon {
+    height: 1.2em;
+    /* Matches the text size nicely */
+    width: auto;
+    vertical-align: middle;
+}
+
+/* Invert lock icon to white when button is green */
+.btn-success img.avion {
+    filter: brightness(0) invert(1);
+}
