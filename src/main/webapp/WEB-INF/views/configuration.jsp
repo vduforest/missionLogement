@@ -25,9 +25,15 @@
               <div class="py-3">
                 <div class="container">
 
-                  <div class="row">
-                    <div class="col-md-12">
-                      <h2 class="">Configuration</h2>
+                  <div class="row mb-2 align-items-end">
+                    <div class="col-md-12 d-flex justify-content-between align-items-center">
+                      <h2 class="m-0">Configuration</h2>
+                      <form method="post" action="configuration.do" class="m-0">
+                        <input type="hidden" name="connexionId" value="${connexionId}" />
+                        <button class="refresh-btn" title="Rafraîchir">
+                          <img src="img/refresh.png" alt="Refresh" class="refresh-icon" /> Rafraîchir
+                        </button>
+                      </form>
                     </div>
                   </div>
 

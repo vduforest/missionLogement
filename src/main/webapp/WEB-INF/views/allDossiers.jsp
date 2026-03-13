@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
@@ -41,14 +42,15 @@
     <!-- Main Section -->
     <div class="py-3">
       <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <h2 class="" style="position:relative">Liste de tous les dossiers
-              <form method="post" action="allDossiers.do" style="position:absolute;right:0px;top:0px">
-                <input type="hidden" name="connexionId" value="${connexionId}" />
-                <button class="btn">Refresh</button>
-              </form>
-            </h2>
+        <div class="row mb-2 align-items-end">
+          <div class="col-md-12 d-flex justify-content-between align-items-center">
+            <h2 class="m-0">Liste de tous les dossiers</h2>
+            <form method="post" action="allDossiers.do" class="m-0">
+              <input type="hidden" name="connexionId" value="${connexionId}" />
+              <button class="refresh-btn" title="Rafraîchir">
+                <img src="img/refresh.png" alt="Refresh" class="refresh-icon" /> Rafraîchir
+              </button>
+            </form>
           </div>
         </div>
         <div class="row">

@@ -29,7 +29,9 @@
                                     <input type="hidden" name="id" value="${item.formulaireId}" />
                                     <input type="hidden" name="personneId" value="${item.personneId.personneId}" />
                                     <input type="hidden" name="formulaireId" value="${item.formulaireId}" />
-                                    <button class="btn">Refresh</button>
+                                    <button class="refresh-btn" title="Rafraîchir">
+                                        <img src="img/refresh.png" alt="Refresh" class="refresh-icon" /> Rafraîchir
+                                    </button>
                                 </form>
                             </h2>
                         </div>
