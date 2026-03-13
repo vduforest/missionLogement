@@ -271,86 +271,9 @@
                                                                     </button>
                                                                 </td>
                                                             </tr>
-                                                            <tr>
-                                                                <th scope="col"><label for="distance">Distance</label>
-                                                                </th>
-                                                                <td>
-                                                                    <input id="distance" type="number" name="distance"
-                                                                        value="${item.distance}" disabled="disabled" />
-                                                                </td>
-                                                                <td class="text-center align-middle">
-                                                                    <button type="button" id="locker_distance"
-                                                                        class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                                        onclick="delock('distance')"
-                                                                        style="gap: 5px; margin:auto; width: 140px;">
-                                                                        <img id="img_distance" src="img/close.png"
-                                                                            class="avion" alt="Verrouillé" />
-                                                                        <span
-                                                                            id="text_locker_distance">Verrouillé</span>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="col"><label for="rang">Rang</label></th>
-                                                                <td>
-                                                                    <select id="rang" name="rang" disabled="disabled">
-                                                                        <option value=0 ${item.rang==0
-                                                                            ? 'selected="selected"' : '' }>
-                                                                            ------------------------------------------------
-                                                                        </option>
-                                                                        <option value=1 ${item.rang==1
-                                                                            ? 'selected="selected"' : '' }>1</option>
-                                                                        <option value=2 ${item.rang==2
-                                                                            ? 'selected="selected"' : '' }>2</option>
-                                                                        <option value=3 ${item.rang==3
-                                                                            ? 'selected="selected"' : '' }>3</option>
-                                                                        <option value=4 ${item.rang==4
-                                                                            ? 'selected="selected"' : '' }>4</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td class="text-center align-middle">
-                                                                    <button type="button" id="locker_rang"
-                                                                        class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                                        onclick="delock('rang')"
-                                                                        style="gap: 5px; margin:auto; width: 140px;">
-                                                                        <img id="img_rang" src="img/close.png"
-                                                                            class="avion" alt="Verrouillé" />
-                                                                        <span id="text_locker_rang">Verrouillé</span>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="col"><label
-                                                                        for="international">International</label></th>
-                                                                <td>
-                                                                    <select name="international" id="international"
-                                                                        disabled="disabled">
-                                                                        <c:if test="${empty item.international}">
-                                                                            <option value="null" selected="selected">---
-                                                                            </option>
-                                                                        </c:if>
-                                                                        <option value="true"
-                                                                            ${item.international=='true'
-                                                                            ? 'selected="selected"' : '' }>Oui
-                                                                        </option>
-                                                                        <option value="false"
-                                                                            ${item.international=='false'
-                                                                            ? 'selected="selected"' : '' }>
-                                                                            Non</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td class="text-center align-middle">
-                                                                    <button type="button" id="locker_international"
-                                                                        class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                                        onclick="delock('international')"
-                                                                        style="gap: 5px; margin:auto; width: 140px;">
-                                                                        <img id="img_international" src="img/close.png"
-                                                                            class="avion" alt="Verrouillé" />
-                                                                        <span
-                                                                            id="text_locker_international">Verrouillé</span>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
+                                                            
+                                                            
+                                                            
                                                             <tr>
                                                                 <th scope="col" <c:choose>
                                                                     <c:when
@@ -481,7 +404,96 @@
                                                                     ${item.commentairesEleve}</td>
                                                                 <td></td>
                                                             </tr>
-                                                            <tr>
+                                                            
+                                                            
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                        <div class="table-responsive mt-5">
+                                            <h4 class="mb-3" style="color: #333;">Informations Administratives</h4>
+                                            <table class="table table-striped">
+                                                <tbody>
+<tr>
+                                                                <th scope="col"><label for="distance">Distance</label>
+                                                                </th>
+                                                                <td>
+                                                                    <input id="distance" type="number" name="distance"
+                                                                        value="${item.distance}" disabled="disabled" />
+                                                                </td>
+                                                                <td class="text-center align-middle">
+                                                                    <button type="button" id="locker_distance"
+                                                                        class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
+                                                                        onclick="delock('distance')"
+                                                                        style="gap: 5px; margin:auto; width: 140px;">
+                                                                        <img id="img_distance" src="img/close.png"
+                                                                            class="avion" alt="Verrouillé" />
+                                                                        <span
+                                                                            id="text_locker_distance">Verrouillé</span>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+<tr>
+                                                                <th scope="col"><label for="rang">Rang</label></th>
+                                                                <td>
+                                                                    <select id="rang" name="rang" disabled="disabled">
+                                                                        <option value=0 ${item.rang==0
+                                                                            ? 'selected="selected"' : '' }>
+                                                                            ------------------------------------------------
+                                                                        </option>
+                                                                        <option value=1 ${item.rang==1
+                                                                            ? 'selected="selected"' : '' }>1</option>
+                                                                        <option value=2 ${item.rang==2
+                                                                            ? 'selected="selected"' : '' }>2</option>
+                                                                        <option value=3 ${item.rang==3
+                                                                            ? 'selected="selected"' : '' }>3</option>
+                                                                        <option value=4 ${item.rang==4
+                                                                            ? 'selected="selected"' : '' }>4</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td class="text-center align-middle">
+                                                                    <button type="button" id="locker_rang"
+                                                                        class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
+                                                                        onclick="delock('rang')"
+                                                                        style="gap: 5px; margin:auto; width: 140px;">
+                                                                        <img id="img_rang" src="img/close.png"
+                                                                            class="avion" alt="Verrouillé" />
+                                                                        <span id="text_locker_rang">Verrouillé</span>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+<tr>
+                                                                <th scope="col"><label
+                                                                        for="international">International</label></th>
+                                                                <td>
+                                                                    <select name="international" id="international"
+                                                                        disabled="disabled">
+                                                                        <c:if test="${empty item.international}">
+                                                                            <option value="null" selected="selected">---
+                                                                            </option>
+                                                                        </c:if>
+                                                                        <option value="true"
+                                                                            ${item.international=='true'
+                                                                            ? 'selected="selected"' : '' }>Oui
+                                                                        </option>
+                                                                        <option value="false"
+                                                                            ${item.international=='false'
+                                                                            ? 'selected="selected"' : '' }>
+                                                                            Non</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td class="text-center align-middle">
+                                                                    <button type="button" id="locker_international"
+                                                                        class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
+                                                                        onclick="delock('international')"
+                                                                        style="gap: 5px; margin:auto; width: 140px;">
+                                                                        <img id="img_international" src="img/close.png"
+                                                                            class="avion" alt="Verrouillé" />
+                                                                        <span
+                                                                            id="text_locker_international">Verrouillé</span>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+<tr>
                                                                 <th scope="col" style="color:red">Commentaire Mission
                                                                     Logement<br />(obligatoire en cas
                                                                     de refus)<br />(sera transmis à l'étudiant en cas de
@@ -504,7 +516,7 @@
                                                                     </button>
                                                                 </td>
                                                             </tr>
-                                                            <tr
+<tr
                                                                 style="background-color: #f8f9fa; border-top: 2px solid #dee2e6;">
                                                                 <th scope="col" style="color:green">
                                                                     Commentaire Interne (Assistants)<br />
@@ -545,9 +557,9 @@
                                                                     </button>
                                                                 </td>
                                                             </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                                 <div class="container mt-4 mb-4 text-center">
                                                     <div class="row justify-content-center">
                                                         <div class="col-md-10">
