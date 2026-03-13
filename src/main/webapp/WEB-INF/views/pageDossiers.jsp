@@ -87,7 +87,21 @@
                           <td class="text-center">${formulaire.numeroScei}</td>
                           <td class="text-center">${formulaire.personneId.nom}</td>
                           <td class="text-center">${formulaire.personneId.prenom}</td>
-                          <td class="text-center">
+                          <c:choose>
+                        <c:when test="${formulaire.estConforme}">
+                          <c:set var="etat" value="traite_complet" />
+                        </c:when>
+                        <c:when test="${(!formulaire.estValide) && (! empty formulaire.commentairesVe)}">
+                          <c:set var="etat" value="dossier_non_conforme" />
+                        </c:when>
+                        <c:when test="${(formulaire.estPmr) || (formulaire.estBoursier) || (formulaire.genreId.genreId!=formulaire.genreAttendu.genreId)}">
+                          <c:set var="etat" value="a_traiter" />
+                        </c:when>
+                        <c:otherwise>
+                          <c:set var="etat" value="non_transmis" />
+                        </c:otherwise>
+                      </c:choose>
+                          <td class="text-center" data-etat="${etat}" data-search="${etat == 'traite_complet' ? 'traite complet' : (etat == 'dossier_non_conforme' ? 'non conforme' : (etat == 'a_traiter' ? 'a traiter' : 'non transmis'))}">
                             <c:choose>
                                <c:when test="${formulaire.estConforme}">
                             <img src="img/coche.png"alt="coche"class="icon"/>
