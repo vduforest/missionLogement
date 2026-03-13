@@ -5,6 +5,7 @@
 --%>
 
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="fr-fr">
   <head>
@@ -12,10 +13,32 @@
     <meta charset="UTF-8"/>
     <link href="css/first_connexion.css" type="text/css" rel="stylesheet"/>
     <link href="bootstrap/css/bootstrap-reboot.min.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <script type="text/javascript" src="js/jquery-3.6.1.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <script type="text/javascript" src="js/errorFirstConnection.js"></script>
+
+    <style>
+      .password-field {
+        position: relative;
+      }
+
+      .password-field input {
+        padding-right: 42px;
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 18px;
+        color: #555;
+        z-index: 2;
+      }
+    </style>
   </head>
   <body>
     <div id="centrage">
@@ -23,7 +46,7 @@
       <div class="row">
         <div class="col-md-12">
           <form action="saveUser.do" method="post" id="form">
-             <input type="hidden" name="token" value="${token}" />
+            <input type="hidden" name="token" value="${token}" />
             <div id="boiteMessageAttention">
               <p id="messageAttention">PENSEZ A NOTER VOTRE IDENTIFIANT ET VOTRE MOT DE PASSE</p>
             </div>
@@ -31,12 +54,13 @@
             <div>
               <p>Votre identification :</p>
             </div>
-              <c:if test="${not empty mySCEI}">
-                <div class="form-group row">
-                    <div class="col-10">
-                        <input type="text" class="form-control" id="myScei" name="myScei" value="${mySCEI}" readonly>
-                    </div>
+
+            <c:if test="${not empty mySCEI}">
+              <div class="form-group row">
+                <div class="col-10">
+                  <input type="text" class="form-control" id="myScei" name="myScei" value="${mySCEI}" readonly>
                 </div>
+              </div>
             </c:if>
 
             <c:if test="${not empty mail}">
@@ -50,6 +74,7 @@
             <p class="space"></p>
             <hr/>
             <p class="space"></p>
+
             <div>
               <p>Créez votre compte :</p>
             </div>
@@ -60,23 +85,38 @@
                        placeholder="Créer un Identifiant" name="myLogin" required="required">
               </div>
             </div>
+
             <p class="space"></p>
+
             <div class="form-group row">
-              <div class="col-10">
+              <div class="col-10 password-field">
                 <input type="password" class="form-control" id="myPassword"
                        placeholder="Définir un mot de passe" name="myPassword" required="required">
+                <i class="bi bi-eye-slash toggle-password"
+                   onclick="togglePassword('myPassword', this)"></i>
               </div>
             </div>
+
             <div class="form-group row">
-              <div class="col-10">
+              <div class="col-10 password-field">
                 <input type="password" class="form-control" id="confMyPassword"
                        placeholder="Confirmer le mot de passe" name="confMyPassword" required="required">
+                <i class="bi bi-eye-slash toggle-password"
+                   onclick="togglePassword('confMyPassword', this)"></i>
               </div>
             </div>
-            <c:if test="${! empty mySCEI}"><input type="hidden" class="form-control" id="mySCEI" name="mySCEI" value="${mySCEI}" disabled></c:if>
-            <c:if test="${! empty mail}"><input type="hidden" class="form-control" id="mail" name="mail" value="${mail}" disabled></c:if>
+
+            <c:if test="${! empty mySCEI}">
+              <input type="hidden" class="form-control" id="mySCEI" name="mySCEI" value="${mySCEI}" disabled>
+            </c:if>
+
+            <c:if test="${! empty mail}">
+              <input type="hidden" class="form-control" id="mail" name="mail" value="${mail}" disabled>
+            </c:if>
+
             <p class="space"></p>
             <button type="submit" class="btn btn-success">Valider</button>
+
             <div class="erreur"> 
               <script>error(${error});</script>
             </div>
@@ -84,5 +124,21 @@
         </div>
       </div>
     </div>
+
+    <script>
+      function togglePassword(inputId, icon) {
+        const input = document.getElementById(inputId);
+
+        if (input.type === "password") {
+          input.type = "text";
+          icon.classList.remove("bi-eye-slash");
+          icon.classList.add("bi-eye");
+        } else {
+          input.type = "password";
+          icon.classList.remove("bi-eye");
+          icon.classList.add("bi-eye-slash");
+        }
+      }
+    </script>
   </body>
 </html>
