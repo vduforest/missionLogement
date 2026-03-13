@@ -55,3 +55,15 @@
 2026-02-19 09:09:52 - TEST ISEMPTY
 2026-02-19 09:09:52 - Creation A Raph
 2026-02-19 09:09:52 - Import terminé !
+2026-03-13 11:46:27 - TEST TRY
+2026-03-13 11:46:27 - Test_pappl_vague1_2pers.csv : Lecture de l'entête
+2026-03-13 11:46:27 - Test_pappl_vague1_2pers.csv : Lecture des données
+2026-03-13 11:46:28 - Le fichier Test_pappl_vague1_2pers.csv a été lu. 3 lignes analysées.
+2026-03-13 11:46:28 - TEST IMPORT CSV
+2026-03-13 11:46:28 - TEST BOUCLEFOR
+2026-03-13 11:46:28 - TEST ISEMPTY
+2026-03-13 11:46:30 - Creation TEST ENCORE R
+2026-03-13 11:46:30 - TEST BOUCLEFOR
+2026-03-13 11:46:30 - TEST ISEMPTY
+2026-03-13 11:46:30 - Creation TEST AUSSI V
+2026-03-13 11:46:30 - Import terminé !

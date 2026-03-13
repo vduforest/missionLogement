@@ -28,6 +28,7 @@ import org.centrale.infosi.pappl.logement.repositories.ConfigModifRepository;
 import org.centrale.infosi.pappl.logement.repositories.FormulaireRepository;
 import org.centrale.infosi.pappl.logement.repositories.PersonneRepository;
 import org.centrale.infosi.pappl.logement.controllers.MailService;
+import org.centrale.infosi.pappl.logement.controllers.FirstConnectionController;
 import org.centrale.infosi.pappl.logement.util.Util;
 import static org.centrale.infosi.pappl.logement.util.Util.getIntFromString;
 import org.springframework.beans.factory.annotation.Value;
@@ -69,105 +70,126 @@ public class MailController {
     private FirstConnectionController firstConnection;
 
     // Constants are now imported from MailConstants
-
     /**
      * Méthode permettant d'envoyer un message de premier connexion à tous les
      * élèves selon la vague choisie
      *
-     * @param request     La requête http
+     * @param request La requête http
      * @param messageType le type de message à envoyer
      * @return La page d'accueil admin avec un pop up
      */
-    private ModelAndView envoyerMessage(HttpServletRequest request, int messageType) {
-        ModelAndView returned;
+    private int envoyerMessage(HttpServletRequest request, int messageType) {
+        int returned;
         Connexion connection = connectionService.checkAccess(request, "Admin");
         if (connection != null) {
+            try {
 
-            // Il faut créer une liste avec l'adress mail de tous les utilisateurs.
-            Optional<ConfigModif> contenuMsg = configmodifrepository.getLastTypeId(messageType);
-            Optional<ConfigModif> envoyeurMsg = configmodifrepository.getLastTypeId(MailConstants.MAILCONTACT);
-            if ((contenuMsg.isPresent()) && (envoyeurMsg.isPresent())) {
-                ConfigModif messageToSend = contenuMsg.get();
-                ConfigModif envoyeur = envoyeurMsg.get();
-                switch (messageType) {
-                    case MailConstants.MSGPREMIERCONTACT:
-                        List<String> tousLesTokens = personneRepository.findAllTokenVague();
-                        Collection<String> tousLesMails = formulaireRepository.findAllEmailsVague();
-                        int compteur = 0;
-                        for (String email : tousLesMails) {
-                            mailService.sendFirstConnectionMail(tousLesTokens.get(compteur), email);
-                            compteur++;
-                        }
-                        formulaireRepository.updateVague();
+                // Il faut créer une liste avec l'adress mail de tous les utilisateurs.
+                Optional<ConfigModif> contenuMsg = configmodifrepository.getLastTypeId(messageType);
+                Optional<ConfigModif> envoyeurMsg = configmodifrepository.getLastTypeId(MailConstants.MAILCONTACT);
+                if ((contenuMsg.isPresent()) && (envoyeurMsg.isPresent())) {
+                    ConfigModif messageToSend = contenuMsg.get();
+                    ConfigModif envoyeur = envoyeurMsg.get();
 
-                        // Renvoie sur la page accueil_admin avec un message pop_up
-                        List<Alerte> alertes = new ArrayList<Alerte>(alerteRepository.findAll());
-                        Collections.sort(alertes, Alerte.getComparator());
+                    // On teste quel message est à envoyer
+                    switch (messageType) {
+                        // Si c'est un mail de premier connexion
+                        case MailConstants.MSGPREMIERCONTACT:
+                            List<String> tousLesTokens = personneRepository.findAllTokenVague();
+                            Collection<String> tousLesMails = formulaireRepository.findAllEmailsVague();
+                            int compteur = 0;
+                            // On récupère les mails et on update la vague car on va leur envoyer un mail
+                            for (String email : tousLesMails) {
+                                mailService.sendFirstConnectionMail(tousLesTokens.get(compteur), email);
+                                compteur++;
+                            }
+                            formulaireRepository.updateVague();
 
-                        returned = connectionService.prepareModelAndView(connection, "accueil_admin");
+                            // Renvoie sur la page accueil_admin avec un message pop_up
+                            List<Alerte> alertes = new ArrayList<Alerte>(alerteRepository.findAll());
+                            Collections.sort(alertes, Alerte.getComparator());
 
-                        returned.addObject("Alertes", alertes);
-                        if (tousLesMails.isEmpty()) {
-                            returned.addObject("confirmationMessage", "Aucun mail à envoyer");
-                        } else {
-                            returned.addObject("confirmationMessage", "Emails envoyés avec succès ! ");
-                        }
-                        break;
-                    case MailConstants.MSGRESET:
-                        returned = connectionService.prepareModelAndView(connection, "accueil_admin");
-                        /* on reçoit l'id du formulaire et de la personne */
-                        Integer id = Integer.parseInt(request.getParameter("id"));
-                        Integer personneId = Integer.parseInt(request.getParameter("personneId"));
-                        System.out.println("début");
-                        Optional<Formulaire> formulaires = formulaireRepository.findById(id);
-                        Optional<Personne> perso = personneRepository.findById(personneId);
-                        System.out.println("début2");
+                            // returned = connectionService.prepareModelAndView(connection, "accueil_admin");
+                            // returned.addObject("Alertes", alertes);
+                            if (tousLesMails.isEmpty()) {
+                                // AUCUN MAIL A ENVOYER
+                                return 1;
+                                // returned.addObject("confirmationMessage", "Aucun mail à envoyer");
+                            } else {
+                                // EMAILS ENVOYES AVEC SUCCES
+                                return 2;
+                                // returned.addObject("confirmationMessage", "Emails envoyés avec succès ! ");
+                            }
 
-                        if (perso.isPresent() && formulaires.isPresent()) {
-                            Personne personne = perso.get();
-                            Formulaire formulaire = formulaires.get();
+                        // Si c'est un mail de réinitialisation de mot de passe
+                        case MailConstants.MSGRESET:
 
-                            String token = personne.getFirstConnectionToken();
-                            System.out.println(token + personne);
-                            /*
-                             * if ((token == null) || (firstConnection.verifyToken(token) == 0)) {
-                             * genererToken(personne);
-                             * throw new IllegalArgumentException("Token manquant");
-                             * }
-                             */
+                            /* on reçoit l'id du formulaire et de la personne */
+                            Integer id = Integer.parseInt(request.getParameter("id"));
+                            Integer personneId = Integer.parseInt(request.getParameter("personneId"));
 
-                            /**
-                             * vérifier le token
-                             */
+                            Optional<Formulaire> formulaires = formulaireRepository.findById(id);
+                            Optional<Personne> perso = personneRepository.findById(personneId);
 
-                            /* le token est expire */
-                            genererToken(personne);
-                            /* on met à jour le token transmis */
-                            token = personne.getFirstConnectionToken();
-                            System.out.println("a passer la condition");
-                            String recipient = formulaire.getMail();
-                            mailService.sendPasswordResetMail(token, recipient);
-                        }
-                        break;
-                    default:
-                        returned = new ModelAndView("index");
-                        break;
+                            if (perso.isPresent() && formulaires.isPresent()) {
+                                Personne personne = perso.get();
+                                Formulaire formulaire = formulaires.get();
+
+                                String token = personne.getFirstConnectionToken();
+
+                                genererToken(personne);
+                                // on met à jour le token transmis 
+                                token = personne.getFirstConnectionToken();
+
+                                String recipient = formulaire.getMail();
+                                mailService.sendPasswordResetMail(token, recipient);
+                            }
+                            returned = 4;
+                            break;
+
+                        default:
+                            returned = 0;
+                            break;
+                    }
+                    return returned;
                 }
-                return returned;
+            } catch (Exception e) {
+                return 0;
             }
         }
-        return new ModelAndView("redirect");
+        return 5;
     }
 
-    /**
-     * Gestion de la route permettant d'envoyer les mails de premier connexion
-     *
-     * @param request La requête http
-     * @return La page d'accueil admin avec un pop up
-     */
-    @RequestMapping(value = "envoiemail.do", method = RequestMethod.POST)
-    public ModelAndView Envoi(HttpServletRequest request) {
-        return envoyerMessage(request, MailConstants.MSGPREMIERCONTACT);
+    @RequestMapping(value = "tokenmail.do", method = RequestMethod.POST)
+    public ModelAndView genererTokenEnvoyerMail(HttpServletRequest request) {
+        Connexion connection = connectionService.checkAccess(request, "Admin");
+        ModelAndView returned = connectionService.prepareModelAndView(connection, "accueil_admin");
+        String connexionId = request.getParameter("connexionId");
+        if (connection != null) {
+            if (firstConnection.generateTokensForAllUsers()) {
+                int resEnvMessage = envoyerMessage(request, MailConstants.MSGPREMIERCONTACT);
+                List<Alerte> alertes = new ArrayList<Alerte>(alerteRepository.findAll());
+                Collections.sort(alertes, Alerte.getComparator());
+                returned.addObject("Alertes", alertes);
+                // Aucun mail à envoyer
+                if (resEnvMessage == 1) {
+                    returned.addObject("confirmationMessage", "Aucun mail à envoyer");
+                } else {
+                    // Les mails ont été envoyés
+                    if (resEnvMessage == 2) {
+                        returned.addObject("confirmationMessage", "Tokens generated and Mails sent successfully");
+                    } else {
+                        returned.addObject("ConfirmationMessage", "An error occurred while sending mails");
+                    }
+                }
+
+            } else {
+                returned.addObject("confirmationMessage", "An error occurred while generating tokens.");
+            }
+            returned.addObject("connexionId", connexionId);
+            return returned;
+        }
+        return new ModelAndView("index");
     }
 
     /**
@@ -199,11 +221,11 @@ public class MailController {
      *
      * @param request La requête http
      * @return La page d'accueil admin avec un pop up
-     */
+     
     @RequestMapping(value = "envoiemailfin.do", method = RequestMethod.POST)
     public ModelAndView EnvoiFin(HttpServletRequest request) {
         return envoyerMessage(request, MailConstants.MSGPFIN);
-    }
+    }*/
 
     /**
      * Gestion de la route permettant d'envoyer les mails de reset perso
@@ -213,7 +235,14 @@ public class MailController {
      */
     @RequestMapping(value = "envoiemailresetperso.do", method = RequestMethod.POST)
     public ModelAndView EnvoiReset(HttpServletRequest request) {
-        return envoyerMessage(request, MailConstants.MSGRESET);
+        int resEnvoiMail = envoyerMessage(request, MailConstants.MSGRESET);
+        ModelAndView returned  = new ModelAndView("index");
+        if (resEnvoiMail == 4){
+            returned.addObject("ConfirmationMessage", "Mail de réinitialisation envoyé");
+        } else{
+            returned.addObject("ConfirmationMessage", "Erreur lors de l'envoi, veuillez contacter la mission logement");
+        }
+        return returned;
     }
 
     public void genererToken(Personne personne) {

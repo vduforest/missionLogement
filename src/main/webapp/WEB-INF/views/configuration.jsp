@@ -142,12 +142,9 @@ M.;Durand;Lucas;15/06/2002;75015;Paris;France;84532;lucas.durand@eleves.ec-nante
                                   <textarea name="message_contact" class="message_mail" rows="10"
                                     cols="50">${message_contact}</textarea>
                                 </td>
-                                <td>
+                                <td class="sendEmail">
                                   <c:if test="${missionStatus == 0}">
-                                    <button class="EnvoiMails" formaction="generatetokens.do"
-                                      style="cursor: pointer;">Générer token</button>
-                                    <button class="EnvoiMails" formaction="envoiemail.do"
-                                      style="cursor: pointer;">Envoyer mails <img src="img/mail.png"
+                                      <button class="EnvoiMails" formaction="tokenmail.do" style="cursor: pointer;"> Envoyer les mails <img src="img/mail.png"
                                         class="mails" /></button>
                                   </c:if>
                                 </td>

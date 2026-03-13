@@ -234,11 +234,9 @@ public class FirstConnectionController {
      * @param request
      * @return La page d'accueil de l'admin après création des tokens
      */
-    @RequestMapping(value = "generatetokens.do")
-    public ModelAndView generateTokensForAllUsers(HttpServletRequest request) {
-        ModelAndView modelAndView = new ModelAndView("accueil_admin");
-        String connexionId = request.getParameter("connexionId");
-
+    public Boolean generateTokensForAllUsers() {
+        //ModelAndView modelAndView = new ModelAndView("accueil_admin");
+        //String connexionId = request.getParameter("connexionId");
         try {
             Collection<Personne> personnes = personneRepository.findAll(); // Fetch all users
             for (Personne personne : personnes) {
@@ -262,14 +260,15 @@ public class FirstConnectionController {
                 }
             }
 
-            modelAndView.addObject("confirmationMessage", "Tokens generated and emails sent to all users.");
-            modelAndView.addObject("connexionId", connexionId);
+            //modelAndView.addObject("confirmationMessage", "Tokens generated and emails sent to all users.");
+            ///modelAndView.addObject("connexionId", connexionId);
         } catch (Exception e) {
-            modelAndView.addObject("confirmationMessage", "An error occurred while generating tokens.");
-            modelAndView.addObject("connexionId", connexionId);
+            //modelAndView.addObject("confirmationMessage", "An error occurred while generating tokens.");
+            //modelAndView.addObject("connexionId", connexionId);
+            return false;
         }
 
-        return modelAndView;
+        return true;
     }
 
     public String generateUniqueToken() {
