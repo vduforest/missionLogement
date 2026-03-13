@@ -4,10 +4,17 @@ function sendDocument() {
   if (radio === null) {
     radio = document.getElementById('ouib');
   }
+
+  if (!fileInput || !radio) {
+    return;
+  }
+
   if (radio.checked) {
     fileInput.style.display = "inline";
   } else {
     fileInput.style.display = "none";
+    fileInput.value = "";
+    fileInput.removeAttribute("required");
   }
 }
 function verifMail(id1, id2) {
