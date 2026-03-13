@@ -129,7 +129,7 @@ public class AdminController {
             return new ModelAndView("redirect");
         }
         //Ajout de la liste des formulaires
-        List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
+        List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAll());//j'ai chnag" findAllValidOrCommentaireVE() par findAll
         Collections.sort(forms, Formulaire.getComparator());
 
         returned = connectionService.prepareModelAndView(connection, "pageDossiers");

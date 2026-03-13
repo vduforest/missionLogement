@@ -37,6 +37,7 @@
             return false;
           }
         </script>
+        
       </head>
 
       <body>
@@ -60,10 +61,21 @@
                   <table id="StudentList" class="table table-striped table-md sortable">
                     <thead>
                       <tr>
+                        <th style="display:none">priority</th>
                         <th scope="col" class="text-center">Numero SCEI</th>
                         <th scope="col" class="text-center">Nom</th>
                         <th scope="col" class="text-center">Prenom</th>
-                        <th scope="col" class="text-center">Etat</th>
+                        <th scope="col" class="text-center">Etat
+                        <div style="display:inline-block;position:relative;">
+                        <button id="etatFilterBtn" type="button" class="btn btn-sm" style="margin-left:6px;padding:2px 6px;">---</button>
+                        <div id="etatFilterDropdown" style="display:none;position:absolute;right:0;background:#fff;border:1px solid #ccc;padding:8px;z-index:1000;min-width:140px;">
+                          <label><input type="checkbox" class="etat-checkbox" value="traite_complet" checked/> Traitement complet</label><br/>
+                          <label><input type="checkbox" class="etat-checkbox" value="dossier_non_conforme" checked/> Dossier non conforme</label><br/>
+                          <label><input type="checkbox" class="etat-checkbox" value="a_traiter" checked/> A traiter</label><br/>
+                          <label><input type="checkbox" class="etat-checkbox" value="non_transmis" checked/> Non transmis</label>
+                        </div>
+                        </div>
+                       </th>
                         <th scope="col" class="text-center">Informations</th>
                         <th scope="col" class="text-center">Actions</th>
                       </tr>
@@ -71,28 +83,24 @@
                     <tbody>
                       <c:forEach var="formulaire" items="${forms}">
                         <tr>
+                          <td style="display:none" class="priority">1</td>
                           <td class="text-center">${formulaire.numeroScei}</td>
                           <td class="text-center">${formulaire.personneId.nom}</td>
                           <td class="text-center">${formulaire.personneId.prenom}</td>
                           <td class="text-center">
                             <c:choose>
-                              <c:when test="${formulaire.estConforme}">
-                                <img src="img/coche.png" alt="coche" class="icon" />
-                              </c:when>
-                              <c:when test="${(!formulaire.estValide) && (! empty formulaire.commentairesVe)}">
-                                <img
-                                  onclick="afficherTexte(${formulaire.estBoursier},${formulaire.estPmr},${formulaire.genreId.genreId},${formulaire.genreAttendu.genreId});"
-                                  src="img/red-x-icon.png" alt="refus" class="icon" />
-                              </c:when>
-                              <c:when
-                                test="${(formulaire.estPmr) || (formulaire.estBoursier) || (formulaire.genreId.genreId!=formulaire.genreAttendu.genreId)}">
-                                <img
-                                  onclick="afficherTexte(${formulaire.estBoursier},${formulaire.estPmr},${formulaire.genreId.genreId},${formulaire.genreAttendu.genreId});"
-                                  src="img/warning.png" alt="warning" class="icon" />
-                              </c:when>
-                              <c:otherwise>
-                                A traiter
-                              </c:otherwise>
+                               <c:when test="${formulaire.estConforme}">
+                            <img src="img/coche.png"alt="coche"class="icon"/>
+                          </c:when>
+                          <c:when test="${(!formulaire.estValide) && (! empty formulaire.commentairesVe)}">
+                            <img onclick="afficherTexte('${formulaire.estBoursier}','${formulaire.estPmr}','${formulaire.genreId.genreId}','${formulaire.genreAttendu.genreId}');" src="img/red-x-icon.png"alt="refus"class="icon"/>
+                          </c:when>
+                          <c:when test="${(formulaire.estPmr) || (formulaire.estBoursier) || (formulaire.genreId.genreId!=formulaire.genreAttendu.genreId)}">
+                            A traiter
+                          </c:when>
+                          <c:otherwise>
+                            Non transmis
+                          </c:otherwise>
                             </c:choose>
                           </td>
                           <td class="text-center">
@@ -165,12 +173,12 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-center">
+                        <!--<td class="text-center">
                           <form action="allDossiers.do" method="POST">
                             <input type="hidden" name="connexionId" value="${connexionId}" />
                             <button id="allDossiers">Voir tous les dossiers</button>
                           </form>
-                        </td>
+                        </td>-->
                         <td class="text-center">
                           <form action="export.do" method="POST">
                             <input type="hidden" name="connexionId" value="${connexionId}" />
