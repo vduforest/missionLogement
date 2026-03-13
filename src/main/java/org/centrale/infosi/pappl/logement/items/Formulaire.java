@@ -176,11 +176,23 @@ public class Formulaire implements Serializable {
     @NotNull
     @Column(name = "vague")
     private boolean vague;
+    
+    @Size(max = 2147483647)
+    @Column(name = "commentaires_internes")
+    private String commentairesInternes;
+     
+    public String getCommentairesInternes() {
+        return commentairesInternes;
+    }
 
+    public void setCommentairesInternes(String commentairesInternes) {
+        this.commentairesInternes = commentairesInternes;
+    }
+    
     @JoinColumn(name = "assistant_id", referencedColumnName = "personne_id")
     @ManyToOne
     private Personne assistant;
-
+    
     public Personne getAssistant() {
         return assistant;
     }
@@ -196,7 +208,7 @@ public class Formulaire implements Serializable {
     public void setDistance(Double distance) {
         this.distance = distance;
     }
-
+    
     public Integer getRang() {
         return rang;
     }

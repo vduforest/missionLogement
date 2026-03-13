@@ -51,6 +51,9 @@ h2 {
     display: flex;
     align-items: center;
     min-height: 60px;
+    font-weight: 600;
+    color: var(--brand-blue);
+    font-size: 0.95rem;
 }
 
 .label-col label {
@@ -60,11 +63,22 @@ h2 {
     font-size: 0.95rem;
 }
 
-/* COLONNE DROITE (INPUTS) */
+/* COLONNE CENTRALE (INPUTS) */
 .input-col {
-    width: 70%;
+    width: 50%;
     padding: 10px 20px;
     background-color: white;
+}
+
+/* COLONNE DROITE (ACTIONS - ADMIN) */
+.action-col {
+    width: 20%;
+    padding: 10px 20px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid #e2e8f0;
 }
 
 /* --- STYLE DES INPUTS --- */
@@ -91,14 +105,15 @@ textarea:focus {
     box-shadow: 0 0 0 2px rgba(14, 39, 72, 0.1);
 }
 
-/* --- CORRECTIF READONLY (Gris visible) --- */
-.readonly-input {
+/* --- CORRECTIF READONLY & DISABLED (Gris visible global) --- */
+.readonly-input,
+input:disabled,
+select:disabled,
+textarea:disabled {
     background-color: #e9ecef !important;
-    /* Gris visible (Bootstrap style) */
     border-color: #ced4da !important;
     color: #495057 !important;
     cursor: not-allowed !important;
-    /* Curseur 'interdit' */
     opacity: 1;
 }
 
@@ -235,4 +250,18 @@ textarea:focus {
     .input-col {
         width: 100%;
     }
+}
+
+/* --- FIX FOR ICONS (ADMIN VIEW) --- */
+button img.avion,
+button img.icon {
+    height: 1.2em;
+    /* Matches the text size nicely */
+    width: auto;
+    vertical-align: middle;
+}
+
+/* Invert lock icon to white when button is green */
+.btn-success img.avion {
+    filter: brightness(0) invert(1);
 }

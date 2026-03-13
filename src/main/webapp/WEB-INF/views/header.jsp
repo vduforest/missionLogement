@@ -20,7 +20,7 @@
                 <button class="p-0 ml-3 bg-transparent border-0"
                   formaction="${not empty homeLink ? homeLink : ((not empty connexion && connexion.isAdmin()) ? 'adminDashboard.do' : ((not empty connexion && connexion.isAssistant()) ? 'dossiersAssist.do' : 'informations.do'))}"
                   style="display:flex; align-items:center;">
-                  <img src="img/ecn_blanc.png" alt="logo" class="logo" />
+                  <img src="img/ecn_blanc.png" alt="logo_ecole_centrale_nantes" class="logo" />
                 </button>
               </div>
 

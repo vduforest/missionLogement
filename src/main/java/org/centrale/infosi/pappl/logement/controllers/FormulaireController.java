@@ -273,7 +273,11 @@ public class FormulaireController {
                     File bourseFile = this.createBourseFile(formulaire, request);
 
                     // Erreur choix logement
+                    // Erreurs bloquant la soumission
                     boolean erreur = false;
+                    boolean erreurBourse = false;
+
+                    // Vérification choix logement
                     String souhaitStr = Util.getStringFromRequest(request, "Souhait");
                     if ((souhaitStr == null) || (souhaitStr.isEmpty())) {
                         erreur = true;
@@ -282,6 +286,12 @@ public class FormulaireController {
                         if (souhait <= 0) {
                             erreur = true;
                         }
+                    }
+
+                    // Vérification preuve de bourse obligatoire si boursier
+                    if ((instruction == 2) && Boolean.TRUE.equals(formulaire.getEstBoursier()) && (bourseFile == null)) {
+                        erreur = true;
+                        erreurBourse = true;
                     }
 
                     // soumission si demandée
@@ -310,12 +320,14 @@ public class FormulaireController {
                     String msg;
                     if (instruction == 1) {
                         if (erreur) {
-                            msg = "Le formulaire a bien été enregistré, mais vous n'avez pas indiqué le type de logement !";
+                            msg = "Le formulaire a bien été enregistré, mais certaines informations empêchent encore la soumission.";
                         } else {
                             msg = "Le formulaire a bien été enregistré !";
                         }
                     } else {
-                        if (erreur) {
+                        if (erreurBourse) {
+                            msg = "Le formulaire a bien été enregistré, mais il n'a pas été soumis : une preuve de bourse est obligatoire.";
+                        } else if (erreur) {
                             msg = "Le formulaire a bien été enregistré, mais vous n'avez pas indiqué le type de logement !\nIl n'a pas été soumis !";
                         } else {
                             msg = "Le formulaire a bien été soumis vous ne pouvez plus le modifier !";
@@ -323,6 +335,10 @@ public class FormulaireController {
                     }
 
                     returned.addObject("confirmationMessage", msg);
+                    if (erreurBourse) {
+                    returned.addObject("erreurBourse",
+                            "Vous avez indiqué être boursier, mais aucune preuve n'a été ajoutée. Merci de déposer un fichier PDF ou une image avant la soumission.");
+                    }
                     return returned;
                 }
             }
@@ -608,9 +624,20 @@ public class FormulaireController {
         if (connection != null) {
             String formulaireIdStr = Util.getStringFromRequest(request, "id");
             int formulaireId = getIntFromString(formulaireIdStr);
-
+            //ikram
+            Formulaire formulaireAvant = formulaireRepository.getReferenceById(formulaireId);
+            String ancienCommentaire = formulaireAvant.getCommentairesInternes();
+            String nouveauCommentaire = request.getParameter("commentairesInternes");
+            //fin
             Util.enregistrementFormulaire(request, formulaireId, null, formulaireRepository);
-
+            //ikram
+            if (nouveauCommentaire != null && !nouveauCommentaire.equals(ancienCommentaire)) {
+            // Le texte est différent : l'Assistant 2 a écrit quelque chose.
+            // On recharge l'objet et on met à jour l'auteur.
+            Formulaire formulaireAPresent = formulaireRepository.getReferenceById(formulaireId);
+            formulaireAPresent.setAssistant(connection.getPersonneId());
+            formulaireRepository.save(formulaireAPresent);
+        }
             // Redirection
             List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
             Collections.sort(forms, Formulaire.getComparator());

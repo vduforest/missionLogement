@@ -119,7 +119,7 @@
                     <form method="post" action="adminDashboard.do" class="m-0">
                       <input type="hidden" name="connexionId" value="${connexionId}" />
                       <button class="refresh-btn" title="Rafraîchir">
-                        <img src="img/refresh.png" alt="Refresh" class="refresh-icon" />
+                        <img src="img/refresh.png" alt="Refresh" class="refresh-icon" /> Rafraîchir
                       </button>
                     </form>
                   </div>
@@ -204,8 +204,8 @@
                                   <input type="hidden" name="connexionId" value="${connexionId}" />
                                   <input type="hidden" name="formulaireId"
                                     value="${alertes.formulaireId.formulaireId}" />
-                                  <button name="edit" class="btn"><img src="img/show.png" alt="show"
-                                      class="show" /></button>
+                                  <button name="edit" class="btn"><img src="img/show.png" alt="show" class="show" />
+                                    Infos</button>
                                 </form>
                               </td>
                             </tr>
