@@ -171,8 +171,8 @@ public class MailService {
     public void sendEmail(String recipient, String subject, String body) {
 
         final String mailExpediteur = "noreply@ec-nantes.fr";
-        final String usernameSMTP = "Victor.Duforest@eleves.ec-nantes.fr"; // victor.duforest@eleves.ec-nantes.fr en local
-        final String passwordSMTP = "dutzos-3Sujfu-cugves"; // mon mot de passe en localu6vSB@qAm49t2Gt
+        final String usernameSMTP = "Victor.Duforest@eleves.ec-nantes.fr"; // smtp.missionlogement en vrai
+        final String passwordSMTP = ""; // u6vSB@qAm49t2Gt en vrai 
 
         //final String host = "smtps.ec-nantes.fr";
         final String host = "smtps.nomade.ec-nantes.fr"; // En local
