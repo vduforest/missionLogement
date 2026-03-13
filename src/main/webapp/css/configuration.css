@@ -115,6 +115,10 @@ button.EnvoiMails:hover {
   background-color: #138496 !important;
 }
 
+td.sendEmail{
+    vertical-align: middle;
+}
+
 
 /* --- ICONS --- */
 img.icon,

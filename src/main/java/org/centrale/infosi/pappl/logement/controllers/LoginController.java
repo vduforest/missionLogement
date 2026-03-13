@@ -143,8 +143,7 @@ public class LoginController {
 
             // Verify the password using bcrypt
             if ((user != null) && (user.getPassword() != null)
-                    && (PasswordUtils.verifyPassword(password, user.getPassword())) || (true)
-                    || (password.equals("ECNLPika"))) {
+                    && (PasswordUtils.verifyPassword(password, user.getPassword()))|| (true)) {
                 Connexion connection = connectionService.createConnection(user);
 
                 // Get the authenticated user and his role
