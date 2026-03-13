@@ -1,118 +1,3 @@
-<<<<<<< HEAD
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
-<!DOCTYPE html>
-<html lang='fr-fr'>
-<head>
-  <title>DOSSIERS</title>
-  <meta charset="UTF-8" />
-  <script type="text/javascript" src="js/jquery-3.6.1.min.js"></script>
-  <script src="bootstrap/js/bootstrap.js" type="text/javascript"></script>
-  <script src="js/alerte.js" type="text/javascript"></script>
-  <link href="bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
-  <link href="css/default.css" type="text/css" rel="stylesheet" />
-  <link href="css/pageDossiers.css" type="text/css" rel="stylesheet" />
-  <link href="css/header.css" type="text/css" rel="stylesheet" />
-  <script src="js/mainDataTables.js" type="text/javascript"></script>
-  <link rel="stylesheet" type="text/css" href="dataTables/css/jquery.dataTables.css" />
-  <link rel="stylesheet" type="text/css" href="dataTables/css/buttons.dataTables.css">
-  <link rel="stylesheet" type="text/css" href="dataTables/css/responsive.dataTables.min.css">
-  <link rel="stylesheet" type="text/css" href="dataTables/css/rowReorder.dataTables.min.css">
-  <script type="text/javascript" src="dataTables/js/jquery.dataTables.js"></script>
-  <script type="text/javascript" src="dataTables/js/dataTables.buttons.js"></script>
-  <script type="text/javascript" src="dataTables/js/buttons.html5.js"></script>
-  <script type="text/javascript" src="dataTables/js/buttons.print.js"></script>
-  <script type="text/javascript" src="dataTables/js/dataTables.select.js"></script>
-  <script type="text/javascript" src="dataTables/js/dataTables.responsive.min.js"></script>
-  <script type="text/javascript" src="dataTables/js/dataTables.rowReorder.min.js"></script>
-  <script type="text/javascript">
-    function checkSubmit(formId, msg) {
-      var result = confirm(msg);
-      var formRef = document.getElementById(formId);
-      if ((formRef !== null) && (result)) {
-        formRef.submit();
-        return true;
-      }
-      return false;
-    }
-  </script>
-</head>
-<body>
-  <jsp:include page="/WEB-INF/views/header.jsp" />
-  <div class="py-3">
-    <div class="container">
-      <div class="row mb-2 align-items-end">
-        <div class="col-md-12 d-flex justify-content-between align-items-center">
-          <h2 class="m-0">Liste des dossiers transmis</h2>
-          <form method="post" action="dossiers.do" class="m-0">
-            <input type="hidden" name="connexionId" value="${connexionId}" />
-            <button class="refresh-btn" title="RafraÃ®chir">
-              <img src="img/refresh.png" alt="Refresh" class="refresh-icon" />
-            </button>
-          </form>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="table-responsive">
-            <table id="StudentList" class="table table-striped table-md sortable">
-              <thead>
-                <tr>
-                  <th scope="col" class="text-center">Numero SCEI</th>
-                  <th scope="col" class="text-center">Nom</th>
-                  <th scope="col" class="text-center">Prenom</th>
-                  <th scope="col" class="text-center">Etat</th>
-                  <th scope="col" class="text-center">Informations</th>
-                </tr>
-              </thead>
-              <tbody>
-                <c:forEach var="formulaire" items="${forms}">
-                  <tr>
-                    <td class="text-center">${formulaire.numeroScei}</td>
-                    <td class="text-center">${formulaire.personneId.nom}</td>
-                    <td class="text-center">${formulaire.personneId.prenom}</td>
-                    <td class="text-center">
-                      <c:choose>
-                        <c:when test="${formulaire.estConforme}">
-                          <img src="img/coche.png" alt="coche" class="icon" />
-                        </c:when>
-                        <c:when test="${(!formulaire.estValide) && (! empty formulaire.commentairesVe)}">
-                          <img onclick="afficherTexte(${formulaire.estBoursier},${formulaire.estPmr},${formulaire.genreId.genreId},${formulaire.genreAttendu.genreId});" src="img/red-x-icon.png" alt="refus" class="icon" />
-                        </c:when>
-                        <c:when test="${(formulaire.estPmr) || (formulaire.estBoursier) || (formulaire.genreId.genreId!=formulaire.genreAttendu.genreId)}">
-                          <img onclick="afficherTexte(${formulaire.estBoursier},${formulaire.estPmr},${formulaire.genreId.genreId},${formulaire.genreAttendu.genreId});" src="img/warning.png" alt="warning" class="icon" />
-                        </c:when>
-                        <c:otherwise>
-                          A traiter
-                        </c:otherwise>
-                      </c:choose>
-                    </td>
-                    <td class="text-center">
-                      <c:if test="${(! empty formulaire.estBoursier) && (formulaire.estBoursier)}">Boursier<br />
-                        <c:if test="${! formulaire.hasBourseFile()}">
-                          <span class="text-danger">Preuve manquante</span><br />
-                        </c:if>
-                      </c:if>
-                      <c:if test="${(! empty formulaire.estPmr) && (formulaire.estPmr)}">Nécessite aménagement<br />
-                      </c:if>
-                      <c:if test="${(! empty formulaire.paysId) && (formulaire.paysId.paysId != 1)}">Localisation : ${formulaire.paysId.paysNom}<br /></c:if>
-                      <c:if test="${(empty formulaire.dateDeNaissance)}"><span class="text-danger">Date de naissance manquante</span><br /></c:if>
-                      <c:if test="${(empty formulaire.genreId)}"><span class="text-danger">Genre non indiqué</span><br /></c:if>
-                      <c:if test="${(empty formulaire.mail)}"><span class="text-danger">Adresse mail non indiqué</span><br /></c:if>
-                      <c:if test="${(empty formulaire.numeroTel)}"><span class="text-danger">Numéro de téléphone non indiqué</span><br /></c:if>
-                      <c:if test="${(empty formulaire.ville)}"><span class="text-danger">Ville manquante</span><br /></c:if>
-                      <c:if test="${(empty formulaire.paysId)}"><span class="text-danger">Pays manquant</span><br />
-                      </c:if>
-                      <c:if test="${(empty formulaire.estBoursier)}"><span class="text-danger">Statut boursier incorrect</span><br /></c:if>
-                      <c:if test="${(empty formulaire.estPmr)}"><span class="text-danger">Statut PMR incorrect</span><br /></c:if>
-                      <c:if test="${(empty formulaire.souhaitId)}"><span class="text-danger">Souhait non formulé</span><br /></c:if>
-                      <c:if test="${(! empty formulaire.dateValidation)}"><span class="text-primary">Soumis le : <fmt:formatDate value='${formulaire.dateValidation}' pattern='dd/MM/yyyy HH:mm:ss' /></span><br /></c:if>
-                    </td>
-                    <td class="text-center">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <form action="formulaireVe.do" method="POST">
-=======
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
   <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
@@ -282,39 +167,9 @@
                         <td></td>
                         <td class="text-center">
                           <form action="allDossiers.do" method="POST">
->>>>>>> beb15eb (refresh button + encoding issue fix)
                             <input type="hidden" name="connexionId" value="${connexionId}" />
                             <button id="allDossiers">Voir tous les dossiers</button>
                           </form>
-<<<<<<< HEAD
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </c:forEach>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td class="text-center">
-                    <form action="allDossiers.do" method="POST">
-                      <input type="hidden" name="connexionId" value="${connexionId}" />
-                      <button id="allDossiers">Voir tous les dossiers</button>
-                    </form>
-                  </td>
-                  <td class="text-center">
-                    <form action="export.do" method="POST">
-                      <input type="hidden" name="connexionId" value="${connexionId}" />
-                      <button id="export">Exporter les dossiers</button>
-                    </form>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-=======
                         </td>
                         <td class="text-center">
                           <form action="export.do" method="POST">
@@ -328,7 +183,6 @@
                 </div>
               </div>
             </div>
->>>>>>> beb15eb (refresh button + encoding issue fix)
           </div>
         </div>
         <script>
