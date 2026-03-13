@@ -43,6 +43,12 @@
                   ${item.commentairesVe}
                 </div>
               </c:if>
+              <c:if test="${not empty erreurBourse}">
+                <div class="alert alert-danger">
+                  <b>Pièce justificative manquante :</b><br />
+                  ${erreurBourse}
+                </div>
+              </c:if>
 
               <div class="modern-form-table">
 
@@ -161,17 +167,20 @@
                 </div>
 
                 <div class="form-row">
-                  <div class="label-col">International <c:if test="${not empty tooltip_international}"><span
-                          class="tooltip-icon">i<span class="tooltip-text">${tooltip_international}</span></span></c:if>
+                    <div class="label-col">Pays <c:if test="${not empty tooltip_pays}"><span
+                            class="tooltip-icon">i<span class="tooltip-text">${tooltip_pays}</span></span></c:if>
                     </div>
-                  <div class="input-col radio-options">
-                    <input type="radio" name="international" id="ouiI" value="true" ${item.international=='true'
-                      ? 'checked' : '' } <c:if test="${item.estValide}">disabled</c:if> class="monitor-change"/> <label
-                      for="ouiI">Oui</label>
-                    <input type="radio" name="international" id="nonI" value="false" ${item.international=='false'
-                      ? 'checked' : '' } <c:if test="${item.estValide}">disabled</c:if> class="monitor-change"/> <label
-                      for="nonI">Non</label>
-                  </div>
+
+                    <div class="input-col">
+                      <label for="paysAffichage">Pays</label>
+                      <input type="text" id="paysAffichage"
+                             value="${not empty item.paysId ? item.paysId.paysNom : ''}"
+                             readonly class="readonly-input" />
+
+                      <!-- important : champ envoyé au backend -->
+                      <input type="hidden" id="pays" name="pays"
+                             value="${not empty item.paysId ? item.paysId.paysId : ''}" />
+                    </div>
                 </div>
 
                 <div class="form-row">
@@ -196,8 +205,8 @@
                           Fichier bourse transmis</span><br /></c:if>
                       <label for="preuveBourse">preuve</label>
                       <input type="file" id="preuveBourse" name="preuveBourse"
-                        class="form-control-file mt-2 monitor-change" accept="image/png,application/pdf"
-                        style="display: none;" />
+                      class="form-control-file mt-2 monitor-change" accept="image/png,image/jpeg,application/pdf"
+                      style="display: none;" />
                     </div>
                   </div>
                 </div>
@@ -302,15 +311,25 @@
             });
 
             btnSubmit.addEventListener("click", function (event) {
-              if (btnSubmit.disabled) {
-                event.preventDefault();
-                return false;
-              }
-              const confirmation = confirm("Êtes-vous sûr de vouloir soumettre ?\n\nVous ne pourrez plus modifier vos informations après cette action.");
-              if (!confirmation) {
-                event.preventDefault();
-              }
-            });
+            if (btnSubmit.disabled) {
+              event.preventDefault();
+              return false;
+            }
+
+            const ouiB = document.getElementById("ouiB");
+            const preuveBourse = document.getElementById("preuveBourse");
+            const dejaTransmis = ${item.hasBourseFile() ? "true" : "false"};
+
+            if (ouiB && ouiB.checked && !dejaTransmis && (!preuveBourse || !preuveBourse.files || preuveBourse.files.length === 0)) {
+              event.preventDefault();
+              alert("Vous avez indiqué être boursier. Veuillez ajouter une preuve (PDF ou image) avant de soumettre le formulaire.");
+              return false;
+            }
+
+            const confirmation = confirm("Êtes-vous sûr de vouloir soumettre ?\n\nVous ne pourrez plus modifier vos informations après cette action.");
+            if (!confirmation) {
+              event.preventDefault();
+            }
           });
         </script>
       </body>

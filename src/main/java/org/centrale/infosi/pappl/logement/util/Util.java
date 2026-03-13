@@ -713,17 +713,12 @@ public class Util {
             }
         }
 
-        // International (JSP: name="international")
-        Boolean estInternational = formulaire.getEstInternational();
-        if (Util.hasRequestParameter(request, "international")) {
-            String intlStr = Util.getStringFromRequest(request, "international"); // "true" / "false" / ""
-            if (intlStr != null && !intlStr.trim().isEmpty()) {
-                estInternational = Boolean.parseBoolean(intlStr);
-            } else {
-                estInternational = null;
-            }
+        Boolean estInternational = null;
+        if (pays > 0) {
+            estInternational = (pays != 1);
+        } else if (formulaire.getPaysId() != null) {
+            estInternational = (formulaire.getPaysId().getPaysId() != 1);
         }
-
         // Rang calculé automatiquement
         Integer rang = Util.calculerRang(estInternational, boursier, distance, ville);
 
