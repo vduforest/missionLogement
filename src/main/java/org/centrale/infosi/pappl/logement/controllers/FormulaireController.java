@@ -289,7 +289,8 @@ public class FormulaireController {
                     }
 
                     // Vérification preuve de bourse obligatoire si boursier
-                    if ((instruction == 2) && Boolean.TRUE.equals(formulaire.getEstBoursier()) && (bourseFile == null)) {
+                    if ((instruction == 2) && Boolean.TRUE.equals(formulaire.getEstBoursier())
+                            && (bourseFile == null)) {
                         erreur = true;
                         erreurBourse = true;
                     }
@@ -336,8 +337,8 @@ public class FormulaireController {
 
                     returned.addObject("confirmationMessage", msg);
                     if (erreurBourse) {
-                    returned.addObject("erreurBourse",
-                            "Vous avez indiqué être boursier, mais aucune preuve n'a été ajoutée. Merci de déposer un fichier PDF ou une image avant la soumission.");
+                        returned.addObject("erreurBourse",
+                                "Vous avez indiqué être boursier, mais aucune preuve n'a été ajoutée. Merci de déposer un fichier PDF ou une image avant la soumission.");
                     }
                     return returned;
                 }
@@ -624,20 +625,46 @@ public class FormulaireController {
         if (connection != null) {
             String formulaireIdStr = Util.getStringFromRequest(request, "id");
             int formulaireId = getIntFromString(formulaireIdStr);
-            //ikram
+            // ikram
             Formulaire formulaireAvant = formulaireRepository.getReferenceById(formulaireId);
             String ancienCommentaire = formulaireAvant.getCommentairesInternes();
             String nouveauCommentaire = request.getParameter("commentairesInternes");
-            //fin
-            Util.enregistrementFormulaire(request, formulaireId, null, formulaireRepository);
-            //ikram
+            // fin
+
+            boolean aEteModifie = false;
+            // Check if comment changed
             if (nouveauCommentaire != null && !nouveauCommentaire.equals(ancienCommentaire)) {
-            // Le texte est différent : l'Assistant 2 a écrit quelque chose.
-            // On recharge l'objet et on met à jour l'auteur.
-            Formulaire formulaireAPresent = formulaireRepository.getReferenceById(formulaireId);
-            formulaireAPresent.setAssistant(connection.getPersonneId());
-            formulaireRepository.save(formulaireAPresent);
-        }
+                aEteModifie = true;
+            } else {
+                // Check if any field was unlocked and submitted
+                String[] editableFields = { "nom", "prenom", "ville", "codePostal", "mail", "tel", "tel2",
+                        "commentairesVe", "distance", "pays", "Genre", "boursier", "Souhait", "pmr", "rang",
+                        "international", "dateDeNaissance" };
+                for (String field : editableFields) {
+                    if (Util.hasRequestParameter(request, field)) {
+                        aEteModifie = true;
+                        break;
+                    }
+                }
+            }
+
+            Util.enregistrementFormulaire(request, formulaireId, null, formulaireRepository);
+
+            if (aEteModifie) {
+                Formulaire formulaireAPresent = formulaireRepository.getReferenceById(formulaireId);
+                formulaireAPresent.setAssistant(connection.getPersonneId());
+                if (nouveauCommentaire != null && !nouveauCommentaire.equals(ancienCommentaire)) {
+                    formulaireAPresent.setCommentairesInternes(nouveauCommentaire);
+                }
+                formulaireRepository.save(formulaireAPresent);
+
+                // Create History Record
+                Traitement traitement = new Traitement();
+                traitement.setFormulaireId(formulaireAPresent);
+                traitement.setPersonneId(connection.getPersonneId());
+                traitement.setDateTraitement(new Date());
+                traitementRepository.save(traitement);
+            }
             // Redirection
             List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
             Collections.sort(forms, Formulaire.getComparator());
