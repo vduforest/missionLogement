@@ -69,20 +69,25 @@ public class PersonneRepositoryCustomImpl implements PersonneRepositoryCustom {
         }
     }
 
-    @Override
-    public Personne update(int id, String firstName, String lastName, String Login, String Password) {
-        Personne item = null;
-        if (id > 0) {
-            item = personneRepository.getReferenceById(id);
+        @Override
+        public Personne update(int id, String firstName, String lastName, String Login, String Password) {
+            Personne item = null;
+            if (id > 0) {
+                item = personneRepository.getReferenceById(id);
+            }
+            if ((item != null) && (firstName != null) && (lastName != null)) {
+                item.setPrenom(firstName);
+                item.setNom(lastName);
+                item.setLogin(Login);
+
+                if (Password != null && !Password.isEmpty()) {
+                    item.setPassword(PasswordUtils.hashPassword(Password));
+                }
+
+                personneRepository.saveAndFlush(item);
+            }
+            return item;
         }
-        if ((item != null) && (firstName != null) && (lastName != null)) {
-            item.setPrenom(firstName);
-            item.setNom(lastName);
-            item.setLogin(Login);
-            personneRepository.saveAndFlush(item);
-        }
-        return item;
-    }
 
     @Override
     public Personne create(String firstName, String lastName, String Login, String Password) {
