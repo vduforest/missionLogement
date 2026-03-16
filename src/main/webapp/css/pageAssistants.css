@@ -32,32 +32,4 @@ button[name="create"]:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* --- REFRESH BUTTON --- */
-.refresh-btn {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 8px;
-    transition: background-color 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-weight: 600;
-    color: var(--brand-blue);
-}
-
-.refresh-icon {
-    height: 18px;
-    width: 18px;
-    display: block;
-    transition: transform 0.3s ease;
-}
-
-.refresh-btn:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-}
-
-.refresh-btn:hover .refresh-icon {
-    transform: rotate(90deg);
-}
+/* --- NAVIGATION --- */

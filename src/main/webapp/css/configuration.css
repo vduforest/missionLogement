@@ -1,62 +1,169 @@
 /* --- CONFIGURATION PAGE STYLES --- */
 
-/* Table Layout Fixes */
-th {
-  width: 300px;
-  /* Reduced specific width to allow flex */
+/* RESET DES ANCIENS STYLES */
+div#main,
+div.main {
+  top: auto;
+  position: static;
+}
+
+/* FIXE DU TITRE */
+h2 {
+  background-color: transparent !important;
+  color: var(--brand-blue) !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  border-bottom: 3px solid var(--brand-yellow);
+  display: inline-block;
+  margin-bottom: 10px;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+}
+
+/* --- STRUCTURE TABLEAU MODERNE --- */
+.modern-form-table {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+  margin-bottom: 2rem;
+  /* Prevent double borders if nested or adjacent */
+  border-collapse: collapse;
+}
+
+.form-row {
+  display: flex;
+  border-bottom: 1px solid #e2e8f0;
+  align-items: stretch;
+}
+
+.form-row:last-child {
+  border-bottom: none;
+}
+
+/* COLONNE GAUCHE (TITRES) */
+.label-col {
+  width: 320px;
+  flex-shrink: 0;
   background-color: #f8fafc;
-  color: var(--brand-blue);
+  padding: 15px 20px;
+  border-right: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
   font-weight: 600;
-  padding: 15px;
-  text-align: left;
-  border-bottom: 1px solid #e2e8f0;
+  color: var(--brand-blue);
+  font-size: 0.95rem;
 }
 
-td {
-  padding: 15px;
-  border-bottom: 1px solid #e2e8f0;
+/* COLONNE CENTRALE (INPUTS) */
+.input-col {
+  flex-grow: 1;
+  padding: 15px 20px;
+  background-color: white;
 }
 
-/* Textareas */
+/* Removed action-col entirely as requested */
+
+/* Grouped buttons in input-col */
+.button-group {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+/* --- STYLE DES INPUTS --- */
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="datetime-local"],
+select,
 textarea {
   width: 100%;
+  padding: 10px 12px;
   border: 1px solid #ddd;
   border-radius: 6px;
-  padding: 10px;
-  font-family: inherit;
+  background-color: white;
+  transition: all 0.3s;
+  font-size: 1rem;
+  color: #333;
+  box-sizing: border-box;
+}
+
+/* Bigger textareas for paragraphs */
+textarea {
+  min-height: 180px;
   resize: vertical;
 }
 
+input:focus,
+select:focus,
 textarea:focus {
   border-color: var(--brand-blue);
-  box-shadow: 0 0 0 2px rgba(14, 39, 72, 0.1);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(14, 39, 72, 0.1);
+}
+
+/* Labels for inputs inside input-col */
+.field-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #64748b;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* Status Highlight */
-td[style*="background-color:yellow"] {
+.status-highlight {
   background-color: rgba(250, 181, 0, 0.15) !important;
-  /* Brand yellow tint */
   color: var(--text-dark) !important;
-  border-radius: 6px;
+  padding: 10px 20px;
+  border-radius: 50px;
   font-weight: 600;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(250, 181, 0, 0.3);
 }
 
-/* --- BUTTONS --- */
+/* Section Titles */
+h3 {
+  font-size: 1.4rem;
+  margin-top: 2rem;
+  margin-bottom: 1.2rem;
+  color: var(--brand-blue);
+  border-left: 5px solid var(--brand-yellow);
+  padding-left: 15px;
+}
+
+/* --- BOUTONS --- */
 button {
   cursor: pointer;
   font-family: 'Open Sans', sans-serif;
   font-weight: 600;
   border: none;
   border-radius: 6px;
-  padding: 8px 16px;
+  padding: 10px 18px;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   font-size: 0.95rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-button img.icon {
+button img.icon,
+button img.avion,
+button img.import,
+button img.mails {
   height: 18px;
   width: 18px;
 }
@@ -65,24 +172,35 @@ button img.icon {
 button.Enregistrer {
   background-color: var(--brand-blue) !important;
   color: white !important;
-  box-shadow: 0 2px 5px rgba(14, 39, 72, 0.2);
 }
 
-button.Enregistrer:hover {
+button.Enregistrer:hover:not(:disabled) {
   background-color: var(--brand-yellow) !important;
-  /* Yellow hover like navbar */
   color: var(--brand-blue) !important;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(14, 39, 72, 0.15);
 }
 
-/* Confirm (Green) */
-button.Confirmer {
-  background-color: #28a745 !important;
+/* Send Mails (Info/Sky) */
+button.EnvoiMails {
+  background-color: #17a2b8 !important;
   color: white !important;
 }
 
-button.Confirmer:hover {
-  background-color: #218838 !important;
+button.EnvoiMails:hover:not(:disabled) {
+  background-color: #138496 !important;
+  transform: translateY(-2px);
+}
+
+/* Delete (Red) */
+button.Supprimer {
+  background-color: #dc3545 !important;
+  color: white !important;
+}
+
+button.Supprimer:hover:not(:disabled) {
+  background-color: #c82333 !important;
+  transform: translateY(-2px);
 }
 
 /* Import (Blue-ish) */
@@ -93,73 +211,5 @@ button.Import {
 
 button.Import:hover {
   background-color: #0069d9 !important;
-}
-
-/* Delete (Red) */
-button.Supprimer {
-  background-color: #dc3545 !important;
-  color: white !important;
-}
-
-button.Supprimer:hover {
-  background-color: #c82333 !important;
-}
-
-/* Send Mails (Info/Sky) */
-button.EnvoiMails {
-  background-color: #17a2b8 !important;
-  color: white !important;
-}
-
-button.EnvoiMails:hover {
-  background-color: #138496 !important;
-}
-
-td.sendEmail{
-    vertical-align: middle;
-}
-
-
-/* --- ICONS --- */
-img.icon,
-img.avion,
-img.import,
-img.mails {
-  height: 18px;
-  width: 18px;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-/* --- REFRESH BUTTON --- */
-.refresh-btn {
-  background-color: transparent !important;
-  border: none !important;
-  cursor: pointer;
-  padding: 5px 10px !important;
-  border-radius: 8px !important;
-  transition: background-color 0.2s !important;
-  display: inline-flex !important;
-  align-items: center;
-  gap: 5px;
-  font-weight: 600 !important;
-  color: var(--brand-blue) !important;
-  box-shadow: none !important;
-  transform: none !important;
-}
-
-.refresh-icon {
-  height: 18px;
-  width: 18px;
-  display: block;
-  transition: transform 0.3s ease;
-}
-
-.refresh-btn:hover {
-  background-color: rgba(0, 0, 0, 0.05) !important;
-  transform: none !important;
-}
-
-.refresh-btn:hover .refresh-icon {
-  transform: rotate(90deg);
-}
+  transform: translateY(-2px);
+/* CRITICAL: This must be at the end */

@@ -16,29 +16,26 @@
 
             <body>
                 <jsp:include page="/WEB-INF/views/header.jsp" />
-                <div id="main">
-                    <div id="liste">
-                        <div class="py-3">
-                            <div class="container">
+                <div class="main-container">
+                    <div class="info-card" style="position: relative;">
 
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h2 class="">Formulaire
-                                            <form method="post" action="formulaireVe.do"
-                                                style="position:absolute;right:20px;top:0px">
-                                                <input type="hidden" name="connexionId" value="${connexionId}" />
-                                                <input type="hidden" name="id" value="${item.formulaireId}" />
-                                                <input type="hidden" name="personneId"
-                                                    value="${item.personneId.personneId}" />
-                                                <input type="hidden" name="formulaireId" value="${item.formulaireId}" />
-                                                <button class="refresh-btn" title="Rafraîchir">
-                                                    <img src="img/refresh.png" alt="Refresh" class="refresh-icon" />
-                                                    Rafraîchir
-                                                </button>
-                                            </form>
-                                        </h2>
-                                    </div>
-                                </div>
+                        <form method="post" action="formulaireVe.do" style="position: absolute; top: 20px; right: 20px; z-index: 10;">
+                            <input type="hidden" name="connexionId" value="${connexionId}" />
+                            <input type="hidden" name="id" value="${item.formulaireId}" />
+                            <input type="hidden" name="personneId" value="${item.personneId.personneId}" />
+                            <input type="hidden" name="formulaireId" value="${item.formulaireId}" />
+                            <button class="refresh-btn" title="Rafraîchir">
+                                <img src="img/refresh.png" alt="Refresh" class="refresh-icon" />
+                                Rafraîchir
+                            </button>
+                        </form>
+
+                        <div class="form-header">
+                            <div>
+                                <h2>Validation du Formulaire</h2>
+                                <p class="subtitle">Dossier de ${item.personneId.prenom} ${item.personneId.nom}</p>
+                            </div>
+                        </div>
 
                                 <div class="row">
                                     <div class="col-md-12">
@@ -657,16 +654,15 @@
                                                             </c:choose>
                                                         </div>
                                                     </div>
+                                                </script>
+                                                </form>
                                                 </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                                </div>
+                                                </div>
+                                                </div>
+                                                </div>
+                                                </div>
+                                                </div>
 
                 <script>
                     window.onload = function () {
