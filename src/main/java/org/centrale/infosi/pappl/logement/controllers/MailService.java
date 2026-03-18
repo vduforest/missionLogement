@@ -51,7 +51,7 @@ public class MailService {
     public void sendFirstConnectionMail(String token, String recipient) {
         String subject = "Première connexion à la plateforme logement";
         //String link = "http://localhost:8080/MissionLogement/creationcompte.do?token=" + token; // En local
-        String link = "http://dtest-mlogement.ec-nantes.fr:8080/MissionLogement_vtest2/creationcompte.do?token=" + token; // serveur de test
+        String link = "http://dtest-mlogement.ec-nantes.fr:8080/MissionLogement_vtest3/creationcompte.do?token=" + token; // serveur de test
 
         String body = getConfigText(MSGPREMIERCONTACT);
 
@@ -78,8 +78,8 @@ public class MailService {
      */
     public void sendPasswordResetMail(String token, String recipient) {
         String subject = "Réinitialisation de votre mot de passe";
-        // String link = "http://localhost:8080/MissionLogement/passwordresetlink.do?token=" + token; // En local
-        String link = "http://dtest-mlogement.ec-nantes.fr:8080/MissionLogement_vtest2/passwordresetlink.do?token=" + token; // Serveur de test
+        //String link = "http://localhost:8080/MissionLogement/passwordresetlink.do?token=" + token; // En local
+        String link = "http://dtest-mlogement.ec-nantes.fr:8080/MissionLogement_vtest3/passwordresetlink.do?token=" + token; // Serveur de test
 
         String body = getConfigText(MSGRESET);
 
@@ -183,12 +183,12 @@ public class MailService {
 
         final String mailExpediteur = "noreply@ec-nantes.fr";
 
-        final String usernameSMTP = "victor.Duforest@eleves.ec-nantes.fr"; // smtp.missionlogement en vrai
-        final String passwordSMTP = "dutzos-3Sujfu-cugves"; // u6vSB@qAm49t2Gt en vrai 
+        final String usernameSMTP = "smtp.missionlogement"; // smtp.missionlogement en vrai
+        final String passwordSMTP = "u6vSB@qAm49t2Gt"; // u6vSB@qAm49t2Gt en vrai 
 
 
-        //final String host = "smtps.ec-nantes.fr";
-        final String host = "smtps.nomade.ec-nantes.fr"; // En local
+        final String host = "smtps.ec-nantes.fr";
+        //final String host = "smtps.nomade.ec-nantes.fr"; // En local
 
         String port = "587";
 
