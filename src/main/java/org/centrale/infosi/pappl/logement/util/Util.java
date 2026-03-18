@@ -626,6 +626,14 @@ public class Util {
 
         String nom = Util.getStringFromRequest(request, "nom");
         String prenom = Util.getStringFromRequest(request, "prenom");
+        
+        if (nom==null){
+            nom = formulaire.getPersonneId().getNom();
+        }
+        
+        if (prenom==null){
+            prenom = formulaire.getPersonneId().getPrenom();
+        }
 
         String dateNaissanceStr = Util.getStringFromRequest(request, "dateDeNaissance");
         Date dateNaissance = Util.isDate(dateNaissanceStr);

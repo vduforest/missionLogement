@@ -96,6 +96,10 @@ public class FormulaireController {
 
     @Lazy
     @Autowired
+    private MailService mailService;
+
+    @Lazy
+    @Autowired
     private AlerteRepository alerteRepository;
 
     @Lazy
@@ -120,7 +124,7 @@ public class FormulaireController {
     }
 
     private File findBourseFile(Formulaire formulaire) {
-        String[] extList = { "png", "pdf" };
+        String[] extList = {"png", "pdf"};
         File bourseFile = null;
         for (String ext1 : extList) {
             File cible = new File(Util.buildBourseFilePath(formulaire.getNumeroScei(), ext1));
@@ -145,11 +149,11 @@ public class FormulaireController {
 
         // Tooltips
         String[] tooltips = {
-                "tooltip_nom", "tooltip_prenom", "tooltip_date_naissance",
-                "tooltip_ville", "tooltip_code_postal", "tooltip_pays",
-                "tooltip_mail", "tooltip_confirm_mail", "tooltip_genre",
-                "tooltip_tel", "tooltip_bourse", "tooltip_souhait",
-                "tooltip_pmr", "tooltip_infos"
+            "tooltip_nom", "tooltip_prenom", "tooltip_date_naissance",
+            "tooltip_ville", "tooltip_code_postal", "tooltip_pays",
+            "tooltip_mail", "tooltip_confirm_mail", "tooltip_genre",
+            "tooltip_tel", "tooltip_bourse", "tooltip_souhait",
+            "tooltip_pmr", "tooltip_infos"
         };
         for (String tooltip : tooltips) {
             returned.addObject(tooltip, getLast(tooltip));
@@ -169,7 +173,7 @@ public class FormulaireController {
         ModelAndView returned = null;
         Connexion connexion = connectionService.checkAccess(request, "Eleve");
         Connexion connection = connectionService.checkMissionStatus(connexion, 1); // 1 corresponds to "Mission en
-                                                                                   // cours"
+        // cours"
         if (connection == null) {
             Optional<ConfigModif> configInformationPopUpOpt = configModifRepository
                     .findTopByTypeNomOrderByModifIdDesc("message_mission_fermee");
@@ -211,7 +215,7 @@ public class FormulaireController {
                 }
 
                 // Remove possible old files from bourse folder
-                String[] extList = { "png", "pdf" };
+                String[] extList = {"png", "pdf"};
                 for (String ext1 : extList) {
                     File cible = new File(Util.buildBourseFilePath(formulaire.getNumeroScei(), ext1));
                     if (cible.exists()) {
@@ -241,7 +245,7 @@ public class FormulaireController {
      *
      * @param request La requête http
      * @return La page de formulaire si enregistrementFormulaire, la page
-     *         d'accueil si validation
+     * d'accueil si validation
      */
     @RequestMapping(value = "SauvegardeFormulaire.do", method = RequestMethod.POST)
     public ModelAndView handleEnregistrerForm(HttpServletRequest request) {
@@ -604,6 +608,7 @@ public class FormulaireController {
             }
             if (returned != null) {
                 returned.addObject("forms", forms);
+                returned.addObject("ConfirmationMessage", "Mail de dossier validé envoyé");
             }
             return returned;
         } else {
@@ -645,9 +650,9 @@ public class FormulaireController {
                 aEteModifie = true;
             } else {
                 // Check if any field was unlocked and submitted
-                String[] editableFields = { "nom", "prenom", "ville", "codePostal", "mail", "tel", "tel2",
-                        "commentairesVe", "distance", "pays", "Genre", "boursier", "Souhait", "pmr", "rang",
-                        "international", "dateDeNaissance" };
+                String[] editableFields = {"nom", "prenom", "ville", "codePostal", "mail", "tel", "tel2",
+                    "commentairesVe", "distance", "pays", "Genre", "boursier", "Souhait", "pmr", "rang",
+                    "international", "dateDeNaissance"};
                 for (String field : editableFields) {
                     if (Util.hasRequestParameter(request, field)) {
                         aEteModifie = true;
@@ -706,13 +711,15 @@ public class FormulaireController {
             int formulaireId = getIntFromString(formulaireIdStr);
 
             Util.enregistrementFormulaire(request, formulaireId, false, formulaireRepository);
-
+            
             // Gestion de l'envoi du mail
             String comm = Util.getStringFromRequest(request, "commentairesVe");
 
             // Tester que le commentaire n'est pas vide
             if (comm != null && !comm.trim().isEmpty()) {
-                mailController.envoiMailDossierIncomplet(request);
+                String prenom = Util.getStringFromRequest(request, "prenom");
+                String mail = Util.getStringFromRequest(request, "mail");
+                mailController.envoiMailDossierIncomplet(mail, comm, prenom);
             } else {
                 // envoyer javascript
             }
@@ -727,6 +734,7 @@ public class FormulaireController {
             }
             if (returned != null) {
                 returned.addObject("forms", forms);
+                returned.addObject("ConfirmationMessage", "Mail de dossier non conforme envoyé");
             }
             return returned;
         } else {
@@ -789,31 +797,47 @@ public class FormulaireController {
             formulaire = formulaireRepository.getReferenceById(formulaireId);
 
             // Envoi du mail
+            String mail = formulaire.getMail();
 
+            String resetToken = PasswordUtils.generateToken();
+            Date now = new Date();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(now);
+            cal.add(Calendar.HOUR, 24);
+
+            Date expiry = cal.getTime();
+
+            // Stocker token + expiration
+            personne.setFirstConnectionToken(resetToken);
+            personne.setFirstConnectionTokenExpiry(expiry);
+            personneRepository.save(personne);
+
+            // Envoyer le mail
+            mailService.sendPasswordResetMail(resetToken, mail);
             // envoi du mail quand ce sera possible
-            /*
-             * List<Formulaire> forms = new
-             * ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
-             * Collections.sort(forms, Formulaire.getComparator());
-             * 
-             * //Redirection
-             * if (connectionAdmin != null) {
-             * returned = connectionService.prepareModelAndView(connectionAdmin,
-             * "pageDossiers");
-             * } else {
-             * returned = connectionService.prepareModelAndView(connectionAssistant,
-             * "pageDossiersAssist");
-             * }
-             * if (returned != null) {
-             * returned.addObject("forms", forms);
-             * }
-             */
 
+            List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
+            Collections.sort(forms, Formulaire.getComparator());
+
+            //Redirection
+            if (connectionAdmin != null) {
+                returned = connectionService.prepareModelAndView(connectionAdmin,
+                        "pageDossiers");
+            } else {
+                returned = connectionService.prepareModelAndView(connectionAssistant,
+                        "pageDossiersAssist");
+            }
+            if (returned != null) {
+                returned.addObject("forms", forms);
+            }
+            /*
             if (connectionAdmin != null) {
                 returned = manageFormulaireVe(connectionAdmin, formulaire);
             } else {
                 returned = manageFormulaireVe(connectionAssistant, formulaire);
             }
+            */
+            
             return returned;
         } else {
             return new ModelAndView("redirect");

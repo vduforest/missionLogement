@@ -133,7 +133,7 @@ M.;Durand;Lucas;15/06/2002;75015;Paris;France;84532;lucas.durand@eleves.ec-nante
                             <div class="button-group">
                                 <button type="submit" class="EnvoiMails" formaction="tokenmail.do" 
                                     <c:if test="${missionStatus != 0}">disabled="disabled" title="Disponible uniquement 'Avant mission'"</c:if>>
-                                    Envoyer les tokens <img src="img/mail.png" class="mails" />
+                                    Envoyer les mails <img src="img/mail.png" class="mails" />
                                 </button>
                             </div>
                         </div>

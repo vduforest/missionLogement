@@ -50,12 +50,23 @@ public class MailService {
      */
     public void sendFirstConnectionMail(String token, String recipient) {
         String subject = "Première connexion à la plateforme logement";
-        String link = "http://localhost:8080/MissionLogement/creationcompte.do?token=" + token; // En local
-        //String link = "http://dtest-mlogement.ec-nantes.fr:8080/MissionLogement_test/creationcompte.do?token=" + token; // serveur de test
+        //String link = "http://localhost:8080/MissionLogement/creationcompte.do?token=" + token; // En local
+        String link = "http://dtest-mlogement.ec-nantes.fr:8080/MissionLogement_vtest3/creationcompte.do?token=" + token; // serveur de test
 
         String body = getConfigText(MSGPREMIERCONTACT);
 
         sendGenericMailConnexion(token, subject, body, link, recipient);
+    }
+    /**
+     * Envoi mail de fin de mission
+     * 
+     * @param recipient mail à qui envoyer
+     */
+    public void sendEndMissionMail(String recipient){
+        String subject = "Fin de Mission Logement";
+        String body = getConfigText(MSGFIN);
+        
+        sendGenericMailDossier(subject, body, recipient,"");
     }
 
     /**
@@ -67,8 +78,8 @@ public class MailService {
      */
     public void sendPasswordResetMail(String token, String recipient) {
         String subject = "Réinitialisation de votre mot de passe";
-         String link = "http://localhost:8080/MissionLogement/passwordresetlink.do?token=" + token; // En local
-        //String link = "http://dtest-mlogement.ec-nantes.fr:8080/MissionLogement_test/passwordresetlink.do?token= + token; // Serveur de test
+        //String link = "http://localhost:8080/MissionLogement/passwordresetlink.do?token=" + token; // En local
+        String link = "http://dtest-mlogement.ec-nantes.fr:8080/MissionLogement_vtest3/passwordresetlink.do?token=" + token; // Serveur de test
 
         String body = getConfigText(MSGRESET);
 
@@ -171,11 +182,13 @@ public class MailService {
     public void sendEmail(String recipient, String subject, String body) {
 
         final String mailExpediteur = "noreply@ec-nantes.fr";
-        final String usernameSMTP = "Victor.Duforest@eleves.ec-nantes.fr"; // smtp.missionlogement en vrai
-        final String passwordSMTP = ""; // u6vSB@qAm49t2Gt en vrai 
 
-        //final String host = "smtps.ec-nantes.fr";
-        final String host = "smtps.nomade.ec-nantes.fr"; // En local
+        final String usernameSMTP = "smtp.missionlogement"; // smtp.missionlogement en vrai
+        final String passwordSMTP = "u6vSB@qAm49t2Gt"; // u6vSB@qAm49t2Gt en vrai 
+
+
+        final String host = "smtps.ec-nantes.fr";
+        //final String host = "smtps.nomade.ec-nantes.fr"; // En local
 
         String port = "587";
 

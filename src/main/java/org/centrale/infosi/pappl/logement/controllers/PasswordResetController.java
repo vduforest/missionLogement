@@ -139,7 +139,6 @@ public class PasswordResetController {
                 personne.setPassword(PasswordUtils.hashPassword(newPassword));
                 personRepository.save(personne);
                 deleteToken(personne);
-
                 ModelAndView returned = new ModelAndView("index");
                 returned.addObject("succesMessage", "Votre mot de passe a été modifié avec succès. Vous pouvez maintenant vous connecter.");
                 return returned;

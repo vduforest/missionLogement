@@ -120,7 +120,15 @@ public class MailController {
                                 return 2;
                                 // returned.addObject("confirmationMessage", "Emails envoyés avec succès ! ");
                             }
-
+                        // Si c'est un mail de fin de mission
+                        case MailConstants.MSGFIN:
+                            Collection<String> mailFin = formulaireRepository.findAllEmails();
+                            for (String email: mailFin){
+                                mailService.sendEndMissionMail(email);
+                            }
+                            alertes = new ArrayList<Alerte>(alerteRepository.findAll());
+                            Collections.sort(alertes, Alerte.getComparator());
+                            return 3;
                         // Si c'est un mail de réinitialisation de mot de passe
                         case MailConstants.MSGRESET:
 
@@ -195,13 +203,11 @@ public class MailController {
     /**
      * Gestion de l'envoi d'un mail lorsque un dossier est non conforme
      *
-     * @param request La requête http
+     * @param recipient mail qui va recevoir le mail
+     * @param comm commentairesVe
+     * @param prenom prenom du receveur
      */
-    public void envoiMailDossierIncomplet(HttpServletRequest request) {
-        // Récupération du mail à partir de la request
-        String recipient = Util.getStringFromRequest(request, "mail");
-        String comm = Util.getStringFromRequest(request, "commentairesVE");
-        String prenom = Util.getStringFromRequest(request, "prenom");
+    public void envoiMailDossierIncomplet(String recipient,String comm, String prenom) {
 
         // Envoi au service - pas besoin de vérifier que le commentaire est vide, c'est
         // sûr que c'est bon
@@ -209,6 +215,7 @@ public class MailController {
     }
 
     public void envoiMailDossierComplet(HttpServletRequest request) {
+        
         // Récupération du mail à partir de la request
         String recipient = Util.getStringFromRequest(request, "mail");
         String prenom = Util.getStringFromRequest(request, "prenom");
@@ -221,11 +228,24 @@ public class MailController {
      *
      * @param request La requête http
      * @return La page d'accueil admin avec un pop up
-     
+     */
     @RequestMapping(value = "envoiemailfin.do", method = RequestMethod.POST)
     public ModelAndView EnvoiFin(HttpServletRequest request) {
-        return envoyerMessage(request, MailConstants.MSGPFIN);
-    }*/
+        Connexion connection = connectionService.checkAccess(request, "Admin");
+        ModelAndView returned = connectionService.prepareModelAndView(connection, "accueil_admin");
+        String connexionId = request.getParameter("connexionId");
+        if (connection!=null){
+            int res = envoyerMessage(request, MailConstants.MSGFIN);
+            
+            if (res == 3){
+                List<Alerte> alertes = new ArrayList<Alerte>(alerteRepository.findAll());
+                Collections.sort(alertes, Alerte.getComparator());
+                returned.addObject("Alertes", alertes);
+                returned.addObject("confirmationMessage", "Mail de fin de mission envoyé avec succès !");
+            }
+        }
+        return new ModelAndView("index");
+    }
 
     /**
      * Gestion de la route permettant d'envoyer les mails de reset perso

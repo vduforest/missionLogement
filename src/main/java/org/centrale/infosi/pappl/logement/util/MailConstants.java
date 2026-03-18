@@ -13,7 +13,7 @@ public class MailConstants {
     private MailConstants() {} // empêche l'instanciation
     
     public static final int MSGPREMIERCONTACT = 7;
-    public static final int MSGPFIN = 9;
+    public static final int MSGFIN = 9;
     public static final int MAILCONTACT = 8;
     public static final int SIGNATURE = 10;
     public static final int NB = 11;

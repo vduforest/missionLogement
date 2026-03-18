@@ -84,12 +84,18 @@ function openForm(id) {
 }
 
 function messageCommVide(id) {
-  const comm = document.getElementById("commentairesVe").content;
+  /*
+   * var commentaireDiv = document.getElementById("commentairesVeDiv");
+  var commLabel = commentaireDiv.firstElementChild;
+  var commentaire = commLabel.nextElementSibling;
+  const comm = commentaire.textContent;
+   */
+  const comm = document.getElementById("commentairesVe").textContent;
   if ((comm === null) || (comm.trim() === "")) {
     alert("Vous ne pouvez pas refuser un dossier sans expliquer la raison, veuillez remplir la case de commentaires à transmettre au candidat.");
     return false;
   }
-  else {
+  else { console.log(id);
     openForm(id);
     return true;
   }

@@ -495,7 +495,7 @@
                                                                 <small>(obligatoire en cas de refus)<br />(sera transmis
                                                                     à l'étudiant en cas de refus du dossier)</small>
                                                             </div>
-                                                            <div class="input-col">
+                                                            <div id="commentairesVeDiv" class="input-col">
                                                                 <label for="commentairesVe" class="sr-only">
                                                                     commentaires Ve</label>
                                                                 <textarea class="commentairesVe" cols="40" rows="5"
@@ -641,16 +641,15 @@
                                                                         Valider <img src="img/coche.png" class="icon"
                                                                             alt="Valider" />
                                                                     </button>
+                                                                    
+                                                                        
+                                                                        
+                                                                        <button onclick="messageCommVide('formVe')" formaction="RefuserFormVe.do" type="submit" name="refuser" class="btn btn-danger"
+                                                                        value="refuser" >Refuser<img src="img/refuse.png" class="icon"
+                                                                            alt="Refuser" /></button>
+                                                           
 
-                                                                    <button onclick="messageCommVide('formVe')"
-                                                                        formaction="RefuserFormVe.do" type="submit"
-                                                                        name="refuser" class="btn btn-danger"
-                                                                        value="refuser" <c:if
-                                                                        test="${!(item.estConforme)|| (empty item.commentairesVe)}">disabled="disabled"
-                                                                        </c:if>>
-                                                                        Refuser <img src="img/refuse.png" class="icon"
-                                                                            alt="Refuser" />
-                                                                    </button>
+                                                                    
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </div>
