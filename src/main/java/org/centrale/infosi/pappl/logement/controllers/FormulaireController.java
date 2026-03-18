@@ -180,6 +180,7 @@ public class FormulaireController {
             returned = new ModelAndView("informationEleves");
             returned.addObject("texteInfo", texteInformationPopUp);
             returned.addObject("connexionId", connexion.getConnexionId());
+            returned.addObject("hideFormButton", true);
             return returned;
         } else {
             int id = connection.getPersonneId().getPersonneId();

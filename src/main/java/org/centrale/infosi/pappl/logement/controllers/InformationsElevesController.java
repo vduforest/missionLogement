@@ -56,6 +56,11 @@ public class InformationsElevesController {
         // HIDE BACK BUTTON
         returned.addObject("hideBackButton", true);
 
+        // Check if mission is closed to hide the "Accéder au formulaire" button
+        if (connectionService.checkMissionStatus(connection, 1) == null) {
+            returned.addObject("hideFormButton", true);
+        }
+
         // ENSURE LOGO RELOADS THIS PAGE
         returned.addObject("homeLink", "informations.do");
         return returned;

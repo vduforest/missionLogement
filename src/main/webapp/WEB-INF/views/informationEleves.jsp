@@ -1,5 +1,6 @@
 <%-- Document : informationEleves Created on : 6 févr. 2025, 10:49:43 Author : Amolz --%>
   <%@page contentType="text/html" pageEncoding="UTF-8" %>
+  <%@ taglib prefix="c" uri="jakarta.tags.core" %>
     <!DOCTYPE html>
     <html lang="fr-fr">
 
@@ -23,12 +24,14 @@
           </div>
 
           <div class="text-center mt-5 pt-3">
-            <form action="formulaire.do" method="POST">
-              <input type="hidden" name="connexionId" value="${connexionId}" />
-              <button type="submit" class="custom-button">
-                Accéder au Formulaire
-              </button>
-            </form>
+            <c:if test="${hideFormButton != true}">
+              <form action="formulaire.do" method="POST">
+                <input type="hidden" name="connexionId" value="${connexionId}" />
+                <button type="submit" class="custom-button">
+                  Accéder au Formulaire
+                </button>
+              </form>
+            </c:if>
           </div>
         </div>
       </div>
