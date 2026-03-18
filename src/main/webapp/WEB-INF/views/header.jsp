@@ -24,8 +24,8 @@
                 </button>
               </div>
 
-              <h1 class="m-0 text-warning text-center flex-grow-1">
-                Plateforme Mission Logement
+              <h1 class="m-0 text-warning text-center flex-grow-1 px-1 px-md-3">
+                <span class="d-none d-sm-inline">Plateforme </span>Mission Logement
               </h1>
 
               <button class="p-0 bg-transparent border-0 exit-btn" formaction="index.do"

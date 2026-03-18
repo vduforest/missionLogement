@@ -79,3 +79,76 @@ button.exit-btn:focus {
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
 }
+
+/* --- MOBILE RESPONSIVENESS --- */
+
+#header h1 {
+  font-size: 1.6rem;
+  padding: 0;
+  margin: 0;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+@media (max-width: 991px) {
+  #header h1 {
+    font-size: 1.3rem;
+  }
+  .logo {
+    height: 50px;
+  }
+}
+
+@media (max-width: 767px) {
+  #header .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  #header h1 {
+    font-size: 1.1rem;
+    padding: 0 5px;
+  }
+
+  .logo {
+    height: 40px;
+  }
+
+  .return-img {
+    height: 32px;
+    width: 32px;
+  }
+
+  .return-btn {
+    margin-right: 8px;
+  }
+
+  .sortie {
+    height: 32px;
+  }
+
+  button.exit-btn {
+    width: 40px;
+    height: 40px;
+    padding: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  #header h1 {
+    font-size: 0.9rem;
+  }
+  
+  .logo {
+    height: 35px;
+  }
+
+  .return-img {
+    height: 28px;
+    width: 28px;
+  }
+
+  .sortie {
+    height: 28px;
+  }
+}
