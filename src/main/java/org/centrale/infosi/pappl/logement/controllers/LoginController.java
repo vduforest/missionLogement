@@ -140,12 +140,22 @@ public class LoginController {
                     user = formulaire.getPersonneId();
                 }
             }
-
+            System.out.println("login = " + login);
+           System.out.println("user found = " + (user != null));
+           System.out.println("stored password = " + (user != null ? user.getPassword() : "null"));
+           System.out.println("hash(admin) = " + PasswordUtils.hashPassword("admin"));
+           System.out.println("verify(admin, hash(admin)) = " +
+            PasswordUtils.verifyPassword("admin", PasswordUtils.hashPassword("admun")));
+           if (user != null) {
+    System.out.println("hash en base = " + user.getPassword());
+    System.out.println("verify(admin, hash_en_base) = " +
+            PasswordUtils.verifyPassword("test", user.getPassword()));
+}
             // Verify the password using bcrypt
             if ((user != null) && (user.getPassword() != null)
-                    && (PasswordUtils.verifyPassword(password, user.getPassword()))|| (true)) {
+                    && (PasswordUtils.verifyPassword(password, user.getPassword()))) {
                 Connexion connection = connectionService.createConnection(user);
-
+                  
                 // Get the authenticated user and his role
                 Personne loggedInUser = user;
                 Role role = loggedInUser.getRoleId();

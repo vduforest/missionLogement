@@ -48,7 +48,7 @@
                 <td>
                     <c:choose>
                         <c:when test="${(empty user) || (empty user.personneId)}">
-                            <input type="text" class="form-control" name="Password" value="${user.password}">
+                            <input type="password" class="form-control" name="Password" value="">
                         </c:when>
                         <c:otherwise>
                             <span style="font-style: italic;">Créer un nouvel assistant pour changer le mot de passe</span>
