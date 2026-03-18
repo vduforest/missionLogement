@@ -212,4 +212,4 @@ button.Import {
 button.Import:hover {
   background-color: #0069d9 !important;
   transform: translateY(-2px);
-/* CRITICAL: This must be at the end */
+  /* CRITICAL: This must be at the end */
