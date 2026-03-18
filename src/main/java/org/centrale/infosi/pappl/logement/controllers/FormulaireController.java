@@ -703,7 +703,7 @@ public class FormulaireController {
             int formulaireId = getIntFromString(formulaireIdStr);
 
             Util.enregistrementFormulaire(request, formulaireId, false, formulaireRepository);
-
+            
             // Gestion de l'envoi du mail
             String comm = Util.getStringFromRequest(request, "commentairesVe");
 
