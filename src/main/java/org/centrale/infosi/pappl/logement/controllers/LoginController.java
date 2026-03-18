@@ -180,6 +180,11 @@ public class LoginController {
                             // SETS LOGO DESTINATION TO INFORMATIONS
                             returned.addObject("homeLink", "informations.do");
 
+                            // Check if mission is closed to hide the "Accéder au formulaire" button
+                            if (connectionService.checkMissionStatus(connection, 1) == null) {
+                                returned.addObject("hideFormButton", true);
+                            }
+
                             return returned;
 
                         case 2: // Admin
