@@ -1,45 +1,5 @@
 /* --- ACCUEIL ADMIN STYLES --- */
 
-/* REFRESH BUTTON (ADDED) */
-.refresh-btn {
-  background-color: white;
-  color: var(--brand-blue);
-  border: 1px solid #e2e8f0;
-  cursor: pointer;
-  padding: 8px 16px;
-  border-radius: 8px;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-weight: 600;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.refresh-btn:focus {
-  outline: 2px solid var(--brand-blue);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(14, 39, 72, 0.1);
-}
-
-.refresh-icon {
-  height: 20px;
-  width: 20px;
-  display: block;
-  transition: transform 0.3s ease;
-}
-
-/* Hover Effect - only rotate the icon */
-.refresh-btn:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-.refresh-btn:hover .refresh-icon {
-  transform: rotate(90deg);
-}
-
-
 /* --- NAVIGATION BUTTONS --- */
 button.redirect {
   background-color: white;
