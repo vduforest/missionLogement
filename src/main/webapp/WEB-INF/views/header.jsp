@@ -11,8 +11,8 @@
 
               <div class="d-flex align-items-center">
 
-                <c:if test="${empty hideBackButton or not hideBackButton}">
-                  <button type="button" class="return-btn" onclick="history.back()" title="Retour">
+                <c:if test="${(empty hideBackButton or not hideBackButton) and not empty backLink}">
+                  <button type="submit" class="return-btn" formaction="${backLink}" title="Retour">
                     <img src="img/return.png" alt="Retour" class="return-img" />
                   </button>
                 </c:if>

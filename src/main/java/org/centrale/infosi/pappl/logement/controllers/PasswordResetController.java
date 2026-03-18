@@ -64,15 +64,14 @@ public class PasswordResetController {
     @RequestMapping(value = "submitpasswordreset.do", method = RequestMethod.POST)
     public ModelAndView handlePasswordReset(HttpServletRequest request) {
 
-        ModelAndView returned = new ModelAndView("index");
-
         String mail = Util.getStringFromRequest(request, "mail");
         String scei = Util.getStringFromRequest(request, "scei");
 
         Optional<Formulaire> formulaireOpt = formulaireRepository.findBySceiAndMail(scei, mail);
 
         if (formulaireOpt.isEmpty()) {
-            returned.addObject("errorMessage", scei+" "+mail);
+            ModelAndView returned = new ModelAndView("passwordreset");
+            returned.addObject("errorMessage", "Nous n'avons trouvé aucun compte correspondant à ce numéro SCEI et cet e-mail.");
             return returned;
         }
 
@@ -95,20 +94,20 @@ public class PasswordResetController {
         // Envoyer le mail
         mailService.sendPasswordResetMail(resetToken,mail);
 
-        returned.addObject("successMessage","Un e-mail de réinitialisation vous a été envoyé.");
+        ModelAndView returned = new ModelAndView("index");
+        returned.addObject("succesMessage","Un e-mail de réinitialisation vous a été envoyé.");
 
         return returned;
     }
 
-    
-    
-    /**
-     * Gestion de la réinitialisation du mot de passe (doit être modif)
-     * @param request La requête http
-     * @return La vue de changement du mot de passe
-     */
-    @RequestMapping(value="passwordresetlink.do", method=RequestMethod.GET)
-    public ModelAndView handleSetNewPassword(HttpServletRequest request){
+
+        /**
+        * Gestion de la réinitialisation du mot de passe (doit être modif)
+        * @param request La requête http
+        * @return La vue de changement du mot de passe
+        */
+        @RequestMapping(value="passwordresetlink.do", method=RequestMethod.GET)
+        public ModelAndView handleSetNewPassword(HttpServletRequest request){
         ModelAndView returned = null;
         String token = Util.getStringFromRequest(request, "token");
         //vérification du token
@@ -116,17 +115,17 @@ public class PasswordResetController {
             returned=new ModelAndView("setnewpassword");
             returned.addObject("token",token);
         }
-        return returned;   
-    }
-    
-    /**
-     * Gestion de la route permettant d'afficher la page de modification son mot de passe 
-     * @param request La requête http
-     * @return La page de changement de mot de passe
-     */
-    
-    @RequestMapping(value="submitnewpassword.do", method=RequestMethod.POST)
-    public ModelAndView handleSubmitNewPassword(HttpServletRequest request) {
+        return returned;
+        }
+
+        /**
+        * Gestion de la route permettant d'afficher la page de modification son mot de passe
+        * @param request La requête http
+        * @return La page de changement de mot de passe
+        */
+
+        @RequestMapping(value="submitnewpassword.do", method=RequestMethod.POST)
+        public ModelAndView handleSubmitNewPassword(HttpServletRequest request) {
         String token = Util.getStringFromRequest(request, "token");
         String newPassword = Util.getStringFromRequest(request, "password");
 
@@ -140,13 +139,15 @@ public class PasswordResetController {
                 personne.setPassword(PasswordUtils.hashPassword(newPassword));
                 personRepository.save(personne);
                 deleteToken(personne);
-                return new ModelAndView("index"); 
+                ModelAndView returned = new ModelAndView("index");
+                returned.addObject("succesMessage", "Votre mot de passe a été modifié avec succès. Vous pouvez maintenant vous connecter.");
+                return returned;
             }
         }
 
         // If token is invalid or login is null, show an error message
         ModelAndView returned = new ModelAndView("setnewpassword");
-        returned.addObject("errorMessage", "Lien invalide ou expiré.");
+        returned.addObject("errorMessage", "Le lien de réinitialisation est invalide ou a expiré.");
         return returned;
     }
 

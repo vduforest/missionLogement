@@ -76,6 +76,11 @@ public class AllDossierController {
         returned = connectionService.prepareModelAndView(connection, "allDossiers");
         if (returned != null) {
             returned.addObject("forms", forms);
+            if (connection.isAdmin()) {
+                returned.addObject("backLink", "adminDashboard.do");
+            } else {
+                returned.addObject("backLink", "dashboard.do");
+            }
         }
         return returned;
     }
@@ -143,6 +148,7 @@ public class AllDossierController {
             Formulaire formulaire = form.get();
             returned.addObject("form", formulaire);
             returned.addObject("pays", paysRepository.findAll());
+            returned.addObject("backLink", "allDossiers.do");
 
             Date dateD = formulaire.getDateDeNaissance();
             returned.addObject("date", dateD);

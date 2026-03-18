@@ -1,100 +1,125 @@
-<%-- 
-    Document   : passwrodreset
-    Created on : 10 Feb 2025, 16:27:44
-    Author     : samer
---%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="fr-fr">
+<%-- Document : passwrodreset Created on : 10 Feb 2025, 16:27:44 Author : samer --%>
+  <%@page contentType="text/html" pageEncoding="UTF-8" %>
+    <!DOCTYPE html>
+    <html lang="fr-fr">
+
     <head>
-        <title>Réinitialisation du mot de passe</title>
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="css/index.css" type="text/css" rel="stylesheet"/>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f4f4f4;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                margin: 0;
-                position: relative;
-            }
-            #boite {
-                background: #003366; /* Dark blue (Centrale Nantes style) */
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-                text-align: center;
-                max-width: 400px;
-                color: #ffffff; /* Light text */
-            }
+      <title>Réinitialisation du mot de passe</title>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-            p {
-                font-size: 16px;
-                color: #f1f1f1; /* Light gray for readability */
-                margin: 10px 0;
-            }
-            .return-btn {
-                position: absolute;
-                top: 20px;
-                left: 20px;
-                background-color: #FFD700; /* Yellow button */
-                color: #003366; /* Dark blue text */
-                border: none;
-                padding: 8px 12px;
-                border-radius: 5px;
-                text-decoration: none;
-                font-size: 14px;
-                cursor: pointer;
-                transition: background 0.3s ease;
-                font-weight: bold;
-            }
-            .return-btn:hover {
-                background-color: #e6c200;
-            }
-        </style>
+      <link href="bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
+      <link href="css/index.css" type="text/css" rel="stylesheet" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+      <script>
+        // Scroll to Top Logic for Mobile
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+          var btn = document.getElementById("mobileLoginBtn");
+          if ((document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) && window.innerWidth <= 992) {
+            btn.style.display = "block";
+          } else {
+            btn.style.display = "none";
+          }
+        }
+
+        function scrollToTop() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showLoading() {
+          const btn = document.getElementById("submitBtn");
+          btn.disabled = true;
+          btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Envoi en cours...';
+          return true;
+        }
+      </script>
     </head>
+
     <body>
-    <a href="index.do" class="return-btn">⬅ Retour</a>
-    
-    <div id="boite">
-        <h1>Réinitialisation du mot de passe</h1>
 
-        <!-- Formulaire POST pour le reset -->
-        <form method="post" action="submitpasswordreset.do">
-            <div class="form-group row">
-                <div class="col-10">
-                    <input type="text" class="form-control" id="mySCEI"
-                           placeholder="Votre numéro SCEI" name="scei" required>
+      <div class="split-container" id="top">
+
+        <div class="split-pane left-pane">
+          <div class="content-wrapper">
+
+            <h1 class="brand-title">
+              Réinitialisation du<br />
+              <span class="highlight">mot de passe</span>
+            </h1>
+
+            <div class="login-box">
+              <form action="submitpasswordreset.do" method="POST" onsubmit="return showLoading()">
+                <c:if test="${param.error != null}">
+                  <div class="alert alert-danger custom-alert">
+                    ${param.error}
+                  </div>
+                </c:if>
+                <c:if test="${! empty errorMessage}">
+                  <div class="alert alert-danger custom-alert">
+                    ${errorMessage}
+                  </div>
+                </c:if>
+                <c:if test="${param.success != null}">
+                  <div class="alert alert-success custom-alert">
+                    ${param.success}
+                  </div>
+                </c:if>
+                <c:if test="${! empty succesMessage}">
+                  <div class="alert alert-success custom-alert">
+                    ${succesMessage}
+                  </div>
+                </c:if>
+
+                <div class="form-group">
+                  <label for="mySCEI">Numéro SCEI</label>
+                  <input type="text" id="mySCEI" name="scei" placeholder="Votre numéro SCEI"
+                    class="form-control custom-input" required />
                 </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-10">
-                    <input type="text" class="form-control" id="myMail"
-                           placeholder="Votre mail" name="mail" required>
+
+                <div class="form-group">
+                  <label for="myMail">Adresse e-mail</label>
+                  <input type="email" id="myMail" name="mail" placeholder="Votre adresse mail"
+                    class="form-control custom-input" required />
                 </div>
+
+                <button type="submit" id="submitBtn" class="custom-button">Envoyer le lien de réinitialisation</button>
+              </form>
+
+              <div class="mt-4">
+                <a href="index.do" class="defaultlink"><i class="bi bi-arrow-left"></i> Retour à la connexion</a>
+              </div>
             </div>
-            <div class="text-center">
-                <button type="submit" class="Enregistrer" 
-                        style="background-color:lightgreen; cursor:pointer;">
-                    Submit
-                </button>
+          </div>
+        </div>
+
+        <div class="split-pane right-pane">
+          <div class="content-wrapper text-content">
+            <div class="info-text">
+              <h3 class="mb-4" style="color: #0e2748; font-weight: bold;">Instructions</h3>
+              <p>
+                Pour réinitialiser votre mot de passe, veuillez saisir votre <strong>numéro SCEI</strong> ainsi que
+                l'<strong>adresse e-mail</strong>
+                associée à votre dossier de candidature.
+              </p>
+              <p>
+                Un e-mail contenant un lien de réinitialisation vous sera envoyé. Ce lien sera valide pendant <strong>24
+                  heures</strong>.
+              </p>
+              <p>
+                Si vous ne recevez pas l'e-mail dans les prochaines minutes, vérifiez votre dossier de courriers
+                indésirables (spams).
+              </p>
             </div>
-        </form>
+          </div>
+        </div>
 
-        <!-- Affichage message d'erreur ou de succès -->
-        <c:if test="${param.success != null}">
-            <p style="color:green;text-align:center;">${param.success}</p>
-        </c:if>
-        <c:if test="${param.error != null}">
-            <p style="color:red;text-align:center;">${param.error}</p>
-        </c:if>
-    </div>
-</body>
-</html>
+      </div>
 
+      <button id="mobileLoginBtn" onclick="scrollToTop()">&#8593; Réinitialiser</button>
 
+    </body>
 
+    </html>
