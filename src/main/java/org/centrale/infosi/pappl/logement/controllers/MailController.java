@@ -195,13 +195,11 @@ public class MailController {
     /**
      * Gestion de l'envoi d'un mail lorsque un dossier est non conforme
      *
-     * @param request La requête http
+     * @param recipient mail qui va recevoir le mail
+     * @param comm commentairesVe
+     * @param prenom prenom du receveur
      */
-    public void envoiMailDossierIncomplet(HttpServletRequest request) {
-        // Récupération du mail à partir de la request
-        String recipient = Util.getStringFromRequest(request, "mail");
-        String comm = Util.getStringFromRequest(request, "commentairesVE");
-        String prenom = Util.getStringFromRequest(request, "prenom");
+    public void envoiMailDossierIncomplet(String recipient,String comm, String prenom) {
 
         // Envoi au service - pas besoin de vérifier que le commentaire est vide, c'est
         // sûr que c'est bon

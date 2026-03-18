@@ -140,7 +140,7 @@ public class PasswordResetController {
                 personne.setPassword(PasswordUtils.hashPassword(newPassword));
                 personRepository.save(personne);
                 deleteToken(personne);
-                return new ModelAndView("index.do"); 
+                return new ModelAndView("index"); 
             }
         }
 

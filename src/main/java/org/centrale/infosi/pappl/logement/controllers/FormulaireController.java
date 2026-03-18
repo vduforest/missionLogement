@@ -596,6 +596,7 @@ public class FormulaireController {
             }
             if (returned != null) {
                 returned.addObject("forms", forms);
+                returned.addObject("ConfirmationMessage", "Mail de dossier validé envoyé");
             }
             return returned;
         } else {
@@ -704,7 +705,9 @@ public class FormulaireController {
 
             // Tester que le commentaire n'est pas vide
             if (comm != null && !comm.trim().isEmpty()) {
-                mailController.envoiMailDossierIncomplet(request);
+                String prenom = Util.getStringFromRequest(request,"prenom");
+                String mail = Util.getStringFromRequest(request,"mail");
+                mailController.envoiMailDossierIncomplet(mail, comm, prenom);
             } else {
                 // envoyer javascript
             }
@@ -719,6 +722,7 @@ public class FormulaireController {
             }
             if (returned != null) {
                 returned.addObject("forms", forms);
+                returned.addObject("ConfirmationMessage", "Mail de dossier non conforme envoyé");
             }
             return returned;
         } else {
