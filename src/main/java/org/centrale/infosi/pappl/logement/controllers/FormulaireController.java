@@ -140,8 +140,8 @@ public class FormulaireController {
         returned.addObject("bourseFile", bourseFile);
         returned.addObject("error", erreur);
         returned.addObject("souhaitsList", souhaitRepository.findAll(Sort.by(Sort.Direction.ASC, "souhaitOrdre")));
-        returned.addObject("souhaitsList", souhaitRepository.findAll(Sort.by(Sort.Direction.ASC, "souhaitOrdre")));
         returned.addObject("genresList", genreRepository.findAll(Sort.by(Sort.Direction.ASC, "genreOrdre")));
+        returned.addObject("backLink", "informations.do");
 
         // Tooltips
         String[] tooltips = {
