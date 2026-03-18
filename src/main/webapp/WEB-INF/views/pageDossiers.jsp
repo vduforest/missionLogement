@@ -55,6 +55,19 @@
                         </form>
                     </div>
                 </div>
+
+                <c:if test="${not empty confirmationMessage}">
+                    <div id="popupMessage"
+                         style="display: block; position: fixed; bottom: 20px; left: 20px; background-color: #4CAF50; color: white; padding: 10px; border-radius: 5px;">
+                        ${confirmationMessage}
+                    </div>
+                    <script type="text/javascript">
+                        setTimeout(function () {
+                            document.getElementById("popupMessage").style.display = 'none';
+                        }, 5000);
+                    </script>
+                </c:if>            
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive">
