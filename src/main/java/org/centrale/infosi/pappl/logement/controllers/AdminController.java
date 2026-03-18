@@ -135,6 +135,7 @@ public class AdminController {
         returned = connectionService.prepareModelAndView(connection, "pageDossiers");
         if (returned != null) {
             returned.addObject("forms", forms);
+            returned.addObject("backLink", "adminDashboard.do");
         }
 
         return returned;
@@ -164,6 +165,7 @@ public class AdminController {
         //returned=new ModelAndView("pageAssistant");
         if (returned != null) {
             returned.addObject("assistants", assistants);
+            returned.addObject("backLink", "adminDashboard.do");
         }
         return returned;
     }

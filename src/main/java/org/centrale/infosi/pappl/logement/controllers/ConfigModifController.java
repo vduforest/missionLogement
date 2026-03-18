@@ -143,6 +143,7 @@ public class ConfigModifController {
 
         ModelAndView returned = connectionService.prepareModelAndView(connection, "configuration");
         if (returned != null) {
+            returned.addObject("backLink", "adminDashboard.do");
             Collection<TypeModif> listeLignes = typeModifRepository.findAll(Sort.by(Sort.Direction.ASC, "typeId"));
             returned.addObject("typeModif", listeLignes);
             returned.addObject("missionStatus", status);

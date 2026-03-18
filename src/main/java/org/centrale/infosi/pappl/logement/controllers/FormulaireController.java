@@ -538,6 +538,13 @@ public class FormulaireController {
         }
 
         returned = manageFormulaireVe(connection, formulaire);
+        if (returned != null) {
+            if (connection.isAdmin()) {
+                returned.addObject("backLink", "dossiers.do");
+            } else if (connection.isAssistant()) {
+                returned.addObject("backLink", "dossiersAssist.do");
+            }
+        }
         return returned;
     }
 
