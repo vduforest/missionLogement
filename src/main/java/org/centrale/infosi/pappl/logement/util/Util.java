@@ -334,6 +334,8 @@ public class Util {
         writeString(bufferedWriter, formulaire.getMail());
         char dummy = (char) 160;
         writeString(bufferedWriter, dummy + formulaire.getNumeroTel());
+        char dummy2 = (char) 160;
+        writeString(bufferedWriter, dummy2 + formulaire.getNumeroTel2());
 
         if (formulaire.getSouhaitId() != null) {
             writeString(bufferedWriter, formulaire.getSouhaitId().getSouhaitType());
@@ -352,6 +354,20 @@ public class Util {
         } else {
             bufferedWriter.write(";");
         }
+        writeString(bufferedWriter, Double.toString(formulaire.getDistance()));
+        writeString(bufferedWriter, Integer.toString(formulaire.getRang()));
+        if (formulaire.getInternational()==true){
+            writeString(bufferedWriter, "oui");
+        }
+        else if (formulaire.getInternational()==false){
+            writeString(bufferedWriter, "non");
+        }
+        else {
+            bufferedWriter.write(";");
+        }
+        
+        
+        
 
         writeString(bufferedWriter, getStringFromDate(formulaire.getDateValidation()));
 
@@ -395,9 +411,13 @@ public class Util {
             bufferedWriter.write("Pays;");
             bufferedWriter.write("Mail;");
             bufferedWriter.write("Numéro de téléphone;");
+            bufferedWriter.write("Numéro de téléphone 2;");//changement
             bufferedWriter.write("Souhait;");
             bufferedWriter.write("Est boursier;");
             bufferedWriter.write("A besoin de dispositions;");
+            bufferedWriter.write("Distance;");//changement
+            bufferedWriter.write("Rang;");//changement
+            bufferedWriter.write("International;");//changement
             bufferedWriter.write("Date de soumission;");
             bufferedWriter.write("Commentaire;");
             bufferedWriter.write("Commentaire Mission logement");
