@@ -183,12 +183,12 @@ public class MailService {
 
         final String mailExpediteur = "noreply@ec-nantes.fr";
 
-        final String usernameSMTP = "smtp.missionlogement"; // smtp.missionlogement en vrai
-        final String passwordSMTP = "u6vSB@qAm49t2Gt"; // u6vSB@qAm49t2Gt en vrai 
+        final String usernameSMTP = "victor.duforest@eleves.ec-nantes.fr"; // smtp.missionlogement en vrai
+        final String passwordSMTP = "dutzos-3Sujfu-cugves"; // u6vSB@qAm49t2Gt en vrai 
 
 
-        final String host = "smtps.ec-nantes.fr";
-        //final String host = "smtps.nomade.ec-nantes.fr"; // En local
+        //final String host = "smtps.ec-nantes.fr";
+        final String host = "smtps.nomade.ec-nantes.fr"; // En local
 
         String port = "587";
 

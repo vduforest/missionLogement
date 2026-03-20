@@ -1,0 +1,4 @@
+﻿Nom;Prénom;Date de naissance;Numéro SCEI;Genre;Ville;Code Postal;Pays;Mail;Numéro de téléphone;Numéro de téléphone 2;Souhait;Est boursier;A besoin de dispositions;Distance;Rang;International;Date de soumission;Commentaire;Commentaire Mission logement
+"Del";"Raph";"18/01/2003";"10235";"Masculin";"Paris";"75017";"France";"raphael.delacote@eleves.ec-nantes.fr";" 0909090909";" 0808080808";"Seul absolument";"Non";"Non";;;"Non";"19/03/2026";"ZRESR";"";
+"Duf";"Victor";"01/01/2003";"10234";"Féminin";"Lille";"92200";"France";"victor.duforest@eleves.ec-nantes.fr";" 0987654321";" 0987654332";"De préférence en colocation";"Oui";"Non";;;"Non";"19/03/2026";"TEST";"test refus";
+"Gar";"Axel";"22/01/2003";"10236";"Masculin";"Marseille";"00000";"Maroc";"victor.duforest@eleves.ec-nantes.fr";" 0987654321";" 09876543322";"De préférence en colocation";;"Non";;;"Non";"19/03/2026";;"tests";

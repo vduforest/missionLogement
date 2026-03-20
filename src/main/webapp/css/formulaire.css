@@ -196,42 +196,42 @@ textarea:disabled {
 
 /* --- TOOLTIPS --- */
 .tooltip-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-block;
     width: 18px;
     height: 18px;
-    background-color: var(--brand-blue);
-    color: white;
+    line-height: 18px;
+    text-align: center;
     border-radius: 50%;
-    font-size: 11px;
-    margin-left: 8px;
-    cursor: help;
+    background-color: #163a70;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 6px;
     position: relative;
+    vertical-align: middle;
 }
 
 .tooltip-text {
-    visibility: hidden;
-    width: 250px;
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 8px;
+    display: none;
     position: absolute;
-    z-index: 100;
-    bottom: 130%;
-    left: 50%;
-    margin-left: -125px;
-    opacity: 0;
-    transition: opacity 0.3s;
-    font-size: 0.85rem;
-    font-weight: normal;
+    left: 25px;
+    top: -5px;
+    min-width: 220px;
+    max-width: 280px;
+    background: #163a70;
+    color: white;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    z-index: 9999;
+    white-space: normal;
+    text-align: left;
+    line-height: 1.4;
 }
 
 .tooltip-icon:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
+    display: block;
 }
 
 /* RESPONSIVE */
@@ -256,7 +256,6 @@ textarea:disabled {
 button img.avion,
 button img.icon {
     height: 1.2em;
-    /* Matches the text size nicely */
     width: auto;
     vertical-align: middle;
 }

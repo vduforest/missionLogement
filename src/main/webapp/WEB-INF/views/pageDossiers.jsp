@@ -47,7 +47,7 @@
             <div class="container">
                 <div class="row mb-2 align-items-end">
                     <div class="col-md-12 d-flex justify-content-between align-items-center">
-                        <h2 class="m-0">Liste des dossiers transmis</h2>
+                        <h2 class="m-0">Liste des dossiers</h2>
                         <form method="post" action="dossiers.do" class="m-0">
                             <input type="hidden" name="connexionId" value="${connexionId}" />
                             <button class="refresh-btn" title="Rafraîchir">
@@ -168,31 +168,14 @@
                                                     </span><br /></c:if>
                                                 </td>
                                                 <td class="text-center">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
+                                                    
                                                             <form action="formulaireVe.do" method="POST">
                                                                 <input type="hidden" name="connexionId" value="${connexionId}" />
                                                             <input type="hidden" name="formulaireId" value="${formulaire.formulaireId}" />
-                                                            <button name="edit" class="btn btn-primary">
-                                                                <img src="img/show.png" alt="show" class="icon" />
-                                                            </button>
+                                                            <button name="edit" class="btn"><img src="img/show.png" alt="show" class="show" />
+                                    Infos</button>
                                                         </form>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <form action="AnnulerPwd2.do" id="check_${formulaire.formulaireId}" method="POST">
-                                                            <input type="hidden" name="connexionId" value="${connexionId}" />
-                                                            <input type="hidden" name="formulaireId" value="${formulaire.formulaireId}" />
-                                                            <input type="hidden" name="id" value="${formulaire.formulaireId}" />
-                                                            <button name="reinitialiser" class="btn btn-danger"
-                                                                    onclick="return checkSubmit('check_${formulaire.formulaireId}', 'Réinitialiser le mot de passe ?');">
-                                                                <img src="img/return.png" class="icon" alt="Reinitialiser" />
-                                                            </button>
-                                                        </form>
-                                                        <c:if test="${(! empty connexion) && (connexion.isAdmin())}">
-                                                            ${formulaire.personneId.login}
-                                                        </c:if>
-                                                    </div>
-                                                </div>
+                        
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -222,7 +205,6 @@
                     </div>
                 </div>
             </div>
-        </div>
         <script>
             var tableName = "StudentList";
             $(document).ready(function () {

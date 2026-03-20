@@ -313,7 +313,7 @@ public class Util {
         writeString(bufferedWriter, formulaire.getPersonneId().getNom());
         writeString(bufferedWriter, formulaire.getPersonneId().getPrenom());
 
-        String s;
+        
         writeString(bufferedWriter, getStringFromDate(formulaire.getDateDeNaissance()));
         writeString(bufferedWriter, formulaire.getNumeroScei());
 
@@ -334,6 +334,9 @@ public class Util {
         writeString(bufferedWriter, formulaire.getMail());
         char dummy = (char) 160;
         writeString(bufferedWriter, dummy + formulaire.getNumeroTel());
+        //changement
+        char dummy2 = (char) 160;
+        writeString(bufferedWriter, dummy2 + formulaire.getNumeroTel2());
 
         if (formulaire.getSouhaitId() != null) {
             writeString(bufferedWriter, formulaire.getSouhaitId().getSouhaitType());
@@ -352,6 +355,27 @@ public class Util {
         } else {
             bufferedWriter.write(";");
         }
+        
+        if (formulaire.getDistance() != null) {
+            writeString(bufferedWriter, Double.toString(formulaire.getDistance()));//changement
+        } else {
+            bufferedWriter.write(";");
+        }
+        if (formulaire.getRang() != null) {
+            writeString(bufferedWriter, Integer.toString(formulaire.getRang()));//changement
+        } else {
+            bufferedWriter.write(";");
+        }
+        
+        //changement
+        if (formulaire.getEstPmr() != null) {
+            writeString(bufferedWriter, (formulaire.getEstPmr() ? "Oui" : "Non"));
+        } else {
+            bufferedWriter.write(";");
+        }
+        
+        
+        
 
         writeString(bufferedWriter, getStringFromDate(formulaire.getDateValidation()));
 
@@ -395,9 +419,13 @@ public class Util {
             bufferedWriter.write("Pays;");
             bufferedWriter.write("Mail;");
             bufferedWriter.write("Numéro de téléphone;");
+            bufferedWriter.write("Numéro de téléphone 2;");//changement
             bufferedWriter.write("Souhait;");
             bufferedWriter.write("Est boursier;");
             bufferedWriter.write("A besoin de dispositions;");
+            bufferedWriter.write("Distance;");//changement
+            bufferedWriter.write("Rang;");//changement
+            bufferedWriter.write("International;");//changement
             bufferedWriter.write("Date de soumission;");
             bufferedWriter.write("Commentaire;");
             bufferedWriter.write("Commentaire Mission logement");
