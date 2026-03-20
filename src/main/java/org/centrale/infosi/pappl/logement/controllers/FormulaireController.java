@@ -551,6 +551,34 @@ public class FormulaireController {
         }
         return returned;
     }
+    /**
+     * Enregistrer l'admin/assistant qui a traité le formulaire en dernier
+     * @param connectionAdmin connexion admin (null si ce n'est pas l'admin qui est connecté)
+     * @param connectionAssistant connexion assistant (null si ce n'est pas l'assistant qui est connecté)
+     * @param formulaireId numéro du formulaire
+     */
+    private void saveAuthor(Connexion connectionAdmin, Connexion connectionAssistant, int formulaireId){
+        Formulaire formulaire = formulaireRepository.getReferenceById(formulaireId);
+            Personne validator = null;
+            if (connectionAdmin != null) {
+                validator = connectionAdmin.getPersonneId();
+            } else if (connectionAssistant != null) {
+                validator = connectionAssistant.getPersonneId();
+            }
+
+            if (validator != null) {
+                formulaire.setAssistant(validator);
+
+                // Create History Record
+                Traitement traitement = new Traitement();
+                traitement.setFormulaireId(formulaire);
+                traitement.setPersonneId(validator);
+                traitement.setDateTraitement(new Date());
+                traitementRepository.save(traitement);
+            }
+
+            formulaireRepository.save(formulaire);
+    }
 
     /**
      * Gestion de la route de validation d'un formulaire par un assistant ou
@@ -571,26 +599,7 @@ public class FormulaireController {
 
             Util.enregistrementFormulaire(request, formulaireId, true, formulaireRepository);
             // Save validation author
-            Formulaire formulaire = formulaireRepository.getReferenceById(formulaireId);
-            Personne validator = null;
-            if (connectionAdmin != null) {
-                validator = connectionAdmin.getPersonneId();
-            } else if (connectionAssistant != null) {
-                validator = connectionAssistant.getPersonneId();
-            }
-
-            if (validator != null) {
-                formulaire.setAssistant(validator);
-
-                // Create History Record
-                Traitement traitement = new Traitement();
-                traitement.setFormulaireId(formulaire);
-                traitement.setPersonneId(validator);
-                traitement.setDateTraitement(new Date());
-                traitementRepository.save(traitement);
-            }
-
-            formulaireRepository.save(formulaire);
+            saveAuthor(connectionAdmin,connectionAssistant,formulaireId);
 
             // Envoi du mail de validation du dossier
             mailController.envoiMailDossierComplet(request);
@@ -714,14 +723,15 @@ public class FormulaireController {
             
             // Gestion de l'envoi du mail
             String comm = Util.getStringFromRequest(request, "commentairesVe");
-
-            // Tester que le commentaire n'est pas vide
+            
+            // Save Author 
+            saveAuthor(connectionAdmin,connectionAssistant,formulaireId);
+            
+            // Tester que le commentaire n'est pas vide et envoyer le mail (normalement il ne peut pas être nul, ça a été vérifié avant avec le js
             if (comm != null && !comm.trim().isEmpty()) {
                 String prenom = Util.getStringFromRequest(request, "prenom");
                 String mail = Util.getStringFromRequest(request, "mail");
                 mailController.envoiMailDossierIncomplet(mail, comm, prenom);
-            } else {
-                // envoyer javascript
             }
 
             List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());

@@ -123,7 +123,6 @@ public class PasswordResetController {
         * @param request La requête http
         * @return La page de changement de mot de passe
         */
-
         @RequestMapping(value="submitnewpassword.do", method=RequestMethod.POST)
         public ModelAndView handleSubmitNewPassword(HttpServletRequest request) {
         String token = Util.getStringFromRequest(request, "token");
