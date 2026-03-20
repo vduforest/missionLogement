@@ -78,6 +78,33 @@ function openRecursive(anyRef) {
   }
 }
 
+function confirmerEtOuvrir(id,entier) {
+    
+    entier = parseInt(entier);
+    let txt = "";
+    // Ecriture du texte de la box
+    if (entier === 1){
+        txt = "Vous allez envoyer un mail de réinitialisation de mot de passe, voulez-vous continuer ?";
+    } else if (entier === 2){
+        txt = "Vous allez enregistrer le formulaire, voulez-vous continuer ?";
+    } else if (entier === 3){
+        txt = "Vous allez valider le formulaire, vous ne pourrez plus y toucher ensuite, voulez-vous continuer ?";
+    }else if (entier === 4){
+        txt = "Vous allez refuser le formulaire, l'élève va recevoir un mail lui expliquant pourquoi, voulez-vous continuer ?";
+    }
+    
+    if (confirm(txt)) {
+        if (entier === 4){
+            if (!messageCommVide(id)){
+                return false;
+            }
+        }
+        openForm(id);
+        return true;
+    }
+    return false;
+}
+
 function openForm(id) {
   var formVE = document.getElementById(id);
   openRecursive(formVE);
@@ -95,8 +122,7 @@ function messageCommVide(id) {
     alert("Vous ne pouvez pas refuser un dossier sans expliquer la raison, veuillez remplir la case de commentaires à transmettre au candidat.");
     return false;
   }
-  else { console.log(id);
-    openForm(id);
+  else{
     return true;
   }
 }
