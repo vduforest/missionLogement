@@ -313,7 +313,7 @@ public class Util {
         writeString(bufferedWriter, formulaire.getPersonneId().getNom());
         writeString(bufferedWriter, formulaire.getPersonneId().getPrenom());
 
-        String s;
+        
         writeString(bufferedWriter, getStringFromDate(formulaire.getDateDeNaissance()));
         writeString(bufferedWriter, formulaire.getNumeroScei());
 
@@ -334,6 +334,7 @@ public class Util {
         writeString(bufferedWriter, formulaire.getMail());
         char dummy = (char) 160;
         writeString(bufferedWriter, dummy + formulaire.getNumeroTel());
+        //changement
         char dummy2 = (char) 160;
         writeString(bufferedWriter, dummy2 + formulaire.getNumeroTel2());
 
@@ -354,15 +355,22 @@ public class Util {
         } else {
             bufferedWriter.write(";");
         }
-        writeString(bufferedWriter, Double.toString(formulaire.getDistance()));
-        writeString(bufferedWriter, Integer.toString(formulaire.getRang()));
-        if (formulaire.getInternational()==true){
-            writeString(bufferedWriter, "oui");
+        
+        if (formulaire.getDistance() != null) {
+            writeString(bufferedWriter, Double.toString(formulaire.getDistance()));//changement
+        } else {
+            bufferedWriter.write(";");
         }
-        else if (formulaire.getInternational()==false){
-            writeString(bufferedWriter, "non");
+        if (formulaire.getRang() != null) {
+            writeString(bufferedWriter, Integer.toString(formulaire.getRang()));//changement
+        } else {
+            bufferedWriter.write(";");
         }
-        else {
+        
+        //changement
+        if (formulaire.getEstPmr() != null) {
+            writeString(bufferedWriter, (formulaire.getEstPmr() ? "Oui" : "Non"));
+        } else {
             bufferedWriter.write(";");
         }
         
