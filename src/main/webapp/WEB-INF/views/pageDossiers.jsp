@@ -168,17 +168,14 @@
                                                     </span><br /></c:if>
                                                 </td>
                                                 <td class="text-center">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
+                                                    
                                                             <form action="formulaireVe.do" method="POST">
                                                                 <input type="hidden" name="connexionId" value="${connexionId}" />
                                                             <input type="hidden" name="formulaireId" value="${formulaire.formulaireId}" />
-                                                            <button name="edit" class="btn btn-primary">
-                                                                <img src="img/show.png" alt="show" class="icon" />
-                                                            </button>
+                                                            <button name="edit" class="btn"><img src="img/show.png" alt="show" class="show" />
+                                    Infos</button>
                                                         </form>
-                                                    </div>
-                                                </div>
+                        
                                             </td>
                                         </tr>
                                     </c:forEach>

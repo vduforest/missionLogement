@@ -176,21 +176,20 @@
                                                     </span><br /></c:if>
                                                 </td>
                                                     <td class="text-center">
-                                                        <form action="formulaireVe.do" method="POST">
-                                                            <input type="hidden" name="connexionId"
-                                                                value="${connexionId}" />
-                                                            <input type="hidden" name="formulaireId"
-                                                                value="${formulaire.formulaireId}" />
-                                                            <button name="edit" class="btn btn-primary">
-                                                                <img src="img/show.png" alt="show" class="icon" />
-                                                            </button>
+                                                    
+                                                            <form action="formulaireVe.do" method="POST">
+                                                                <input type="hidden" name="connexionId" value="${connexionId}" />
+                                                            <input type="hidden" name="formulaireId" value="${formulaire.formulaireId}" />
+                                                            <button name="edit" class="btn"><img src="img/show.png" alt="show" class="show" />
+                                    Infos</button>
                                                         </form>
-                                                    </td>
+                        
+                                            </td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
                                          <tfoot>
-                                    <tr>
+                                    <!-- <tr>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -200,14 +199,14 @@
                                             <input type="hidden" name="connexionId" value="${connexionId}" />
                                             <button id="allDossiers">Voir tous les dossiers</button>
                                           </form>
-                                        </td>-->
+                                        </td>
                                         <td class="text-center">
                                             <form action="export.do" method="POST">
                                                 <input type="hidden" name="connexionId" value="${connexionId}" />
                                                 <button id="export">Exporter les dossiers</button>
                                             </form>
                                         </td>
-                                    </tr>
+                                    </tr>-->
                                 </tfoot>
                                     </table>
                                 </div>
