@@ -330,7 +330,7 @@
                                                             <option value=0 ${(empty item.souhaitId) ||
                                                                 (item.souhaitId.souhaitId <=0) ? 'selected="selected"'
                                                                 : '' } readonly="readonly">
-                                                                ------------------------------------------------
+                                                                ---
                                                             </option>
                                                             <c:forEach var="souhait" items="${souhaitsList}">
                                                                 <option value="${souhait.souhaitId}" ${(! empty
@@ -427,7 +427,7 @@
                                                         <select id="rang" name="rang" disabled="disabled">
                                                             <option value=0 ${item.rang==0 ? 'selected="selected"' : ''
                                                                 }>
-                                                                ------------------------------------------------
+                                                                ---
                                                             </option>
                                                             <option value=1 ${item.rang==1 ? 'selected="selected"' : ''
                                                                 }>1</option>
