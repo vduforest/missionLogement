@@ -135,6 +135,12 @@ public class ConnectionService {
         return connection;
     }
 
+    @Transactional
+    public int getMissionStatus() {
+        MissionLogementStatus currentStatus = missionStatusRepository.findById(1).get();
+        return currentStatus.getStatus();
+    }
+
     /**
      * Méthode perméttant de créer le bon ModelAndView à partir de la connexion
      *

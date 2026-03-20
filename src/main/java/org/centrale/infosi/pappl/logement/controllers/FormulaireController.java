@@ -172,29 +172,40 @@ public class FormulaireController {
     public ModelAndView handleFormGet(HttpServletRequest request) {
         ModelAndView returned = null;
         Connexion connexion = connectionService.checkAccess(request, "Eleve");
-        Connexion connection = connectionService.checkMissionStatus(connexion, 1); // 1 corresponds to "Mission en
-        // cours"
-        if (connection == null) {
-            Optional<ConfigModif> configInformationPopUpOpt = configModifRepository
-                    .findTopByTypeNomOrderByModifIdDesc("message_mission_fermee");
-            ConfigModif configInformationPopUp = configInformationPopUpOpt.get();
-            String texteInformationPopUp = configInformationPopUp.getContenu();
-            texteInformationPopUp = texteInformationPopUp.replaceAll("\n", "<br/>");
-
-            returned = new ModelAndView("informationEleves");
-            returned.addObject("texteInfo", texteInformationPopUp);
-            returned.addObject("connexionId", connexion.getConnexionId());
-            returned.addObject("hideFormButton", true);
-            return returned;
-        } else {
-            int id = connection.getPersonneId().getPersonneId();
-            Personne user = personneRepository.getReferenceById(id);
-            Collection<Formulaire> form = formulaireRepository.findByPersonneId(user);
-            if (form.size() == 1) {
-                Formulaire formulaire = form.iterator().next();
-                returned = displayFormulaire(connexion, formulaire, false);
-            }
+        if (connexion == null) {
+            return new ModelAndView("redirect");
         }
+        Connexion connectionInProgress = connectionService.checkMissionStatus(connexion, 1); // 1 corresponds to "Mission en cours"
+        
+        if (connectionInProgress == null) {
+            // Mission is NOT in progress (either closed or not started)
+            int status = connectionService.getMissionStatus();
+            String msgKey = "message_page_attente";
+            if (status == 2) { // FINISHED
+                msgKey = "message_mission_fermee";
+            }
+            
+            Optional<ConfigModif> configMsgOpt = configModifRepository
+                    .findTopByTypeNomOrderByModifIdDesc(msgKey);
+            String message = "";
+            if (configMsgOpt.isPresent()) {
+                message = configMsgOpt.get().getContenu();
+                message = message.replaceAll("\n", "<br/>");
+            }
+
+            returned = connectionService.prepareModelAndView(connexion, "pageAttente");
+            returned.addObject("message", message);
+            return returned;
+        }
+
+        int id = connexion.getPersonneId().getPersonneId();
+        Personne user = personneRepository.getReferenceById(id);
+        Collection<Formulaire> form = formulaireRepository.findByPersonneId(user);
+        if (form.size() == 1) {
+            Formulaire formulaire = form.iterator().next();
+            returned = displayFormulaire(connexion, formulaire, false);
+        }
+
         if (returned == null) {
             returned = connectionService.prepareModelAndView(connexion, "accueilEtudiant");
         }

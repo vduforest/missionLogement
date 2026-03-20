@@ -1,27 +1,11 @@
 /* --- PAGE ATTENTE STYLES --- */
 
-/* Fullscreen Centered Message */
-div.main {
-    position: fixed;
-    /* Takes full screen */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--brand-blue);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 p.texteAttente {
-    color: var(--brand-yellow);
+    color: var(--brand-blue); /* Changed from yellow to blue for better visibility on white card */
     font-size: 1.5rem;
     font-weight: 700;
     text-align: center;
-    max-width: 80%;
+    max-width: 100%;
     line-height: 1.5;
-    position: static;
-    /* Flexbox handles centering */
-    transform: none;
+    margin-bottom: 2rem;
 }

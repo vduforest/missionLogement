@@ -301,8 +301,8 @@
                                                             <c:when test="${item.estBoursier}">
                                                                 <button formaction="telechargerBourse.do" type="submit"
                                                                     id="telechargement" class="btn btn-primary mt-2">
-                                                                    télécharger preuve <img id="img_tel"
-                                                                        src="img/export.png" class="icon"
+                                                                    Télécharger la preuve <img id="img_tel"
+                                                                        src="img/download.png" class="icon"
                                                                         alt="download proof" />
                                                                 </button>
                                                             </c:when>

@@ -24,14 +24,12 @@
           </div>
 
           <div class="text-center mt-5 pt-3">
-            <c:if test="${hideFormButton != true}">
-              <form action="formulaire.do" method="POST">
-                <input type="hidden" name="connexionId" value="${connexionId}" />
-                <button type="submit" class="custom-button">
-                  Accéder au Formulaire
-                </button>
-              </form>
-            </c:if>
+            <form action="formulaire.do" method="POST">
+              <input type="hidden" name="connexionId" value="${connexionId}" />
+              <button type="submit" class="custom-button">
+                Accéder au Formulaire
+              </button>
+            </form>
           </div>
         </div>
       </div>
