@@ -239,7 +239,24 @@
                     columnDefs: [
                         {targets: 0, visible: false}
                     ],
-                    order: [[0, 'asc'], [2, 'asc']]
+                    order: [[0, 'asc'], [2, 'asc']],
+                    dom: "<'row mb-3'<'col-sm-12 col-md-6 d-flex align-items-center'l><'col-sm-12 col-md-6 d-flex justify-content-md-end align-items-center'f>>" +
+                         "<'row'<'col-sm-12'tr>>" +
+                         "<'row mt-3'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                    language: {
+                        search: "_INPUT_",
+                        searchPlaceholder: "Rechercher un dossier...",
+                        lengthMenu: "Afficher _MENU_ dossiers",
+                        info: "Affichage de _START_ à _END_ sur _TOTAL_ dossiers",
+                        infoEmpty: "Aucun dossier à afficher",
+                        infoFiltered: "(filtré de _MAX_ dossiers au total)",
+                        paginate: {
+                            first: "Premier",
+                            last: "Dernier",
+                            next: "Suivant",
+                            previous: "Précédent"
+                        }
+                    }
                 });
 
                 function applySorting() {

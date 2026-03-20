@@ -109,87 +109,113 @@
                                                     <td class="text-center">${formulaire.personneId.nom}</td>
                                                     <td class="text-center">${formulaire.personneId.prenom}</td>
                                                     <c:choose>
-                                                <c:when test="${formulaire.estConforme}">
-                                                    <c:set var="etat" value="traite_complet" />
-                                                </c:when>
-                                                <c:when test="${(!formulaire.estValide) && (! empty formulaire.commentairesVe)}">
-                                                    <c:set var="etat" value="dossier_non_conforme" />
-                                                </c:when>
-                                                <c:when test="${(formulaire.estPmr) || (formulaire.estBoursier) || (formulaire.genreId.genreId!=formulaire.genreAttendu.genreId)}">
-                                                    <c:set var="etat" value="a_traiter" />
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <c:set var="etat" value="non_transmis" />
-                                                </c:otherwise>
-                                            </c:choose>
-                                              <td class="text-center" data-etat="${etat}" data-search="${etat == 'traite_complet' ? 'traite complet' : (etat == 'dossier_non_conforme' ? 'non conforme' : (etat == 'a_traiter' ? 'a traiter' : 'non transmis'))}">
-                                                <c:choose>
-                                                    <c:when test="${formulaire.estConforme}">
-                                                        Traitement complet
-                                                    </c:when>
-                                                    <c:when test="${(!formulaire.estValide) && (! empty formulaire.commentairesVe)}">
-                                                        <span style="cursor: pointer; color: blue;" onclick="afficherTexte('${formulaire.estBoursier}', '${formulaire.estPmr}', '${formulaire.genreId.genreId}', '${formulaire.genreAttendu.genreId}');">
-                                                            <strong>Dossier non conforme</strong>
-                                                        </span>
-                                                    </c:when>
-                                                    <c:when test="${(formulaire.estPmr) || (formulaire.estBoursier) || (formulaire.genreId.genreId!=formulaire.genreAttendu.genreId)}">
-                                                        A traiter
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        Non transmis
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                                    
+                                                        <c:when test="${formulaire.estConforme}">
+                                                            <c:set var="etat" value="traite_complet" />
+                                                        </c:when>
+                                                        <c:when
+                                                            test="${(!formulaire.estValide) && (! empty formulaire.commentairesVe)}">
+                                                            <c:set var="etat" value="dossier_non_conforme" />
+                                                        </c:when>
+                                                        <c:when
+                                                            test="${(formulaire.estPmr) || (formulaire.estBoursier) || (formulaire.genreId.genreId!=formulaire.genreAttendu.genreId)}">
+                                                            <c:set var="etat" value="a_traiter" />
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <c:set var="etat" value="non_transmis" />
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <td class="text-center" data-etat="${etat}"
+                                                        data-search="${etat == 'traite_complet' ? 'traite complet' : (etat == 'dossier_non_conforme' ? 'non conforme' : (etat == 'a_traiter' ? 'a traiter' : 'non transmis'))}">
+                                                        <c:choose>
+                                                            <c:when test="${formulaire.estConforme}">
+                                                                Traitement complet
+                                                            </c:when>
+                                                            <c:when
+                                                                test="${(!formulaire.estValide) && (! empty formulaire.commentairesVe)}">
+                                                                <span style="cursor: pointer; color: blue;"
+                                                                    onclick="afficherTexte('${formulaire.estBoursier}', '${formulaire.estPmr}', '${formulaire.genreId.genreId}', '${formulaire.genreAttendu.genreId}');">
+                                                                    <strong>Dossier non conforme</strong>
+                                                                </span>
+                                                            </c:when>
+                                                            <c:when
+                                                                test="${(formulaire.estPmr) || (formulaire.estBoursier) || (formulaire.genreId.genreId!=formulaire.genreAttendu.genreId)}">
+                                                                A traiter
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                Non transmis
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+
                                                     <td class="text-center">
-                                                <c:if test="${(! empty formulaire.estBoursier) && (formulaire.estBoursier)}">Boursier<br />
-                                                    <c:if test="${! formulaire.hasBourseFile()}">
-                                                        <span class="text-danger">Preuve manquante</span><br />
-                                                    </c:if>
-                                                </c:if>
-                                                <c:if test="${(! empty formulaire.estPmr) && (formulaire.estPmr)}">Nécessite
-                                                    aménagement<br />
-                                                </c:if>
-                                                <c:if test="${(! empty formulaire.paysId) && (formulaire.paysId.paysId != 1)}">Localisation
-                                                    : ${formulaire.paysId.paysNom}<br /></c:if>
-                                                <c:if test="${(empty formulaire.dateDeNaissance)}"><span class="text-danger">Date de
-                                                        naissance manquante</span><br /></c:if>
-                                                <c:if test="${(empty formulaire.genreId)}"><span class="text-danger">Genre non
-                                                        indiqué</span><br /></c:if>
-                                                <c:if test="${(empty formulaire.mail)}"><span class="text-danger">Adresse mail non
-                                                        indiqué</span><br /></c:if>
-                                                <c:if test="${(empty formulaire.numeroTel)}"><span class="text-danger">Numéro de téléphone
-                                                        non indiqué</span><br /></c:if>
-                                                <c:if test="${(empty formulaire.ville)}"><span class="text-danger">Ville
-                                                        manquante</span><br /></c:if>
-                                                <c:if test="${(empty formulaire.paysId)}"><span class="text-danger">Pays
-                                                        manquant</span><br />
-                                                    </c:if>
-                                                    <c:if test="${(empty formulaire.estBoursier)}"><span class="text-danger">Statut boursier
-                                                        incorrect</span><br /></c:if>
-                                                <c:if test="${(empty formulaire.estPmr)}"><span class="text-danger">Statut PMR
-                                                        incorrect</span><br /></c:if>
-                                                <c:if test="${(empty formulaire.souhaitId)}"><span class="text-danger">Souhait non
-                                                        formulé</span><br /></c:if>
-                                                <c:if test="${(! empty formulaire.dateValidation)}"><span class="text-primary">Soumis le :
-                                                        <fmt:formatDate value='${formulaire.dateValidation}' pattern='dd/MM/yyyy HH:mm:ss' />
-                                                    </span><br /></c:if>
-                                                </td>
+                                                        <c:if
+                                                            test="${(! empty formulaire.estBoursier) && (formulaire.estBoursier)}">
+                                                            Boursier<br />
+                                                            <c:if test="${! formulaire.hasBourseFile()}">
+                                                                <span class="text-danger">Preuve manquante</span><br />
+                                                            </c:if>
+                                                        </c:if>
+                                                        <c:if
+                                                            test="${(! empty formulaire.estPmr) && (formulaire.estPmr)}">
+                                                            Nécessite
+                                                            aménagement<br />
+                                                        </c:if>
+                                                        <c:if
+                                                            test="${(! empty formulaire.paysId) && (formulaire.paysId.paysId != 1)}">
+                                                            Localisation
+                                                            : ${formulaire.paysId.paysNom}<br /></c:if>
+                                                        <c:if test="${(empty formulaire.dateDeNaissance)}"><span
+                                                                class="text-danger">Date de
+                                                                naissance manquante</span><br /></c:if>
+                                                        <c:if test="${(empty formulaire.genreId)}"><span
+                                                                class="text-danger">Genre non
+                                                                indiqué</span><br /></c:if>
+                                                        <c:if test="${(empty formulaire.mail)}"><span
+                                                                class="text-danger">Adresse mail non
+                                                                indiqué</span><br /></c:if>
+                                                        <c:if test="${(empty formulaire.numeroTel)}"><span
+                                                                class="text-danger">Numéro de téléphone
+                                                                non indiqué</span><br /></c:if>
+                                                        <c:if test="${(empty formulaire.ville)}"><span
+                                                                class="text-danger">Ville
+                                                                manquante</span><br /></c:if>
+                                                        <c:if test="${(empty formulaire.paysId)}"><span
+                                                                class="text-danger">Pays
+                                                                manquant</span><br />
+                                                        </c:if>
+                                                        <c:if test="${(empty formulaire.estBoursier)}"><span
+                                                                class="text-danger">Statut boursier
+                                                                incorrect</span><br /></c:if>
+                                                        <c:if test="${(empty formulaire.estPmr)}"><span
+                                                                class="text-danger">Statut PMR
+                                                                incorrect</span><br /></c:if>
+                                                        <c:if test="${(empty formulaire.souhaitId)}"><span
+                                                                class="text-danger">Souhait non
+                                                                formulé</span><br /></c:if>
+                                                        <c:if test="${(! empty formulaire.dateValidation)}"><span
+                                                                class="text-primary">Soumis le :
+                                                                <fmt:formatDate value='${formulaire.dateValidation}'
+                                                                    pattern='dd/MM/yyyy HH:mm:ss' />
+                                                            </span><br /></c:if>
+                                                    </td>
                                                     <td class="text-center">
-                                                    
-                                                            <form action="formulaireVe.do" method="POST">
-                                                                <input type="hidden" name="connexionId" value="${connexionId}" />
-                                                            <input type="hidden" name="formulaireId" value="${formulaire.formulaireId}" />
-                                                            <button name="edit" class="btn"><img src="img/show.png" alt="show" class="show" />
-                                    Infos</button>
+
+                                                        <form action="formulaireVe.do" method="POST">
+                                                            <input type="hidden" name="connexionId"
+                                                                value="${connexionId}" />
+                                                            <input type="hidden" name="formulaireId"
+                                                                value="${formulaire.formulaireId}" />
+                                                            <button name="edit" class="btn"><img src="img/show.png"
+                                                                    alt="show" class="show" />
+                                                                Infos</button>
                                                         </form>
-                        
-                                            </td>
+
+                                                    </td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>
-                                         <tfoot>
-                                    <!-- <tr>
+                                        <tfoot>
+                                            <!-- <tr>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -207,7 +233,7 @@
                                             </form>
                                         </td>
                                     </tr>-->
-                                </tfoot>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -217,82 +243,27 @@
                 <script>
                     var tableName = "StudentList";
                     $(document).ready(function () {
-                        // Setup - ajout d'un text pour chaque case du footer
-                        $('#' + tableName + 'tfoot th').each(function () {
-                            var theId = $(this).attr('id');
-                            if ((theId !== null) && (typeof theId) !== 'undefined') && (theId !== "") {
-                                var title = $(this).text();
-                                $(this).html('<input type="text" name="search_' + theId + '" placeholder="' + title + '" value=""/>');
+                        var table = $('#' + tableName).DataTable({
+                            dom: "<'row mb-3'<'col-sm-12 col-md-6 d-flex align-items-center'l><'col-sm-12 col-md-6 d-flex justify-content-md-end align-items-center'f>>" +
+                                "<'row'<'col-sm-12'tr>>" +
+                                "<'row mt-3'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                            language: {
+                                search: "_INPUT_",
+                                searchPlaceholder: "Rechercher un dossier...",
+                                lengthMenu: "Afficher _MENU_ dossiers",
+                                info: "Affichage de _START_ à _END_ sur _TOTAL_ dossiers",
+                                infoEmpty: "Aucun dossier à afficher",
+                                infoFiltered: "(filtré de _MAX_ dossiers au total)",
+                                paginate: {
+                                    first: "Premier",
+                                    last: "Dernier",
+                                    next: "Suivant",
+                                    previous: "Précédent"
+                                }
                             }
                         });
-                        /*
-                         addDataTableButtonNew("Etudiants");
-                         setDataTableRemovePaginate();
-                         vat table = buildTable(tableName);
-                         
-                         //mise en place de la recherche
-                         table.columns().every(function () {
-                         var that = this;
-                         $('input', this.footer()).on('keyup change', function () {
-                         if (that.search() !== this.value) {
-                         that.search(this.value).draw();
-                         }
-                         });
-                         });
-                         */
                     });
                 </script>
-                <script type="text/javascript">
-            $(document).ready(function () {
-                var table = $('#StudentList').DataTable({
-                    columnDefs: [
-                        {targets: 0, visible: false}
-                    ],
-                    order: [[0, 'asc'], [2, 'asc']]
-                });
-
-                function applySorting() {
-                    var selectedEtats = $('.etat-checkbox:checked').map(function () {
-                        return $(this).val();
-                    }).get();
-
-                    table.rows().every(function () {
-                        var row = this.node();
-                        var etat = $(row).find('td[data-etat]').attr('data-etat');
-
-                        var index = selectedEtats.indexOf(etat);
-
-
-                        var priorityValue = (index !== -1) ? index : 99;
-
-                        table.cell(this.index(), 0).data(priorityValue);
-                    });
-
-                    table.draw();
-                }
-
-                $('#etatFilterBtn').on('click', function (e) {
-                    e.stopPropagation();
-                    $('#etatFilterDropdown').toggle();
-                });
-
-                $(document).on('click', function () {
-                    $('#etatFilterDropdown').hide();
-                });
-
-                $('#etatFilterDropdown').on('click', function (e) {
-                    e.stopPropagation(); // Empêche la fermeture quand on clique sur un label
-                });
-
-                // Trigger quand on coche/décoche
-                $('.etat-checkbox').on('change', function () {
-                    applySorting();
-                });
-
-                // Appel initial
-                applySorting();
-            });
-        </script>
             </body>
 
             </html>

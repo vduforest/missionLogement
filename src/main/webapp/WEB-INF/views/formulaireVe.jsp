@@ -324,19 +324,18 @@
                                                     <div class="label-col"><label for="souhait">Préférence
                                                             logement</label></div>
                                                     <div class="input-col">
-                                                        <select id="souhait" name="Souhait" <c:if
-                                                            test="${item.estValide}">disabled="disabled"</c:if>
+                                                        <select id="souhait" name="Souhait" disabled="disabled"
                                                             required="required">
                                                             <option value=0 ${(empty item.souhaitId) ||
                                                                 (item.souhaitId.souhaitId <=0) ? 'selected="selected"'
-                                                                : '' } readonly="readonly">
+                                                                : '' }>
                                                                 ---
                                                             </option>
                                                             <c:forEach var="souhait" items="${souhaitsList}">
                                                                 <option value="${souhait.souhaitId}" ${(! empty
                                                                     item.souhaitId) &&
                                                                     (souhait.souhaitId==item.souhaitId.souhaitId)
-                                                                    ? 'selected="selected"' : '' } readonly="readonly">
+                                                                    ? 'selected="selected"' : '' }>
                                                                     ${souhait.souhaitType}
                                                                 </option>
                                                             </c:forEach>
