@@ -222,6 +222,151 @@
                     </div>
                 </div>
             </div>
+          <div class="container">
+            <div class="row mb-2 align-items-end">
+              <div class="col-md-12 d-flex justify-content-between align-items-center">
+                <h2 class="m-0">Liste des dossiers</h2>
+                <form method="post" action="dossiers.do" class="m-0">
+                  <input type="hidden" name="connexionId" value="${connexionId}" />
+                  <button class="refresh-btn" title="Rafraîchir">
+                    <img src="img/refresh.png" alt="Refresh" class="refresh-icon" /> Rafraîchir
+                  </button>
+                </form>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="table-responsive">
+                  <table id="StudentList" class="table table-striped table-md sortable">
+                    <thead>
+                      <tr>
+                        <th style="display:none">priority</th>
+                        <th scope="col" class="text-center">Numero SCEI</th>
+                        <th scope="col" class="text-center">Nom</th>
+                        <th scope="col" class="text-center">Prenom</th>
+                        <th scope="col" class="text-center">Etat
+                        <div style="display:inline-block;position:relative;">
+                        <button id="etatFilterBtn" type="button" class="btn btn-sm" style="margin-left:6px;padding:2px 6px;">---</button>
+                        <div id="etatFilterDropdown" style="display:none;position:absolute;right:0;background:#fff;border:1px solid #ccc;padding:8px;z-index:1000;min-width:140px;">
+                          <label><input type="checkbox" class="etat-checkbox" value="traite_complet" checked/> Traitement complet</label><br/>
+                          <label><input type="checkbox" class="etat-checkbox" value="dossier_non_conforme" checked/> Dossier non conforme</label><br/>
+                          <label><input type="checkbox" class="etat-checkbox" value="a_traiter" checked/> A traiter</label><br/>
+                          <label><input type="checkbox" class="etat-checkbox" value="non_transmis" checked/> Non transmis</label>
+                        </div>
+                        </div>
+                       </th>
+                        <th scope="col" class="text-center">Informations</th>
+                        <th scope="col" class="text-center">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <c:forEach var="formulaire" items="${forms}">
+                        <tr>
+                          <td style="display:none" class="priority">1</td>
+                          <td class="text-center">${formulaire.numeroScei}</td>
+                          <td class="text-center">${formulaire.personneId.nom}</td>
+                          <td class="text-center">${formulaire.personneId.prenom}</td>
+                        <c:choose>
+                        <c:when test="${formulaire.estConforme}">
+                          <c:set var="etat" value="traite_complet" />
+                        </c:when>
+                        <c:when test="${(!formulaire.estValide) && (! empty formulaire.commentairesVe)}">
+                          <c:set var="etat" value="dossier_non_conforme" />
+                        </c:when>
+                        <c:when test="${(formulaire.estPmr) || (formulaire.estBoursier) || (formulaire.genreId.genreId!=formulaire.genreAttendu.genreId)}">
+                          <c:set var="etat" value="a_traiter" />
+                        </c:when>
+                        <c:otherwise>
+                          <c:set var="etat" value="non_transmis" />
+                        </c:otherwise>
+                      </c:choose>
+                          <td class="text-center" data-etat="${etat}" data-search="${etat == 'traite_complet' ? 'traite complet' : (etat == 'dossier_non_conforme' ? 'non conforme' : (etat == 'a_traiter' ? 'a traiter' : 'non transmis'))}">
+                            <c:choose>
+                               <c:when test="${formulaire.estConforme}">
+                            <img src="img/coche.png"alt="coche"class="icon"/>
+                          </c:when>
+                          <c:when test="${(!formulaire.estValide) && (! empty formulaire.commentairesVe)}">
+                            <img onclick="afficherTexte('${formulaire.estBoursier}','${formulaire.estPmr}','${formulaire.genreId.genreId}','${formulaire.genreAttendu.genreId}');" src="img/red-x-icon.png"alt="refus"class="icon"/>
+                          </c:when>
+                          <c:when test="${(formulaire.estPmr) || (formulaire.estBoursier) || (formulaire.genreId.genreId!=formulaire.genreAttendu.genreId)}">
+                            A traiter
+                          </c:when>
+                          <c:otherwise>
+                            Non transmis
+                          </c:otherwise>
+                            </c:choose>
+                          </td>
+                          <td class="text-center">
+                            <c:if test="${(! empty formulaire.estBoursier) && (formulaire.estBoursier)}">Boursier<br />
+                              <c:if test="${! formulaire.hasBourseFile()}">
+                                <span class="text-danger">Preuve manquante</span><br />
+                              </c:if>
+                            </c:if>
+                            <c:if test="${(! empty formulaire.estPmr) && (formulaire.estPmr)}">Nécessite
+                              aménagement<br />
+                            </c:if>
+                            <c:if test="${(! empty formulaire.paysId) && (formulaire.paysId.paysId != 1)}">Localisation
+                              : ${formulaire.paysId.paysNom}<br /></c:if>
+                            <c:if test="${(empty formulaire.dateDeNaissance)}"><span class="text-danger">Date de
+                                naissance manquante</span><br /></c:if>
+                            <c:if test="${(empty formulaire.genreId)}"><span class="text-danger">Genre non
+                                indiqué</span><br /></c:if>
+                            <c:if test="${(empty formulaire.mail)}"><span class="text-danger">Adresse mail non
+                                indiqué</span><br /></c:if>
+                            <c:if test="${(empty formulaire.numeroTel)}"><span class="text-danger">Numéro de téléphone
+                                non indiqué</span><br /></c:if>
+                            <c:if test="${(empty formulaire.ville)}"><span class="text-danger">Ville
+                                manquante</span><br /></c:if>
+                            <c:if test="${(empty formulaire.paysId)}"><span class="text-danger">Pays
+                                manquant</span><br />
+                            </c:if>
+                            <c:if test="${(empty formulaire.estBoursier)}"><span class="text-danger">Statut boursier
+                                incorrect</span><br /></c:if>
+                            <c:if test="${(empty formulaire.estPmr)}"><span class="text-danger">Statut PMR
+                                incorrect</span><br /></c:if>
+                            <c:if test="${(empty formulaire.souhaitId)}"><span class="text-danger">Souhait non
+                                formulé</span><br /></c:if>
+                            <c:if test="${(! empty formulaire.dateValidation)}"><span class="text-primary">Soumis le :
+                                <fmt:formatDate value='${formulaire.dateValidation}' pattern='dd/MM/yyyy HH:mm:ss' />
+                              </span><br /></c:if>
+                          </td>
+                         <td class="text-center">
+                            <form action="formulaireVe.do" method="POST">
+                              <input type="hidden" name="connexionId" value="${connexionId}" />
+                              <input type="hidden" name="formulaireId" value="${formulaire.formulaireId}" />
+                              <button name="edit" class="btn btn-primary">
+                                <img src="img/show.png" alt="show" class="icon" />
+                              </button>
+                            </form>
+                          </td>
+                        </tr>
+                      </c:forEach>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <!--<td class="text-center">
+                          <form action="allDossiers.do" method="POST">
+                            <input type="hidden" name="connexionId" value="${connexionId}" />
+                            <button id="allDossiers">Voir tous les dossiers</button>
+                          </form>
+                        </td>-->
+                        <td class="text-center">
+                          <form action="export.do" method="POST">
+                            <input type="hidden" name="connexionId" value="${connexionId}" />
+                            <button id="export">Exporter les dossiers</button>
+                          </form>
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <script>
             var tableName = "StudentList";
