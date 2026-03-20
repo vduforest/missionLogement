@@ -1,25 +1,43 @@
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c"   uri="jakarta.tags.core" %>
 <%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html lang="fr-fr">
     <head>
-        <title> Create / Edit User page </title>
+        <title>Mission Logement - Gestion Assistant</title>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="css/changementassistant.css" type="text/css" rel="stylesheet" />
-
         
+        <!-- Standard Styles -->
+        <link href="bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
+        <link href="css/default.css" type="text/css" rel="stylesheet" />
+        <link href="css/header.css" type="text/css" rel="stylesheet" />
+        <link href="css/formulaire.css" type="text/css" rel="stylesheet" />
+        <link href="css/changementassistant.css" type="text/css" rel="stylesheet" />
     </head>
+    
     <body>
-        <h1>Create / Edit Assistant</h1>
-        <form action="saveassistant.do" method="POST">
-            <input type="hidden" name="connexionId" value="${connexionId}" />
-        <table>
-            <tr>
-                <th>assistant </th>
-                <td>
+        <c:set var="backLink" value="pageAssistants.do" scope="request" />
+        <jsp:include page="/WEB-INF/views/header.jsp" />
+
+        <div class="main-container">
+            <div class="info-card">
+                
+                <div class="form-header mb-5">
+                    <c:choose>
+                        <c:when test="${(empty user) || (empty user.personneId)}">
+                            <h2>Créer un nouvel assistant</h2>
+                        </c:when>
+                        <c:otherwise>
+                            <h2>Modifier l'assistant</h2>
+                            <p class="subtitle">${user.prenom} ${user.nom}</p>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+
+                <form action="saveassistant.do" method="POST">
+                    <input type="hidden" name="connexionId" value="${connexionId}" />
+                    
                     <c:choose>
                         <c:when test="${(empty user) || (empty user.personneId)}">
                             <input type="hidden" name="id" value="-1" />
@@ -28,42 +46,81 @@
                             <input type="hidden" name="id" value="${user.personneId}" />
                         </c:otherwise>
                     </c:choose>
-                </td>
-            </tr>
-            
-            <tr>
-                <th>Prenom</th>
-                <td><input type="text" class="form-control" name="FirstName" value="${user.prenom}"></td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td><input type="text" class="form-control" name="LastName" value="${user.nom}"></td>
-            </tr>
-            <tr>
-                <th>Login</th>
-                <td><input type="text" class="form-control" name="Login" value="${user.login}"></td>
-            </tr>
 
-            <tr>
-                <th>Mot de passe</th>
-                <td>
-                    <c:choose>
-                        <c:when test="${(empty user) || (empty user.personneId)}">
-                            <input type="password" class="form-control" name="Password" value="">
-                        </c:when>
-                        <c:otherwise>
-                            <span style="font-style: italic;">Créer un nouvel assistant pour changer le mot de passe</span>
-                        </c:otherwise>
-                    </c:choose>                                                          
-                </td>
-            </tr>
+                    <div class="modern-form-table">
+                        
+                        <!-- Prénom -->
+                        <div class="form-row">
+                            <div class="label-col">
+                                <label for="FirstName">Prénom</label>
+                            </div>
+                            <div class="input-col">
+                                <input type="text" id="FirstName" name="FirstName" value="${user.prenom}" required="required" placeholder="Prénom de l'assistant">
+                            </div>
+                        </div>
 
-            <tr>
-                <th colspan="2" >                 
-                    <button>
-                        Save
-                    </button>
-                </th>               
-            </tr> 
-    </body> 
+                        <!-- Nom -->
+                        <div class="form-row">
+                            <div class="label-col">
+                                <label for="LastName">Nom</label>
+                            </div>
+                            <div class="input-col">
+                                <input type="text" id="LastName" name="LastName" value="${user.nom}" required="required" placeholder="Nom de l'assistant">
+                            </div>
+                        </div>
+
+                        <!-- Login -->
+                        <div class="form-row">
+                            <div class="label-col">
+                                <label for="Login">Login</label>
+                            </div>
+                            <div class="input-col">
+                                <input type="text" id="Login" name="Login" value="${user.login}" required="required" placeholder="Identifiant de connexion">
+                            </div>
+                        </div>
+
+                        <!-- Mot de passe -->
+                        <div class="form-row">
+                            <div class="label-col">
+                                <label for="Password">Mot de passe</label>
+                            </div>
+                            <div class="input-col">
+                                <c:choose>
+                                    <c:when test="${(empty user) || (empty user.personneId)}">
+                                        <input type="password" id="Password" name="Password" value="" required="required" placeholder="Définir un mot de passe">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="alert alert-info py-2 px-3 mb-0" style="font-size: 0.9rem;">
+                                            <i class="info-icon">ℹ️</i> Pour changer le mot de passe, créez un nouvel assistant.
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="form-actions text-center mt-5">
+                        <div class="buttons-container justify-content-center gap-3">
+                            <button type="submit" class="custom-button">
+                                Sauvegarder
+                            </button>
+                            
+                            <button type="button" class="custom-button" style="background-color: #6c757d; box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);" onclick="window.location.href='pageAssistants.do?connexionId=${connexionId}'">
+                                Annuler
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <script>
+            // Allow cancel button to submit with proper method if needed, 
+            // but simple location.href is usually fine for a GET redirect back.
+            // If pageAssistants.do requires POST, we'd need a hidden form.
+        </script>
+    </body>
 </html>

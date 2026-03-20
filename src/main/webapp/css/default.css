@@ -29,15 +29,16 @@ h6 {
 
 /* --- FIXING THE HEADERS --- */
 
-/* Removed absolute positioning that was breaking the header layout */
-h1 {
+/* Scoped to NOT affect the main navigation header h1 */
+body > h1, 
+.main-container h1,
+.info-card h1 {
     font-size: 2.5rem;
     color: var(--brand-yellow);
     text-align: center;
     font-weight: 700;
     margin: 0;
     padding: 20px 0;
-    /* If this H1 is inside the header.jsp, it will now flow naturally */
 }
 
 /* Modern Heading Style (No more ugly banner box) */
