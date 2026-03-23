@@ -58,6 +58,11 @@
         errorDiv.style.display = "block";
         return false;
       }
+      
+      const btn = document.getElementById("submitBtn");
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Validation en cours...';
+      
       return true;
     }
   </script>
@@ -103,7 +108,7 @@
               </div>
             </div>
 
-            <button type="submit" class="custom-button">Valider le nouveau mot de passe</button>
+            <button type="submit" id="submitBtn" class="custom-button">Valider le nouveau mot de passe</button>
           </form>
 
           <div class="mt-4">

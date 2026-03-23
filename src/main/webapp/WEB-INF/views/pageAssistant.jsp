@@ -15,6 +15,23 @@
                     <script src="js/jquery-3.6.1.min.js" type="text/javascript"></script>
                     <script src="bootstrap/js/bootstrap.js" type="text/javascript"></script>
 
+                    <script type="text/javascript">
+                        function showLoading(btn, text) {
+                            if (btn.classList.contains('is-loading')) return false;
+                            btn.classList.add('is-loading');
+
+                            const spinner = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span> ';
+                            btn.innerHTML = spinner + (text || "");
+
+                            // Delay disabling to allow form data capture
+                            setTimeout(() => {
+                                btn.disabled = true;
+                            }, 10);
+
+                            return true;
+                        }
+                    </script>
+
                     <link href="bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
                     <link href="css/pageAssistants.css" type="text/css" rel="stylesheet" />
                     <link href="css/default.css" type="text/css" rel="stylesheet" />
@@ -33,7 +50,7 @@
                                     <h2 class="m-0">Liste des assistants</h2>
                                     <form method="post" action="pageAssistants.do" class="m-0">
                                         <input type="hidden" name="connexionId" value="${connexionId}" />
-                                        <button class="refresh-btn" title="Rafraîchir">
+                                        <button class="refresh-btn" title="Rafraîchir" onclick="this.disabled=true; this.innerHTML='<img src=\'img/refresh.png\' class=\'refresh-icon spin\' /> Chargement...'; this.form.submit();">
                                             <img src="img/refresh.png" alt="Refresh" class="refresh-icon" /> Rafraîchir
                                         </button>
                                     </form>
@@ -70,7 +87,7 @@
                                                                 <input type="hidden" name="id"
                                                                     value="${assist.personneId}" />
 
-                                                                <button name="edit" class="btn"><img src="img/edit.png"
+                                                                <button name="edit" class="btn" onclick="showLoading(this)"><img src="img/edit.png"
                                                                         alt="edit" class="icon" /></button>
                                                                 <button name="delete" class="btn"
                                                                     onClick="deleteAssistant(1,this);return false;"><img
@@ -85,8 +102,8 @@
                                                 <form action="creatuser.do">
                                                     <input type="hidden" name="connexionId" value="${connexionId}" />
                                                     <td class="text-center" scope="col" colspan=4><button type="submit"
-                                                            name="create" class="btn">Créer un nouvel
-                                                            assistant</a></button></td>
+                                                            name="create" class="btn" onclick="showLoading(this, 'Création...')">Créer un nouvel
+                                                            assistant</button></td>
                                                 </form>
                                                 </tr>
                                             </tfoot>

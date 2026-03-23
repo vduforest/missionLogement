@@ -37,6 +37,21 @@
                 }
                 return false;
             }
+
+            function showLoading(btn, text) {
+                if (btn.classList.contains('is-loading')) return false;
+                btn.classList.add('is-loading');
+
+                const spinner = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span> ';
+                btn.innerHTML = spinner + text;
+
+                // Delay disabling to allow form data capture
+                setTimeout(() => {
+                    btn.disabled = true;
+                }, 10);
+
+                return true;
+            }
         </script>
 
     </head>
@@ -172,7 +187,7 @@
                                                             <form action="formulaireVe.do" method="POST">
                                                                 <input type="hidden" name="connexionId" value="${connexionId}" />
                                                             <input type="hidden" name="formulaireId" value="${formulaire.formulaireId}" />
-                                                            <button name="edit" class="btn"><img src="img/show.png" alt="show" class="show" />
+                                                            <button name="edit" class="btn" onclick="showLoading(this, 'Chargement...')"><img src="img/show.png" alt="show" class="show" />
                                     Infos</button>
                                                         </form>
                         
@@ -195,7 +210,7 @@
                                         <td class="text-center">
                                             <form action="export.do" method="POST">
                                                 <input type="hidden" name="connexionId" value="${connexionId}" />
-                                                <button id="export">Exporter les dossiers</button>
+                                                <button id="export" onclick="showLoading(this, 'Export en cours...')">Exporter les dossiers</button>
                                             </form>
                                         </td>
                                     </tr>

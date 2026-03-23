@@ -14,6 +14,31 @@
         <link href="css/header.css" type="text/css" rel="stylesheet" />
         <link href="css/formulaire.css" type="text/css" rel="stylesheet" />
         <link href="css/changementassistant.css" type="text/css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+        <style>
+            .password-field {
+                position: relative;
+            }
+
+            .password-field input {
+                padding-right: 42px;
+            }
+
+            .btn-toggle-password {
+                position: absolute;
+                right: 14px;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+                font-size: 18px;
+                color: #555;
+                z-index: 2;
+                background: none;
+                border: none;
+                padding: 0;
+            }
+        </style>
     </head>
     
     <body>
@@ -87,7 +112,12 @@
                             <div class="input-col">
                                 <c:choose>
                                     <c:when test="${(empty user) || (empty user.personneId)}">
-                                        <input type="password" id="Password" name="Password" value="" required="required" placeholder="Définir un mot de passe">
+                                        <div class="password-field">
+                                            <input type="password" id="Password" name="Password" value="" required="required" placeholder="Définir un mot de passe">
+                                            <button type="button" class="btn-toggle-password" onclick="togglePassword('Password', this)" aria-label="Afficher le mot de passe" aria-pressed="false">
+                                                <i class="bi bi-eye-slash" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
                                     </c:when>
                                     <c:otherwise>
                                         <div class="alert alert-info py-2 px-3 mb-0" style="font-size: 0.9rem;">
@@ -103,7 +133,7 @@
                     <!-- Actions -->
                     <div class="form-actions text-center mt-5">
                         <div class="buttons-container justify-content-center gap-3">
-                            <button type="submit" class="custom-button">
+                            <button type="submit" class="custom-button" onclick="showLoading(this, 'Sauvegarde...')">
                                 Sauvegarder
                             </button>
                             
@@ -118,9 +148,33 @@
         </div>
 
         <script>
-            // Allow cancel button to submit with proper method if needed, 
-            // but simple location.href is usually fine for a GET redirect back.
-            // If pageAssistants.do requires POST, we'd need a hidden form.
+            function togglePassword(inputId, btn) {
+                const input = document.getElementById(inputId);
+                const icon = btn.querySelector('i');
+                const isVisible = input.type === 'text';
+
+                input.type = isVisible ? 'password' : 'text';
+                icon.classList.toggle('bi-eye', isVisible);
+                icon.classList.toggle('bi-eye-slash', !isVisible);
+
+                btn.setAttribute('aria-pressed', String(!isVisible));
+                btn.setAttribute('aria-label', isVisible ? 'Afficher le mot de passe' : 'Masquer le mot de passe');
+            }
+
+            function showLoading(btn, text) {
+                if (btn.classList.contains('is-loading')) return false;
+                btn.classList.add('is-loading');
+
+                const spinner = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span> ';
+                btn.innerHTML = spinner + text;
+
+                // Delay disabling to allow form data capture
+                setTimeout(() => {
+                    btn.disabled = true;
+                }, 10);
+
+                return true;
+            }
         </script>
     </body>
 </html>

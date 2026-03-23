@@ -17,6 +17,22 @@
         <link href="css/pageDossiers.css" type="text/css" rel="stylesheet" />
 
         <script type="text/javascript" src="js/jquery-3.6.1.min.js"></script>
+        <script type="text/javascript">
+          function showLoading(btn, text) {
+            if (btn.classList.contains('is-loading')) return false;
+            btn.classList.add('is-loading');
+
+            const spinner = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span> ';
+            btn.innerHTML = spinner + (text || "");
+
+            // Delay disabling to allow form data capture
+            setTimeout(() => {
+              btn.disabled = true;
+            }, 10);
+
+            return true;
+          }
+        </script>
       </head>
 
       <body>
@@ -35,11 +51,11 @@
                           <form method="POST">
                             <input type="hidden" name="connexionId" value="${connexionId}" />
                             <th scope="col" class="text-center"><button class="redirect"
-                                formaction="configuration.do">Configuration</button></th>
+                                formaction="configuration.do" onclick="showLoading(this, 'Configuration...')">Configuration</button></th>
                             <th scope="col" class="text-center"><button class="redirect"
-                                formaction="dossiers.do">Dossiers</button></th>
+                                formaction="dossiers.do" onclick="showLoading(this, 'Dossiers...')">Dossiers</button></th>
                             <th scope="col" class="text-center"><button class="redirect"
-                                formaction="pageAssistants.do">Assistants</button></th>
+                                formaction="pageAssistants.do" onclick="showLoading(this, 'Assistants...')">Assistants</button></th>
                           </form>
                         </tr>
                       </thead>
@@ -182,7 +198,7 @@
                                   <input type="hidden" name="connexionId" value="${connexionId}" />
                                   <input type="hidden" name="formulaireId"
                                     value="${alertes.formulaireId.formulaireId}" />
-                                  <button name="edit" class="btn"><img src="img/show.png" alt="show" class="show" />
+                                  <button name="edit" class="btn" onclick="showLoading(this)"><img src="img/show.png" alt="show" class="show" />
                                     Infos</button>
                                 </form>
                               </td>

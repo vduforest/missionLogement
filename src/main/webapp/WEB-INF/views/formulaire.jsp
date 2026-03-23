@@ -292,11 +292,21 @@
           };
 
           function showLoading(btn, text) {
-            // Disable all buttons in the container
-            const buttons = document.querySelectorAll(".custom-button");
-            buttons.forEach(b => b.disabled = true);
+            if (btn.classList.contains('is-loading')) return false;
+            btn.classList.add('is-loading');
+
+            const spinner = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span> ';
+            btn.innerHTML = spinner + text;
+
+            // Delay disabling to allow form data capture
+            setTimeout(() => {
+              const buttons = document.querySelectorAll(".custom-button");
+              buttons.forEach(b => {
+                if (b !== btn) b.disabled = true;
+              });
+              btn.disabled = true;
+            }, 10);
             
-            btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ${text}`;
             return true;
           }
 

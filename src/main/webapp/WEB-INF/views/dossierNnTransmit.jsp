@@ -162,11 +162,11 @@
                                 mais supprimera les autres informations rentrées par l'étudiant (bourse, souhait,...)
                                 avant de le transmettre </p>
                               <input type="hidden" name="connexionId" value="${connexionId}" />
-                              <button onclick="openForm('formVe')" formaction="EnregistrerDossierNnTransmit.do"
+                              <button onclick="openForm('formVe'); showLoadingVe(this, 'Sauvegarde...');" formaction="EnregistrerDossierNnTransmit.do"
                                 type="submit" name="enregistrer" class="btn btn-primary mr-3" value="enregistrer">
                                 Sauvegarder <img src="img/save.png" class="icon" alt="save" />
                               </button>
-                              <button onclick="openForm('formVe')" formaction="ViderEtTransmettre.do" type="submit"
+                              <button onclick="if(confirm('Êtes-vous sûr de vouloir vider et transmettre ce dossier ?')){openForm('formVe'); showLoadingVe(this, 'Transmission...'); return true;} return false;" formaction="ViderEtTransmettre.do" type="submit"
                                 name="refuser" class="btn btn-danger" value="refuser">
                                 Vider et Transmettre <img src="img/refuse.png" class="icon" alt="submit" />
                               </button>

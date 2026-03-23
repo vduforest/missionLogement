@@ -115,7 +115,7 @@
             </c:if>
 
             <p class="space"></p>
-            <button type="submit" class="btn btn-success">Valider</button>
+            <button type="submit" id="submitBtn" class="btn btn-success" onclick="this.disabled=true; this.innerHTML='<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span> Validation...'; this.form.submit();">Valider</button>
 
             <div class="erreur"> 
               <script>error(${error});</script>

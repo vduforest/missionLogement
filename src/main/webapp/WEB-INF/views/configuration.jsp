@@ -18,18 +18,22 @@
                     <script src="${pageContext.request.contextPath}/js/configuration.js"></script>
                     <script>
                         function showLoadingConfig(btn, text) {
-                            // Find all submit buttons in the form or card
-                            const card = btn.closest('.info-card');
-                            const buttons = card.querySelectorAll('button[type="submit"], button.Supprimer, button.Import');
-                            buttons.forEach(b => {
-                                if (b !== btn) b.disabled = true;
-                            });
+                            if (btn.classList.contains('is-loading')) return false;
+                            btn.classList.add('is-loading');
+
+                            const spinner = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span> ';
+                            btn.innerHTML = spinner + text;
+
+                            // Disable after short delay to ensure submit name/value is sent
+                            setTimeout(() => {
+                                const card = btn.closest('.info-card');
+                                const buttons = card.querySelectorAll('button[type="submit"], button.Supprimer, button.Import');
+                                buttons.forEach(b => {
+                                    if (b !== btn) b.disabled = true;
+                                });
+                                btn.disabled = true;
+                            }, 10);
                             
-                            btn.disabled = true;
-                            btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ${text}`;
-                            
-                            // If it's a type="submit" button, we might need to manually trigger the form if disabling stops it
-                            // But usually it works. Let's ensure it's a submit action.
                             return true;
                         }
 
@@ -42,6 +46,14 @@
                                 return true;
                             }
                             return false;
+                        }
+
+                        function handleImport(input) {
+                            if (input.files && input.files.length > 0) {
+                                const btn = document.querySelector('.Import');
+                                showLoadingConfig(btn, 'Import en cours...');
+                                document.getElementById('importForm').submit();
+                            }
                         }
                     </script>
                 </head>
@@ -143,7 +155,7 @@ M.;Durand;Lucas;15/06/2002;75015;Paris;France;84532;lucas.durand@eleves.ec-nante
                                     <input type="hidden" name="connexionId" value="${connexionId}" />
                                     <input type="file" id="fichierImport" name="file" class="fichierImport"
                                         accept="text/.csv" style="display: none;"
-                                        onchange="document.getElementById('importForm').submit();" />
+                                        onchange="handleImport(this);" />
                                     <div class="text-center mb-4">
                                         <button type="button" class="Import"
                                             onclick="document.getElementById('fichierImport').click();">

@@ -10,6 +10,22 @@
     <link href="css/accueil_etudiant.css" type="text/css"rel="stylesheet"/>
     <link href="css/header.css" type="text/css" rel="stylesheet"/>
 
+    <script type="text/javascript">
+      function showLoading(btn, text) {
+        if (btn.classList.contains('is-loading')) return false;
+        btn.classList.add('is-loading');
+
+        const spinner = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span> ';
+        btn.innerHTML = spinner + (text || "");
+
+        // Delay disabling to allow form data capture
+        setTimeout(() => {
+          btn.disabled = true;
+        }, 10);
+
+        return true;
+      }
+    </script>
   </head>
 
   <body>
@@ -25,8 +41,8 @@
                   <form method="POST">
                     <input type="hidden" name="connexionId" value="${connexionId}" />
                     <tr>
-                      <th scope="col"class="text-center"><button class="redirect" formaction="informations.do">Informations Standard</button></th>
-                      <th scope="col"class="text-center"><button class="btn redirect" formaction="formulaire.do">Formulaire</button></th>
+                      <th scope="col"class="text-center"><button class="redirect" formaction="informations.do" onclick="showLoading(this, 'Chargement...')">Informations Standard</button></th>
+                      <th scope="col"class="text-center"><button class="btn redirect" formaction="formulaire.do" onclick="showLoading(this, 'Chargement...')">Formulaire</button></th>
                     </tr>
                   </form>
                   </thead>

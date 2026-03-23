@@ -25,7 +25,7 @@
                                 <input type="text" class="form-control" id="mail"
                                 placeholder="Email" name="mail" required="required">
                             </div>
-                        <button type="submit" class="btn btn-success">Valider</button>
+                        <button type="submit" class="btn btn-success" onclick="this.disabled=true; this.innerHTML='<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span> Validation...'; this.form.submit();">Valider</button>
                         <div class="erreur"> 
                             <script>error(${error});</script>
                         </div>
