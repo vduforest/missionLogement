@@ -225,3 +225,11 @@ select:focus {
 .refresh-btn:hover .refresh-icon {
   transform: rotate(90deg);
 }
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.spin {
+  animation: spin 1s linear infinite;
+}

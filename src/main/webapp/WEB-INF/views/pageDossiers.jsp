@@ -50,7 +50,7 @@
                         <h2 class="m-0">Liste des dossiers</h2>
                         <form method="post" action="dossiers.do" class="m-0">
                             <input type="hidden" name="connexionId" value="${connexionId}" />
-                            <button class="refresh-btn" title="Rafraîchir">
+                            <button class="refresh-btn" title="Rafraîchir" onclick="this.disabled=true; this.innerHTML='<img src=\'img/refresh.png\' class=\'refresh-icon spin\' /> Chargement...'; this.form.submit();">
                                 <img src="img/refresh.png" alt="Refresh" class="refresh-icon" /> Rafraîchir
                             </button>
                         </form>

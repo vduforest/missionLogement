@@ -26,7 +26,7 @@
                             <input type="hidden" name="id" value="${item.formulaireId}" />
                             <input type="hidden" name="personneId" value="${item.personneId.personneId}" />
                             <input type="hidden" name="formulaireId" value="${item.formulaireId}" />
-                            <button class="refresh-btn" title="Rafraîchir">
+                            <button class="refresh-btn" title="Rafraîchir" onclick="this.disabled=true; this.innerHTML='<img src=\'img/refresh.png\' class=\'refresh-icon spin\' /> Chargement...'; this.form.submit();">
                                 <img src="img/refresh.png" alt="Refresh" class="refresh-icon" />
                                 Rafraîchir
                             </button>
@@ -587,7 +587,7 @@
                                                             </c:if>
                                                             <c:if
                                                                 test="${(! empty connexion) && (connexion.isAdmin())}">
-                                                                <button onclick="openForm('formVe')"
+                                                                <button onclick="openForm('formVe'); showLoadingVe(this, 'Sauvegarde...');"
                                                                     formaction="EnregistrerFormVe.do" type="submit"
                                                                     name="enregistrer" class="btn btn-primary mr-3"
                                                                     value="enregistrer">
@@ -615,7 +615,7 @@
                                                                 </p>
                                                             </c:if>
 
-                                                            <button onclick="return confirmerEtOuvrir('formVe', 1)"
+                                                            <button onclick="return confirmerEtOuvrir('formVe', 1, this)"
                                                                 formaction="AnnulerPwd.do" type="submit"
                                                                 name="annulerpwd" class="btn btn-info mr-2"
                                                                 value="annulerpwd" <c:if
@@ -626,7 +626,7 @@
                                                                     alt="Reinitialiser" />
                                                             </button>
 
-                                                            <button onclick="return confirmerEtOuvrir('formVe', 2)"
+                                                            <button onclick="return confirmerEtOuvrir('formVe', 2, this)"
                                                                 formaction="EnregistrerFormVe.do" type="submit"
                                                                 name="enregistrer" class="btn btn-primary mr-2"
                                                                 value="enregistrer">
@@ -634,7 +634,7 @@
                                                                 <img src="img/save.png" class="icon" alt="save" />
                                                             </button>
 
-                                                            <button onclick="return confirmerEtOuvrir('formVe', 3)"
+                                                            <button onclick="return confirmerEtOuvrir('formVe', 3, this)"
                                                                 formaction="ValiderFormVe.do" type="submit"
                                                                 name="valider" class="btn btn-success mr-2"
                                                                 value="valider">
@@ -642,7 +642,7 @@
                                                                 <img src="img/coche.png" class="icon" alt="Valider" />
                                                             </button>
 
-                                                            <button onclick="return confirmerEtOuvrir('formVe', 4)"
+                                                            <button onclick="return confirmerEtOuvrir('formVe', 4, this)"
                                                                 formaction="RefuserFormVe.do" type="submit"
                                                                 name="refuser" class="btn btn-danger" value="refuser">
                                                                 Refuser<img src="img/refuse.png" class="icon"

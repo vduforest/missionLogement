@@ -16,6 +16,34 @@
                     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/configuration.css?v=4">
 
                     <script src="${pageContext.request.contextPath}/js/configuration.js"></script>
+                    <script>
+                        function showLoadingConfig(btn, text) {
+                            // Find all submit buttons in the form or card
+                            const card = btn.closest('.info-card');
+                            const buttons = card.querySelectorAll('button[type="submit"], button.Supprimer, button.Import');
+                            buttons.forEach(b => {
+                                if (b !== btn) b.disabled = true;
+                            });
+                            
+                            btn.disabled = true;
+                            btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ${text}`;
+                            
+                            // If it's a type="submit" button, we might need to manually trigger the form if disabling stops it
+                            // But usually it works. Let's ensure it's a submit action.
+                            return true;
+                        }
+
+                        function checkSubmit(formId, action, message, btn) {
+                            if (confirm(message)) {
+                                if (btn) showLoadingConfig(btn, "Purge...");
+                                var form = document.getElementById(formId);
+                                form.action = action;
+                                form.submit();
+                                return true;
+                            }
+                            return false;
+                        }
+                    </script>
                 </head>
 
                 <body>
@@ -27,7 +55,7 @@
                             <form method="post" action="configuration.do"
                                 style="position: absolute; top: 20px; right: 20px; z-index: 10;">
                                 <input type="hidden" name="connexionId" value="${connexionId}" />
-                                <button class="refresh-btn" title="Rafraîchir la page">
+                                <button class="refresh-btn" title="Rafraîchir la page" onclick="this.disabled=true; this.innerHTML='<img src=\'img/refresh.png\' class=\'refresh-icon spin\' /> Chargement...'; this.form.submit();">
                                     <img src="img/refresh.png" alt="Refresh" class="refresh-icon" /> Rafraîchir
                                 </button>
                             </form>
@@ -83,14 +111,14 @@
                                         <div class="label-col">Actions globales</div>
                                         <div class="input-col">
                                             <div class="button-group">
-                                                <button type="submit" class="Enregistrer">
+                                                <button type="submit" class="Enregistrer" onclick="showLoadingConfig(this, 'Sauvegarde...')">
                                                     Mettre à jour <img src="img/save.png" class="icon" />
                                                 </button>
                                                 <button type="button" <c:if
                                                     test="${missionStatus != 2}">disabled="disabled"</c:if>
                                                     onclick="return checkSubmit('configuration', 'supprimerDonnees.do',
                                                     '!!Attention!! \n Voulez-vous vraiment supprimer ces données ?\n
-                                                    Cette action est irréversible');"
+                                                    Cette action est irréversible', this);"
                                                     id="supprimerDonnees" class="Supprimer">
                                                     Purger les données <img src="img/warning.png" class="icon" />
                                                 </button>
@@ -147,8 +175,9 @@ M.;Durand;Lucas;15/06/2002;75015;Paris;France;84532;lucas.durand@eleves.ec-nante
                                             <div class="button-group">
                                                 <button type="submit" class="EnvoiMails" formaction="tokenmail.do" <c:if
                                                     test="${missionStatus != 0}">disabled="disabled" title="Disponible
-                                                    uniquement 'Avant mission'"</c:if>>
-                                                    Envoyer les mails <img src="img/mail.png" class="mails" />
+                                                    uniquement 'Avant mission'"</c:if> onclick="showLoadingConfig(this, 'Envoi en cours...')">
+                                                    Envoyer les mails d'authentification<img src="img/mail.png"
+                                                        class="mails" />
                                                 </button>
                                             </div>
                                         </div>
@@ -168,8 +197,8 @@ M.;Durand;Lucas;15/06/2002;75015;Paris;France;84532;lucas.durand@eleves.ec-nante
                                             <div class="button-group">
                                                 <button type="submit" class="EnvoiMails" formaction="envoiemailfin.do"
                                                     <c:if test="${missionStatus != 2}">disabled="disabled"
-                                                    title="Disponible uniquement quand la 'Mission est fermée'"</c:if>>
-                                                    Envoyer mail de fin <img src="img/mail.png" class="mails" />
+                                                    title="Disponible uniquement quand la 'Mission est fermée'"</c:if> onclick="showLoadingConfig(this, 'Envoi en cours...')">
+                                                    Envoyer les mails de fin <img src="img/mail.png" class="mails" />
                                                 </button>
                                             </div>
                                         </div>
@@ -308,7 +337,7 @@ M.;Durand;Lucas;15/06/2002;75015;Paris;France;84532;lucas.durand@eleves.ec-nante
 
                                 <div class="form-actions text-center">
                                     <button type="submit" class="Enregistrer"
-                                        style="padding: 15px 60px; font-size: 1.1rem;">
+                                        style="padding: 15px 60px; font-size: 1.1rem;" onclick="showLoadingConfig(this, 'Sauvegarde...')">
                                         Sauvegarder toute la configuration <img src="img/save.png" class="icon" />
                                     </button>
                                 </div>

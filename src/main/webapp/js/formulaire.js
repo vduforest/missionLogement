@@ -78,19 +78,37 @@ function openRecursive(anyRef) {
   }
 }
 
-function confirmerEtOuvrir(id,entier) {
+function showLoadingVe(btn, text) {
+  // Disable all action buttons in the form actions area
+  const footer = btn.closest('.row.justify-content-center');
+  if (footer) {
+    const buttons = footer.querySelectorAll('button');
+    buttons.forEach(b => b.disabled = true);
+  } else {
+    btn.disabled = true;
+  }
+  btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ${text}`;
+  return true;
+}
+
+function confirmerEtOuvrir(id,entier, btn) {
     
     entier = parseInt(entier);
     let txt = "";
+    let loadingText = "";
     // Ecriture du texte de la box
     if (entier === 1){
         txt = "Vous allez envoyer un mail de réinitialisation de mot de passe, voulez-vous continuer ?";
+        loadingText = "Envoi...";
     } else if (entier === 2){
         txt = "Vous allez enregistrer le formulaire, voulez-vous continuer ?";
+        loadingText = "Sauvegarde...";
     } else if (entier === 3){
         txt = "Vous allez valider le formulaire, vous ne pourrez plus y toucher ensuite, voulez-vous continuer ?";
+        loadingText = "Validation...";
     }else if (entier === 4){
         txt = "Vous allez refuser le formulaire, l'élève va recevoir un mail lui expliquant pourquoi, voulez-vous continuer ?";
+        loadingText = "Refus en cours...";
     }
     
     if (confirm(txt)) {
@@ -100,6 +118,9 @@ function confirmerEtOuvrir(id,entier) {
             }
         }
         openForm(id);
+        if (btn) {
+            showLoadingVe(btn, loadingText);
+        }
         return true;
     }
     return false;

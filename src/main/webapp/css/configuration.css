@@ -92,6 +92,7 @@ textarea {
   background-color: white;
   transition: all 0.3s;
   font-size: 1rem;
+  font-family: 'Open Sans', sans-serif;
   color: #333;
   box-sizing: border-box;
 }
@@ -172,6 +173,16 @@ button img.mails {
 button.Enregistrer {
   background-color: var(--brand-blue) !important;
   color: white !important;
+}
+
+button:disabled,
+button[disabled] {
+  background-color: #e2e8f0 !important;
+  color: #94a3b8 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+  border: 1px solid #cbd5e0 !important;
 }
 
 button.Enregistrer:hover:not(:disabled) {

@@ -267,7 +267,7 @@
                     </div>
 
                     <div class="buttons-container">
-                      <button type="submit" name="enregistrer" class="custom-button btn-save" value="enregistrer">
+                      <button type="submit" name="enregistrer" id="btnSave" class="custom-button btn-save" value="enregistrer">
                         Sauvegarder
                       </button>
 
@@ -291,10 +291,26 @@
             if (typeof sendDocument === "function") { sendDocument(); }
           };
 
+          function showLoading(btn, text) {
+            // Disable all buttons in the container
+            const buttons = document.querySelectorAll(".custom-button");
+            buttons.forEach(b => b.disabled = true);
+            
+            btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ${text}`;
+            return true;
+          }
+
           // --- NOUVELLE LOGIQUE JS ---
           document.addEventListener("DOMContentLoaded", function () {
             const btnSubmit = document.getElementById("btnSubmit");
+            const btnSave = document.getElementById("btnSave");
             const inputs = document.querySelectorAll(".monitor-change");
+
+            if (btnSave) {
+              btnSave.addEventListener("click", function() {
+                showLoading(btnSave, "Sauvegarde...");
+              });
+            }
 
             if (!btnSubmit) return;
 
@@ -329,8 +345,11 @@
             const confirmation = confirm("Êtes-vous sûr de vouloir soumettre ?\n\nVous ne pourrez plus modifier vos informations après cette action.");
             if (!confirmation) {
               event.preventDefault();
+            } else {
+              showLoading(btnSubmit, "Envoi en cours...");
             }
           });
+        });
         </script>
       </body>
 
