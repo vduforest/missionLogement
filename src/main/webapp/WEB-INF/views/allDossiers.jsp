@@ -15,19 +15,19 @@
     <script src="js/alerte.js" type="text/javascript"></script>
     <link href="bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet"/>
 
+    <!--Datatable-->
+    <link rel="stylesheet" type="text/css" href="dataTables/css/jquery.dataTables.css"/>
+    <link rel="stylesheet" type="text/css" href="dataTables/css/buttons.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="dataTables/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="dataTables/css/rowReorder.dataTables.min.css">
+
     <!--Local-->
     <link href="css/default.css" type="text/css" rel="stylesheet"/>
     <link href="css/pageDossiers.css" type="text/css" rel="stylesheet"/>
     
     <link href="css/header.css" type="text/css" rel="stylesheet"/>
 
-
-    <!--Datatable-->
     <script src="js/mainDataTables.js" type="text/javascript"></script>
-    <link rel="stylesheet" type="text/css" href="dataTables/css/jquery.dataTables.css"/>
-    <link rel="stylesheet" type="text/css" href="dataTables/css/buttons.dataTables.css">
-    <link rel="stylesheet" type="text/css" href="dataTables/css/responsive.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="dataTables/css/rowReorder.dataTables.min.css">
     <script type="text/javascript" src="dataTables/js/jquery.dataTables.js" ></script>
     <script type="text/javascript" src="dataTables/js/dataTables.buttons.js"></script>
     <script type="text/javascript" src="dataTables/js/buttons.html5.js"></script>

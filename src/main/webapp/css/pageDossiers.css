@@ -169,32 +169,69 @@ img.show {
   padding-top: 0.5em;
 }
 
+/* Modern DataTables Styling Fixes */
+
+/* Action Buttons (Copy, CSV, etc.) */
+.dt-buttons {
+  margin-bottom: 20px !important;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dt-button {
+  background: white !important;
+  color: var(--brand-blue) !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  padding: 8px 18px !important;
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+.dt-button:hover:not(.disabled) {
+  background-color: var(--brand-blue) !important;
+  color: white !important;
+  border-color: var(--brand-blue) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(14, 39, 72, 0.15) !important;
+}
+
 /* Pagination Buttons Modernization */
 .dataTables_wrapper .dataTables_paginate .paginate_button {
-  border-radius: 4px !important;
-  border: 1px solid transparent !important;
-  padding: 5px 12px !important;
-  margin-left: 2px !important;
-  transition: all 0.2s;
+  border-radius: 6px !important;
+  border: 1px solid #e2e8f0 !important;
+  padding: 6px 14px !important;
+  margin: 0 3px !important;
+  transition: all 0.2s ease;
+  background: white !important;
+  color: var(--brand-blue) !important;
+  font-weight: 500 !important;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current, 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
   background: var(--brand-blue) !important;
-  color: white !important;
+  color: white !important; /* FIXED: Always white on dark blue */
   border: 1px solid var(--brand-blue) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 6px rgba(14, 39, 72, 0.2) !important;
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-  background: #f8f9fa !important;
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover:not(.current):not(.disabled) {
+  background: #f8fafc !important;
   color: var(--brand-blue) !important;
-  border: 1px solid #dee2e6 !important;
+  border: 1px solid #cbd5e0 !important;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
 .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,
 .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
-  color: #6c757d !important;
-  background: transparent !important;
-  border: 1px solid transparent !important;
+  color: #a0aec0 !important;
+  background: #f8fafc !important;
+  border: 1px solid #edf2f7 !important;
+  cursor: default !important;
 }
