@@ -78,7 +78,11 @@ public class ConnectionService {
             texteInformation = configInformationPopUp.getContenu();
         }
 
-        texteInformation = texteInformation.replaceAll("\n", "<br/>");
+        if (texteInformation != null) {
+            texteInformation = texteInformation.replaceAll("\n", "<br/>");
+        } else {
+            texteInformation = "";
+        }
 
         return texteInformation;
     }

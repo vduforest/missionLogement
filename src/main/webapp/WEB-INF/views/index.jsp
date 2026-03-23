@@ -131,7 +131,7 @@
           </div>
         </div>
       </div>
-    </main>
+    </div>
 
     <div class="split-pane right-pane">
       <div class="content-wrapper text-content">
@@ -166,7 +166,7 @@
       </div>
     </div>
 
-  </div>
+  </main>
 
   <button id="mobileLoginBtn" onclick="scrollToTop()">&#8593; Se connecter</button>
 

@@ -130,7 +130,11 @@ public class LoginController {
                             String texteInformation = "";
                             if (configInformationTexteOpt.isPresent()) {
                                 texteInformation = configInformationTexteOpt.get().getContenu();
-                                texteInformation = texteInformation.replaceAll("\n", "<br/>");
+                                if (texteInformation != null) {
+                                    texteInformation = texteInformation.replaceAll("\n", "<br/>");
+                                } else {
+                                    texteInformation = "";
+                                }
                             }
                             returned = connectionService.prepareModelAndView(connection, "informationEleves");
                             returned.addObject("texteInfo", texteInformation);

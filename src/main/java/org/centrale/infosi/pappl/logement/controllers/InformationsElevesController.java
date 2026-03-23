@@ -46,9 +46,15 @@ public class InformationsElevesController {
         }
         Optional<ConfigModif> configInformationTexteOpt = configModifRepository
                 .findTopByTypeNomOrderByModifIdDesc("message_page_informations");
-        ConfigModif configInformationTexte = configInformationTexteOpt.get();
-        String texteInformation = configInformationTexte.getContenu();
-        texteInformation = texteInformation.replaceAll("\n", "<br/>");
+        String texteInformation = "";
+        if (configInformationTexteOpt.isPresent()) {
+            texteInformation = configInformationTexteOpt.get().getContenu();
+            if (texteInformation != null) {
+                texteInformation = texteInformation.replaceAll("\n", "<br/>");
+            } else {
+                texteInformation = "";
+            }
+        }
 
         String connectionIdStr = Util.getStringFromRequest(request, "connexionId");
         ModelAndView returned = connectionService.prepareModelAndView(connection, "informationEleves");
