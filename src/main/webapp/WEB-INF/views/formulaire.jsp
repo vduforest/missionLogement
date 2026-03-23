@@ -104,7 +104,7 @@
                   <div class="input-col">
                       <label for="mail">mail</label>
                     <input type="text" id="mail" name="mail" value="${item.mail}" placeholder="exemple@ec-nantes.fr"
-                      <c:if test="${item.estValide == true}">readonly="readonly"</c:if> required="required"
+                      <c:if test="${item.estValide == true}">readonly="readonly" class="readonly-input"</c:if> required="required"
                       oninput="verifMail('mail', 'Confirmmail')" class="monitor-change"/>
                       
                   </div>
@@ -118,7 +118,7 @@
                     <label for="Confirmmail">confirme mail</label>
                     <input type="text" id="Confirmmail" name="Confirmmail" value="${item.mail}"
                       placeholder="Confirmez l'adresse" <c:choose>
-                    <c:when test="${item.estValide == true}">readonly="readonly"</c:when>
+                    <c:when test="${item.estValide == true}">readonly="readonly" class="readonly-input"</c:when>
                     <c:otherwise>oninput="verifMail('mail', 'Confirmmail');"</c:otherwise>
                     </c:choose> class="monitor-change"/>
                   </div>
@@ -131,7 +131,7 @@
                   <div class="input-col">
                     <label for="tel">Téléphone</label>
                         <input type="text" id="tel" name="tel" value="${item.numeroTel}" <c:if
-                          test="${item.estValide == true}">readonly="readonly"</c:if> required="required"
+                          test="${item.estValide == true}">readonly="readonly" class="readonly-input"</c:if> required="required"
                         class="monitor-change"/>
                     
                   </div>
@@ -142,7 +142,7 @@
                   <div class="input-col">
                       <label for="tel2">Téléphone 2</label>
                     <input type="text" name="tel2" id="tel2" value="${item.tel2}" <c:if
-                      test="${item.estValide == true}">readonly="readonly"</c:if> class="monitor-change"/>
+                      test="${item.estValide == true}">readonly="readonly" class="readonly-input"</c:if> class="monitor-change"/>
                   </div>
                 </div>
 
@@ -251,7 +251,7 @@
                   <div class="input-col">
                       <label for="infoSupplementaires">infos supplémentaires</label>
                     <textarea id="infoSupplementaires" name="infoSupplementaires" rows="5" <c:if
-                      test="${item.estValide}">readonly</c:if> <c:if test="${item.estPmr == 'true'}"> required="required"</c:if> class="monitor-change">${item.commentairesEleve}</textarea>
+                      test="${item.estValide}">readonly class="readonly-input"</c:if> <c:if test="${item.estPmr == 'true'}"> required="required"</c:if> class="monitor-change">${item.commentairesEleve}</textarea>
                   </div>
                 </div>
 

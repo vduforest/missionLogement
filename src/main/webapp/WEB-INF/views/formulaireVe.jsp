@@ -72,8 +72,8 @@
                                                     </div>
                                                     <div class="action-col text-center align-middle">
                                                         <button type="button" id="locker_nom"
-                                                            class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                            onclick="delock('nom')"
+                                                            class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center"
+                                                            ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'nom\')"' }
                                                             style="gap: 5px; margin:auto; width: 140px;">
                                                             <img id="img_nom" src="img/close.png" class="avion"
                                                                 alt="Verrouillé" />
@@ -92,8 +92,8 @@
                                                     </div>
                                                     <div class="action-col text-center align-middle">
                                                         <button type="button" id="locker_prenom"
-                                                            class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                            onclick="delock('prenom')"
+                                                            class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center"
+                                                            ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'prenom\')"' }
                                                             style="gap: 5px; margin:auto; width: 140px;">
                                                             <img id="img_prenom" src="img/close.png" class="avion"
                                                                 alt="Verrouillé" />
@@ -114,8 +114,8 @@
                                                     </div>
                                                     <div class="action-col text-center align-middle">
                                                         <button type="button" id="locker_dateNaissance"
-                                                            class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                            onclick="delock('dateNaissance')"
+                                                            class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center"
+                                                            ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'dateNaissance\')"' }
                                                             style="gap: 5px; margin:auto; width: 140px;">
                                                             <img id="img_dateNaissance" src="img/close.png"
                                                                 class="avion" alt="Verrouillé" />
@@ -133,8 +133,8 @@
                                                     </div>
                                                     <div class="action-col text-center align-middle">
                                                         <button type="button" id="locker_ville"
-                                                            class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                            onclick="delock('ville')"
+                                                            class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center"
+                                                            ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'ville\')"' }
                                                             style="gap: 5px; margin:auto; width: 140px;">
                                                             <img id="img_ville" src="img/close.png" class="avion"
                                                                 alt="Verrouillé" />
@@ -152,8 +152,8 @@
                                                     </div>
                                                     <div class="action-col text-center align-middle">
                                                         <button type="button" id="locker_codePostal"
-                                                            class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                            onclick="delock('codePostal')"
+                                                            class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center"
+                                                            ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'codePostal\')"' }
                                                             style="gap: 5px; margin:auto; width: 140px;">
                                                             <img id="img_codePostal" src="img/close.png" class="avion"
                                                                 alt="Verrouillé" />
@@ -174,8 +174,9 @@
                                                 </select>
                                             </div>
                                             <div class="action-col text-center align-middle">
-                                                <button type="button" id="locker_pays" class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center" onclick="delock('
-                                                                    pays')"
+                                                <button type="button" id="locker_pays" 
+                                                                    class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center" 
+                                                                    ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'pays\')"' }
                                                                     style="gap: 5px; margin:auto; width: 140px;">
                                                                     <img id="img_pays" src="img/close.png" class="avion"
                                                                         alt="Verrouillé" />
@@ -193,8 +194,8 @@
                                                     </div>
                                                     <div class="action-col text-center align-middle">
                                                         <button type="button" id="locker_mail"
-                                                            class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                            onclick="delock('mail')"
+                                                            class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center"
+                                                            ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'mail\')"' }
                                                             style="gap: 5px; margin:auto; width: 140px;">
                                                             <img id="img_mail" src="img/close.png" class="avion"
                                                                 alt="Verrouillé" />
@@ -228,8 +229,8 @@
                                                     </div>
                                                     <div class="action-col text-center align-middle">
                                                         <button type="button" id="locker_Genre"
-                                                            class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                            onclick="delock('Genre')"
+                                                            class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center"
+                                                            ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'Genre\')"' }
                                                             style="gap: 5px; margin:auto; width: 140px;">
                                                             <img id="img_Genre" src="img/close.png" class="avion"
                                                                 alt="Verrouillé" />
@@ -247,8 +248,8 @@
                                                     </div>
                                                     <div class="action-col text-center align-middle">
                                                         <button type="button" id="locker_tel"
-                                                            class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                            onclick="delock('tel')"
+                                                            class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center"
+                                                            ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'tel\')"' }
                                                             style="gap: 5px; margin:auto; width: 140px;">
                                                             <img id="img_tel" src="img/close.png" class="avion"
                                                                 alt="Verrouillé" />
@@ -266,8 +267,8 @@
                                                     </div>
                                                     <div class="action-col text-center align-middle">
                                                         <button type="button" id="locker_tel2"
-                                                            class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                            onclick="delock('tel2')"
+                                                            class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center"
+                                                            ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'tel2\')"' }
                                                             style="gap: 5px; margin:auto; width: 140px;">
                                                             <img id="img_tel2" src="img/close.png" class="avion"
                                                                 alt="Verrouillé" />
@@ -310,8 +311,8 @@
                                                     </div>
                                                     <div class="action-col text-center align-middle">
                                                         <button type="button" id="locker_boursier"
-                                                            class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                            onclick="delock('boursier')"
+                                                            class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center"
+                                                            ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'boursier\')"' }
                                                             style="gap: 5px; margin:auto; width: 140px;">
                                                             <img id="img_boursier" src="img/close.png" class="avion"
                                                                 alt="Verrouillé" />
@@ -343,8 +344,8 @@
                                                     </div>
                                                     <div class="action-col text-center align-middle">
                                                         <button type="button" id="locker_souhait"
-                                                            class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                            onclick="delock('souhait')"
+                                                            class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center"
+                                                            ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'souhait\')"' }
                                                             style="gap: 5px; margin:auto; width: 140px;">
                                                             <img id="img_souhait" src="img/close.png" class="avion"
                                                                 alt="Verrouillé" />
@@ -372,8 +373,8 @@
                                                     </div>
                                                     <div class="action-col text-center align-middle">
                                                         <button type="button" id="locker_pmr"
-                                                            class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                            onclick="delock('pmr')"
+                                                            class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center"
+                                                            ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'pmr\')"' }
                                                             style="gap: 5px; margin:auto; width: 140px;">
                                                             <img id="img_pmr" src="img/close.png" class="avion"
                                                                 alt="Verrouillé" />
@@ -410,8 +411,8 @@
                                                     </div>
                                                     <div class="action-col text-center align-middle">
                                                         <button type="button" id="locker_distance"
-                                                            class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                            onclick="delock('distance')"
+                                                            class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center"
+                                                            ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'distance\')"' }
                                                             style="gap: 5px; margin:auto; width: 140px;">
                                                             <img id="img_distance" src="img/close.png" class="avion"
                                                                 alt="Verrouillé" />
@@ -440,8 +441,8 @@
                                                     </div>
                                                     <div class="action-col text-center align-middle">
                                                         <button type="button" id="locker_rang"
-                                                            class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                            onclick="delock('rang')"
+                                                            class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center"
+                                                            ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'rang\')"' }
                                                             style="gap: 5px; margin:auto; width: 140px;">
                                                             <img id="img_rang" src="img/close.png" class="avion"
                                                                 alt="Verrouillé" />
@@ -468,8 +469,8 @@
                                                     </div>
                                                     <div class="action-col text-center align-middle">
                                                         <button type="button" id="locker_international"
-                                                            class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                            onclick="delock('international')"
+                                                            class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center"
+                                                            ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'international\')"' }
                                                             style="gap: 5px; margin:auto; width: 140px;">
                                                             <img id="img_international" src="img/close.png"
                                                                 class="avion" alt="Verrouillé" />
@@ -493,8 +494,8 @@
                                                     </div>
                                                     <div class="action-col text-center align-middle">
                                                         <button type="button" id="locker_commentairesVe"
-                                                            class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                            onclick="delock('commentairesVe')"
+                                                            class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center"
+                                                            ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'commentairesVe\')"' }
                                                             style="gap: 5px; margin:auto; width: 140px;">
                                                             <img id="img_commentairesVe" src="img/close.png"
                                                                 class="avion" alt="Verrouillé" />
@@ -543,8 +544,8 @@
                                                     </div>
                                                     <div class="action-col text-center align-middle">
                                                         <button type="button" id="locker_commentairesInternes"
-                                                            class="btn btn-outline-dark btn-sm d-flex align-items-center justify-content-center"
-                                                            onclick="delock('commentairesInternes')"
+                                                            class="btn ${(item.estConforme && !connexion.isAdmin()) ? 'btn-secondary' : 'btn-outline-dark'} btn-sm d-flex align-items-center justify-content-center"
+                                                            ${(item.estConforme && !connexion.isAdmin()) ? 'disabled="disabled"' : 'onclick="delock(\'commentairesInternes\')"' }
                                                             style="gap: 5px; margin:auto; width: 140px;">
                                                             <img id="img_commentairesInternes" src="img/close.png"
                                                                 class="avion" alt="Verrouillé" />

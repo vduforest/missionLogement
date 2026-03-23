@@ -105,6 +105,13 @@ textarea:focus {
     box-shadow: 0 0 0 2px rgba(14, 39, 72, 0.1);
 }
 
+.radio-options input[type="radio"]:disabled + label,
+.radio-options label:has(input[type="radio"]:disabled),
+input:disabled + label {
+    color: #6c757d !important;
+    cursor: not-allowed !important;
+}
+
 /* --- CORRECTIF READONLY & DISABLED (Gris visible global) --- */
 .readonly-input,
 input:disabled,
