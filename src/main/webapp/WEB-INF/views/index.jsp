@@ -77,7 +77,7 @@
 
 <body>
 
-  <div class="split-container" id="top">
+  <main class="split-container" id="top">
 
     <div class="split-pane left-pane">
       <div class="content-wrapper">
@@ -131,7 +131,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </main>
 
     <div class="split-pane right-pane">
       <div class="content-wrapper text-content">
