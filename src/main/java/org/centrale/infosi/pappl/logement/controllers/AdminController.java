@@ -119,12 +119,15 @@ public class AdminController {
      *
      * @return Le ModelAndView lié à la page des dossiers
      */
-    @RequestMapping(value = "dossiers.do", method = RequestMethod.POST)
+    @RequestMapping(value = {"dossiers.do", "dossiersAssist.do"}, method = RequestMethod.POST)
     public ModelAndView handleDossierGet(HttpServletRequest request) {
         ModelAndView returned;
 
         //Check de la connexion
         Connexion connection = connectionService.checkAccess(request, "Admin");
+        if (connection == null) {
+            connection = connectionService.checkAccess(request, "Assistant");
+        }
         if (connection == null) {
             return new ModelAndView("redirect");
         }
@@ -135,7 +138,11 @@ public class AdminController {
         returned = connectionService.prepareModelAndView(connection, "pageDossiers");
         if (returned != null) {
             returned.addObject("forms", forms);
-            returned.addObject("backLink", "adminDashboard.do");
+            if (connection.isAdmin()) {
+                returned.addObject("backLink", "adminDashboard.do");
+            } else {
+                returned.addObject("hideBackButton", true);
+            }
         }
 
         return returned;
@@ -308,7 +315,10 @@ public class AdminController {
         //Check de la connexion
         Connexion connection = connectionService.checkAccess(request, "Admin");
         if (connection == null) {
-            ResponseEntity.unprocessableEntity().body((InputStreamResource) null);
+            connection = connectionService.checkAccess(request, "Assistant");
+        }
+        if (connection == null) {
+            return ResponseEntity.unprocessableEntity().body((InputStreamResource) null);
         }
 
         //Création du fichier d'export

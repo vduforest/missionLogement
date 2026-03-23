@@ -79,7 +79,7 @@ public class AllDossierController {
             if (connection.isAdmin()) {
                 returned.addObject("backLink", "adminDashboard.do");
             } else {
-                returned.addObject("backLink", "dashboard.do");
+                returned.addObject("backLink", "dossiers.do");
             }
         }
         return returned;
@@ -100,14 +100,14 @@ public class AllDossierController {
         Connexion connectionAssist = connectionService.checkAccess(request, "Assistant");
         Connexion connectionAdmin = connectionService.checkAccess(request, "Admin");
         if (connectionAssist != null || connectionAdmin != null) {
-            //On renvoie à la page Dossier Assistant
-            List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
+            //On renvoie à la page Dossier
+            List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAll());
             Collections.sort(forms, Formulaire.getComparator());
 
             if (connectionAdmin != null) {
                 returned = connectionService.prepareModelAndView(connectionAdmin, "pageDossiers");
             } else {
-                returned = connectionService.prepareModelAndView(connectionAssist, "pageDossiersAssist");
+                returned = connectionService.prepareModelAndView(connectionAssist, "pageDossiers");
             }
 
             if (returned != null) {

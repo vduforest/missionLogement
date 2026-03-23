@@ -554,11 +554,7 @@ public class FormulaireController {
 
         returned = manageFormulaireVe(connection, formulaire);
         if (returned != null) {
-            if (connection.isAdmin()) {
-                returned.addObject("backLink", "dossiers.do");
-            } else if (connection.isAssistant()) {
-                returned.addObject("backLink", "dossiersAssist.do");
-            }
+            returned.addObject("backLink", "dossiers.do");
         }
         return returned;
     }
@@ -617,14 +613,14 @@ public class FormulaireController {
             String idStr = Util.getStringFromRequest(request, "id");
             int id = Util.getIntFromString(idStr);
             alerteRepository.update(formulaireRepository.getReferenceById(id), "Traitée");
-            List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
+            List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAll());
             Collections.sort(forms, Formulaire.getComparator());
 
             // Redirection
             if (connectionAdmin != null) {
                 returned = connectionService.prepareModelAndView(connectionAdmin, "pageDossiers");
             } else {
-                returned = connectionService.prepareModelAndView(connectionAssistant, "pageDossiersAssist");
+                returned = connectionService.prepareModelAndView(connectionAssistant, "pageDossiers");
             }
             if (returned != null) {
                 returned.addObject("forms", forms);
@@ -699,11 +695,10 @@ public class FormulaireController {
                 traitementRepository.save(traitement);
             }
             // Redirection
-            List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
+            List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAll());
             Collections.sort(forms, Formulaire.getComparator());
 
-            returned = connectionService.prepareModelAndView(connection,
-                    (connexionType == 1 ? "pageDossiers" : "pageDossiersAssist"));
+            returned = connectionService.prepareModelAndView(connection, "pageDossiers");
             if (returned != null) {
                 returned.addObject("forms", forms);
             }
@@ -745,13 +740,13 @@ public class FormulaireController {
                 mailController.envoiMailDossierIncomplet(mail, comm, prenom);
             }
 
-            List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
+            List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAll());
             Collections.sort(forms, Formulaire.getComparator());
             // Redirection
             if (connectionAdmin != null) {
                 returned = connectionService.prepareModelAndView(connectionAdmin, "pageDossiers");
             } else {
-                returned = connectionService.prepareModelAndView(connectionAssistant, "pageDossiersAssist");
+                returned = connectionService.prepareModelAndView(connectionAssistant, "pageDossiers");
             }
             if (returned != null) {
                 returned.addObject("forms", forms);
@@ -837,7 +832,7 @@ public class FormulaireController {
             mailService.sendPasswordResetMail(resetToken, mail);
             // envoi du mail quand ce sera possible
 
-            List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
+            List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAll());
             Collections.sort(forms, Formulaire.getComparator());
 
             //Redirection
@@ -846,7 +841,7 @@ public class FormulaireController {
                         "pageDossiers");
             } else {
                 returned = connectionService.prepareModelAndView(connectionAssistant,
-                        "pageDossiersAssist");
+                        "pageDossiers");
             }
             if (returned != null) {
                 returned.addObject("forms", forms);

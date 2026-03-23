@@ -195,19 +195,15 @@ public class LoginController {
 
                         case 3: // Assistant
                             List<Formulaire> forms = new ArrayList<Formulaire>(
-                                    formulaireRepository.findAllValidOrCommentaireVE());
+                                    formulaireRepository.findAll());
                             Collections.sort(forms, Formulaire.getComparator());
 
-                            List<Alerte> formsAlerte = new ArrayList<Alerte>(alerteRepository.findAll());
-                            Collections.sort(formsAlerte, Alerte.getComparator());
-
-                            returned = connectionService.prepareModelAndView(connection, "pageDossiersAssist");
+                            returned = connectionService.prepareModelAndView(connection, "pageDossiers");
                             returned.addObject("forms", forms);
-                            returned.addObject("alertes", formsAlerte);
                             returned.addObject("hideBackButton", true);
 
-                            // SETS LOGO DESTINATION TO DASHBOARD
-                            returned.addObject("homeLink", "dashboard.do");
+                            // SETS LOGO DESTINATION TO DOSSIERS
+                            returned.addObject("homeLink", "dossiers.do");
 
                             return returned;
 

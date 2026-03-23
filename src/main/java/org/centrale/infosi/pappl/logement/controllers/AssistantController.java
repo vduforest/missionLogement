@@ -35,28 +35,4 @@ public class AssistantController {
     @Autowired
     private ConnectionService connectionService;
 
-    /**
-     * Gestion de la rotue affichant la page d'acceuil d'un assistant (la liste
-     * des formulaires)
-     *
-     * @return Le ModelAndView lié à la page d'acceuil d'un assistant
-     */
-    @RequestMapping(value = "dossiersAssist.do", method = RequestMethod.POST)
-    public ModelAndView handleDossiersAssist(HttpServletRequest request) {
-        ModelAndView returned;
-        Connexion connection = connectionService.checkAccess(request, "Assistant");
-        if (connection != null) {
-            // Ajout de la liste des formulaires
-            List<Formulaire> forms = new ArrayList<Formulaire>(formulaireRepository.findAllValidOrCommentaireVE());
-            Collections.sort(forms, Formulaire.getComparator());
-
-            returned = connectionService.prepareModelAndView(connection, "pageDossiersAssist");
-            if (returned != null) {
-                returned.addObject("forms", forms);
-                returned.addObject("hideBackButton", true);
-            }
-            return returned;
-        }
-        return new ModelAndView("redirect");
-    }
 }
