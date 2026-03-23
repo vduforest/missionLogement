@@ -45,13 +45,8 @@ public class StudentController {
         Connexion connection = connectionService.checkAccess(request, "Eleve");
 
         if (connection == null) {
-            Optional<ConfigModif> configInformationPopUpOpt = configModifRepository.findTopByTypeNomOrderByModifIdDesc("message_pge_connexion");
-            ConfigModif configInformationPopUp = configInformationPopUpOpt.get();
-            String texteInformationPopUp = configInformationPopUp.getContenu();
-            
-            texteInformationPopUp = texteInformationPopUp.replaceAll("\n", "<br/>");
-            returned = new ModelAndView("index");
-            returned.addObject("textePopUp", texteInformationPopUp);
+            returned = connectionService.prepareIndexModelAndView();
+            returned.addObject("message", "Votre session a expiré.");
         } else {
             returned = connectionService.prepareModelAndView(connection, "accueilEtudiant");
         }

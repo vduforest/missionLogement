@@ -63,48 +63,9 @@ public class LoginController {
     @Autowired
     private MissionLogementStatusRepository missionStatusRepository;
 
-    private String getLoginMessage() {
-        int status = missionStatusRepository.findById(MissionLogementStatus.MISSIONID).get().getStatus();
-        String msgToDisplay = "";
-        switch (status) {
-            case 0:
-                msgToDisplay = "message_avant_connexion";
-                break;
-            case 1:
-                msgToDisplay = "message_pge_connexion";
-                break;
-            case 2:
-                msgToDisplay = "message_page_attente";
-                break;
-        }
-
-        Optional<ConfigModif> configInformationPopUpOpt = configModifRepository
-                .findTopByTypeNomOrderByModifIdDesc(msgToDisplay);
-
-        String texteInformation = "";
-        if ((configInformationPopUpOpt != null) && (configInformationPopUpOpt.isPresent())) {
-            ConfigModif configInformationPopUp = configInformationPopUpOpt.get();
-            texteInformation = configInformationPopUp.getContenu();
-        }
-
-        texteInformation = texteInformation.replaceAll("\n", "<br/>");
-
-        return texteInformation;
-    }
-
-    /**
-     * Controller permettant d'afficher la page d'identification
-     *
-     * @return Le ModelAndView lié à la page de connexion
-     */
     @RequestMapping(value = "index.do")
     public ModelAndView handleIndexGet() {
-        String texteInformation = getLoginMessage();
-
-        ModelAndView returned = new ModelAndView("index");
-        returned.addObject("textePopUp", texteInformation);
-
-        return returned;
+        return connectionService.prepareIndexModelAndView();
     }
 
     /**
@@ -215,9 +176,7 @@ public class LoginController {
         }
 
         // If login fails, return to index (login page)
-        String texteInformation = getLoginMessage();
-        returned = new ModelAndView("index");
-        returned.addObject("textePopUp", texteInformation);
+        returned = connectionService.prepareIndexModelAndView();
         returned.addObject("message", "Authentification incorrecte");
         return returned;
     }

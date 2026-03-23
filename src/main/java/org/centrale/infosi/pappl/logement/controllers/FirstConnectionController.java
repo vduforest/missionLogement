@@ -49,6 +49,9 @@ public class FirstConnectionController {
     @Lazy
     private ConfigModifRepository configModifRepository;
 
+    @Autowired
+    private ConnectionService connectionService;
+
     private ModelAndView invalidAccountCreation(String scei, String mail) {
         ModelAndView returned = new ModelAndView("premier_connexion");
         returned.addObject("error", true);
@@ -68,7 +71,7 @@ public class FirstConnectionController {
      */
     @RequestMapping(value = "creationcompte.do", method = RequestMethod.GET)
     public ModelAndView handleCreationCompte(HttpServletRequest request) {
-        ModelAndView returned = new ModelAndView("index"); // erreur 404
+        ModelAndView returned = connectionService.prepareIndexModelAndView(); // default index view
         String token = request.getParameter("token");
         // vérification du token cad que si le token est expiré alors on envoie une page
         // d'erreur
@@ -88,7 +91,7 @@ public class FirstConnectionController {
             // et on envoie une page demandant à l'élève d'aller faire mot de passe oublié
             returned = new ModelAndView("tokenExpiry");
         } else {
-            returned = new ModelAndView("index");
+            returned = connectionService.prepareIndexModelAndView();
         }
         return returned;
     }

@@ -15,10 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
+import org.centrale.infosi.pappl.logement.items.ConfigModif;
+import org.centrale.infosi.pappl.logement.repositories.ConfigModifRepository;
 import org.centrale.infosi.pappl.logement.items.MissionLogementStatus;
 import org.centrale.infosi.pappl.logement.repositories.MissionLogementStatusRepository;
 import org.centrale.infosi.pappl.logement.repositories.PersonneRepository;
 import org.centrale.infosi.pappl.logement.util.Util;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -39,6 +42,56 @@ public class ConnectionService {
 
     @Autowired
     private PersonneRepository personneRepository;
+
+    @Lazy
+    @Autowired
+    private ConfigModifRepository configModifRepository;
+
+    /**
+     * Get the login message based on mission status
+     * @return 
+     */
+    public String getLoginMessage() {
+        Optional<MissionLogementStatus> statusOpt = missionStatusRepository.findById(MissionLogementStatus.MISSIONID);
+        if (statusOpt.isEmpty()) return "";
+        
+        int status = statusOpt.get().getStatus();
+        String msgToDisplay = "";
+        switch (status) {
+            case 0:
+                msgToDisplay = "message_avant_connexion";
+                break;
+            case 1:
+                msgToDisplay = "message_pge_connexion";
+                break;
+            case 2:
+                msgToDisplay = "message_page_attente";
+                break;
+        }
+
+        Optional<ConfigModif> configInformationPopUpOpt = configModifRepository
+                .findTopByTypeNomOrderByModifIdDesc(msgToDisplay);
+
+        String texteInformation = "";
+        if (configInformationPopUpOpt.isPresent()) {
+            ConfigModif configInformationPopUp = configInformationPopUpOpt.get();
+            texteInformation = configInformationPopUp.getContenu();
+        }
+
+        texteInformation = texteInformation.replaceAll("\n", "<br/>");
+
+        return texteInformation;
+    }
+
+    /**
+     * Prepares a ModelAndView for the index page with login information pre-populated
+     * @return 
+     */
+    public ModelAndView prepareIndexModelAndView() {
+        ModelAndView returned = new ModelAndView("index");
+        returned.addObject("textePopUp", getLoginMessage());
+        return returned;
+    }
 
     /**
      * Méthode permettant de vérifier l'accès à une page

@@ -45,6 +45,9 @@ public class PasswordResetController {
     @Autowired
     @Lazy
     private MailService mailService;
+
+    @Autowired
+    private ConnectionService connectionService;
     
     /**
      * Permet d'afficher la page de réinitialisation d'un mot de passe
@@ -94,7 +97,7 @@ public class PasswordResetController {
         // Envoyer le mail
         mailService.sendPasswordResetMail(resetToken,mail);
 
-        ModelAndView returned = new ModelAndView("index");
+        ModelAndView returned = connectionService.prepareIndexModelAndView();
         returned.addObject("succesMessage","Un e-mail de réinitialisation vous a été envoyé.");
 
         return returned;
@@ -138,7 +141,7 @@ public class PasswordResetController {
                 personne.setPassword(PasswordUtils.hashPassword(newPassword));
                 personRepository.save(personne);
                 deleteToken(personne);
-                ModelAndView returned = new ModelAndView("index");
+                ModelAndView returned = connectionService.prepareIndexModelAndView();
                 returned.addObject("succesMessage", "Votre mot de passe a été modifié avec succès. Vous pouvez maintenant vous connecter.");
                 return returned;
             }

@@ -197,7 +197,7 @@ public class MailController {
             returned.addObject("connexionId", connexionId);
             return returned;
         }
-        return new ModelAndView("index");
+        return connectionService.prepareIndexModelAndView();
     }
 
     /**
@@ -244,7 +244,7 @@ public class MailController {
                 returned.addObject("confirmationMessage", "Mail de fin de mission envoyé avec succès !");
             }
         }
-        return new ModelAndView("index");
+        return connectionService.prepareIndexModelAndView();
     }
 
     /**
@@ -256,7 +256,7 @@ public class MailController {
     @RequestMapping(value = "envoiemailresetperso.do", method = RequestMethod.POST)
     public ModelAndView EnvoiReset(HttpServletRequest request) {
         int resEnvoiMail = envoyerMessage(request, MailConstants.MSGRESET);
-        ModelAndView returned  = new ModelAndView("index");
+        ModelAndView returned  = connectionService.prepareIndexModelAndView();
         if (resEnvoiMail == 4){
             returned.addObject("ConfirmationMessage", "Mail de réinitialisation envoyé");
         } else{
