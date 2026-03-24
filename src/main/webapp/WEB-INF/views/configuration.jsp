@@ -37,6 +37,39 @@
                             return true;
                         }
 
+                        function getCookie(name) {
+                            var value = "; " + document.cookie;
+                            var parts = value.split("; " + name + "=");
+                            if (parts.length === 2) return parts.pop().split(";").shift();
+                        }
+
+                        function expireCookie(name) {
+                            document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+                        }
+
+                        function checkDownload(btnSelector, originalText) {
+                            const interval = setInterval(() => {
+                                if (getCookie("fileDownload")) {
+                                    expireCookie("fileDownload");
+                                    const btn = document.querySelector(btnSelector);
+                                    if (btn) {
+                                        btn.disabled = false;
+                                        btn.classList.remove('is-loading');
+                                        btn.innerHTML = originalText;
+                                        
+                                        // Also re-enable other buttons in the same card
+                                        const card = btn.closest('.info-card');
+                                        if (card) {
+                                            const buttons = card.querySelectorAll('button[type="submit"], button.Supprimer, button.Import');
+                                            buttons.forEach(b => b.disabled = false);
+                                        }
+                                    }
+                                    clearInterval(interval);
+                                }
+                            }, 1000);
+                            setTimeout(() => clearInterval(interval), 60000);
+                        }
+
                         function checkSubmit(formId, action, message, btn) {
                             if (confirm(message)) {
                                 if (btn) showLoadingConfig(btn, "Purge...");
@@ -51,8 +84,11 @@
                         function handleImport(input) {
                             if (input.files && input.files.length > 0) {
                                 const btn = document.querySelector('.Import');
-                                showLoadingConfig(btn, 'Import en cours...');
-                                document.getElementById('importForm').submit();
+                                const originalText = btn.innerHTML;
+                                if (showLoadingConfig(btn, 'Import en cours...')) {
+                                    checkDownload('.Import', originalText);
+                                    document.getElementById('importForm').submit();
+                                }
                             }
                         }
                     </script>
