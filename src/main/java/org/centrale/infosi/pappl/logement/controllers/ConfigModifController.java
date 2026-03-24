@@ -260,10 +260,14 @@ public class ConfigModifController {
     public ModelAndView handleSaveConfig(HttpServletRequest request) {
         //
         Connexion connection = connectionService.checkAccess(request, "Admin");
+        ModelAndView returned = handleConfig(request);
         if (connection != null) {
             saveConfig(request);
+            if (returned != null) {
+                returned.addObject("confirmationMessage", "Configuration mise à jour avec succès !");
+            }
         }
-        return handleConfig(request);
+        return returned;
     }
 
     /**
@@ -330,12 +334,16 @@ public class ConfigModifController {
     public ModelAndView SupprimerDonnes(HttpServletRequest request) {
         Connexion connection = connectionService.checkAccess(request, "Admin");
         // connection = connectionService.checkMissionStatus(connection, 2);
+        ModelAndView returned = handleConfig(request);
         if (connection != null) {
             if (this.canEmptyData()) {
                 viderDataBase(connection);
+                if (returned != null) {
+                    returned.addObject("confirmationMessage", "Toutes les données ont été purgées.");
+                }
             }
         }
 
-        return handleConfig(request);
+        return returned;
     }
 }

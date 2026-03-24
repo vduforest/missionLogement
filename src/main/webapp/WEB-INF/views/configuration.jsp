@@ -17,8 +17,22 @@
 
                     <script src="${pageContext.request.contextPath}/js/configuration.js"></script>
                     <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            const scrollPos = localStorage.getItem("configScrollPos");
+                            if (scrollPos) {
+                                window.scrollTo(0, parseInt(scrollPos));
+                                localStorage.removeItem("configScrollPos");
+                            }
+                        });
+
+                        function saveScrollPosition() {
+                            localStorage.setItem("configScrollPos", window.scrollY);
+                        }
+
                         function showLoadingConfig(btn, text) {
                             if (btn.classList.contains('is-loading')) return false;
+                            
+                            saveScrollPosition();
                             btn.classList.add('is-loading');
 
                             const spinner = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span> ';
@@ -109,6 +123,19 @@
 
                     <div class="main-container">
                         <div class="info-card" style="position: relative;">
+
+                            <c:if test="${not empty confirmationMessage}">
+                                <div id="popupMessage"
+                                    style="display: block; position: fixed; bottom: 20px; left: 20px; background-color: #4CAF50; color: white; padding: 10px; border-radius: 5px;">
+                                    ${confirmationMessage}
+                                </div>
+                                <script type="text/javascript">
+                                    setTimeout(function () {
+                                        const popup = document.getElementById("popupMessage");
+                                        if (popup) popup.style.display = 'none';
+                                    }, 5000);
+                                </script>
+                            </c:if>
 
                             <form method="post" action="configuration.do"
                                 style="position: absolute; top: 20px; right: 20px; z-index: 10;">

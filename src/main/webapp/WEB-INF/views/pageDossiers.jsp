@@ -28,10 +28,15 @@
         <script type="text/javascript" src="dataTables/js/dataTables.responsive.min.js"></script>
         <script type="text/javascript" src="dataTables/js/dataTables.rowReorder.min.js"></script>
         <script type="text/javascript">
+            function saveScrollPosition() {
+                localStorage.setItem("pageDossiersScrollPos", window.scrollY);
+            }
+
             function checkSubmit(formId, msg) {
                 var result = confirm(msg);
                 var formRef = document.getElementById(formId);
                 if ((formRef !== null) && (result)) {
+                    saveScrollPosition();
                     formRef.submit();
                     return true;
                 }
@@ -40,6 +45,8 @@
 
             function showLoading(btn, text) {
                 if (btn.classList.contains('is-loading')) return false;
+
+                saveScrollPosition();
                 btn.classList.add('is-loading');
 
                 const spinner = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span> ';
@@ -52,6 +59,14 @@
 
                 return true;
             }
+
+            document.addEventListener("DOMContentLoaded", function() {
+                const scrollPos = localStorage.getItem("pageDossiersScrollPos");
+                if (scrollPos) {
+                    window.scrollTo(0, parseInt(scrollPos));
+                    localStorage.removeItem("pageDossiersScrollPos");
+                }
+            });
 
             function getCookie(name) {
                 var value = "; " + document.cookie;

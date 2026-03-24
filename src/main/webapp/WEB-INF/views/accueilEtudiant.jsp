@@ -11,8 +11,14 @@
     <link href="css/header.css" type="text/css" rel="stylesheet"/>
 
     <script type="text/javascript">
+      function saveScrollPosition() {
+        localStorage.setItem("accueilEtudiantScrollPos", window.scrollY);
+      }
+
       function showLoading(btn, text) {
         if (btn.classList.contains('is-loading')) return false;
+        
+        saveScrollPosition();
         btn.classList.add('is-loading');
 
         const spinner = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span> ';
@@ -25,11 +31,33 @@
 
         return true;
       }
+
+      document.addEventListener("DOMContentLoaded", function() {
+        const scrollPos = localStorage.getItem("accueilEtudiantScrollPos");
+        if (scrollPos) {
+          window.scrollTo(0, parseInt(scrollPos));
+          localStorage.removeItem("accueilEtudiantScrollPos");
+        }
+      });
     </script>
   </head>
 
   <body>
     <jsp:include page="/WEB-INF/views/header.jsp"/>
+
+    <c:if test="${not empty confirmationMessage}">
+        <div id="popupMessage"
+            style="display: block; position: fixed; bottom: 20px; left: 20px; background-color: #4CAF50; color: white; padding: 10px; border-radius: 5px; z-index: 1000;">
+            ${confirmationMessage}
+        </div>
+        <script type="text/javascript">
+            setTimeout(function () {
+                const popup = document.getElementById("popupMessage");
+                if (popup) popup.style.display = 'none';
+            }, 5000);
+        </script>
+    </c:if>
+
     <div class="main">
       <div class="py-3">
         <div class="container">
@@ -53,13 +81,5 @@
         </div>
       </div>
     </div>
-    <script>
-      window.onload = function () {
-        var message = "<%= request.getAttribute("confirmationMessage")%>";
-        if (message && message.trim() !== "null") {
-          alert(message);
-        }
-      };
-    </script>
   </body>
 </html>

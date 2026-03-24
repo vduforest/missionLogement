@@ -22,6 +22,19 @@
         <div class="main-container">
           <div class="info-card">
 
+            <c:if test="${not empty confirmationMessage}">
+                <div id="popupMessage"
+                    style="display: block; position: fixed; bottom: 20px; left: 20px; background-color: #4CAF50; color: white; padding: 10px; border-radius: 5px; z-index: 1000;">
+                    ${confirmationMessage}
+                </div>
+                <script type="text/javascript">
+                    setTimeout(function () {
+                        const popup = document.getElementById("popupMessage");
+                        if (popup) popup.style.display = 'none';
+                    }, 5000);
+                </script>
+            </c:if>
+
             <div class="form-header">
               <h2>Demande de Logement</h2>
               <p class="subtitle">Résidence Max Schmit</p>
@@ -292,13 +305,17 @@
 
         <script>
           window.onload = function () {
-            var message = "${confirmationMessage}";
-            if (message) { alert(message); }
             if (typeof sendDocument === "function") { sendDocument(); }
           };
 
+          function saveScrollPosition() {
+            localStorage.setItem("formulaireScrollPos", window.scrollY);
+          }
+
           function showLoading(btn, text) {
             if (btn.classList.contains('is-loading')) return false;
+
+            saveScrollPosition();
             btn.classList.add('is-loading');
 
             const spinner = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span> ';
@@ -318,6 +335,12 @@
 
           // --- NOUVELLE LOGIQUE JS ---
           document.addEventListener("DOMContentLoaded", function () {
+            const scrollPos = localStorage.getItem("formulaireScrollPos");
+            if (scrollPos) {
+              window.scrollTo(0, parseInt(scrollPos));
+              localStorage.removeItem("formulaireScrollPos");
+            }
+
             const btnSubmit = document.getElementById("btnSubmit");
             const btnSave = document.getElementById("btnSave");
             const inputs = document.querySelectorAll(".monitor-change");

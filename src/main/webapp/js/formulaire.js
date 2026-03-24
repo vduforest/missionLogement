@@ -87,8 +87,25 @@ function openForm(id) {
   });
 }
 
+function saveScrollPosition(pageKey) {
+  localStorage.setItem(pageKey + "ScrollPos", window.scrollY);
+}
+
+function restoreScrollPosition(pageKey) {
+  const scrollPos = localStorage.getItem(pageKey + "ScrollPos");
+  if (scrollPos) {
+    window.scrollTo(0, parseInt(scrollPos));
+    localStorage.removeItem(pageKey + "ScrollPos");
+  }
+}
+
 function showLoadingVe(btn, text) {
   if (btn.classList.contains('is-loading')) return false;
+
+  // Identify current page for scroll preservation
+  const pageKey = window.location.pathname.split('/').pop().replace('.do', '');
+  saveScrollPosition(pageKey);
+
   btn.classList.add('is-loading');
 
   // Prepend spinner and update text
@@ -97,7 +114,7 @@ function showLoadingVe(btn, text) {
 
   // Disable buttons after a short delay to allow form submission to capture the clicked button's name/value
   setTimeout(() => {
-    const footer = btn.closest('.row.justify-content-center') || btn.closest('.buttons-container');
+    const footer = btn.closest('.row.justify-content-center') || btn.closest('.buttons-container') || btn.closest('.form-actions');
     if (footer) {
       const buttons = footer.querySelectorAll('button');
       buttons.forEach(b => {

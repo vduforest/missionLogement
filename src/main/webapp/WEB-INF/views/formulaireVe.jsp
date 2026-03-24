@@ -20,8 +20,20 @@
                 <div class="main-container">
                     <div class="info-card" style="position: relative;">
 
-                        <form method="post" action="formulaireVe.do"
-                            style="position: absolute; top: 20px; right: 20px; z-index: 10;">
+                        <c:if test="${not empty ConfirmationMessage}">
+                            <div id="popupMessage"
+                                style="display: block; position: fixed; bottom: 20px; left: 20px; background-color: #4CAF50; color: white; padding: 10px; border-radius: 5px; z-index: 1000;">
+                                ${ConfirmationMessage}
+                            </div>
+                            <script type="text/javascript">
+                                setTimeout(function () {
+                                    const popup = document.getElementById("popupMessage");
+                                    if (popup) popup.style.display = 'none';
+                                }, 5000);
+                            </script>
+                        </c:if>
+
+                        <form method="post" action="formulaireVe.do"                            style="position: absolute; top: 20px; right: 20px; z-index: 10;">
                             <input type="hidden" name="connexionId" value="${connexionId}" />
                             <input type="hidden" name="id" value="${item.formulaireId}" />
                             <input type="hidden" name="personneId" value="${item.personneId.personneId}" />
@@ -56,6 +68,13 @@
                                         <script>
                                             // Récupérer la valeur de formulaireId depuis le JSP
                                             var formulaireId = "${item.formulaireId}";
+
+                                            document.addEventListener("DOMContentLoaded", function () {
+                                                const pageKey = window.location.pathname.split('/').pop().replace('.do', '');
+                                                if (typeof restoreScrollPosition === "function") {
+                                                    restoreScrollPosition(pageKey);
+                                                }
+                                            });
                                         </script>
 
                                         <div class="table-responsive">
@@ -678,7 +697,6 @@
                                                     </c:choose>
                                                 </div>
                                             </div>
-                                            </script>
                                     </form>
                                 </div>
                             </div>
@@ -687,15 +705,6 @@
                 </div>
                 </div>
                 </div>
-
-                <script>
-                    window.onload = function () {
-                        var message = "<%= request.getAttribute("confirmationMessage")%>";
-                        if (message && message.trim() !== "null") {
-                            alert(message);
-                        }
-                    };
-                </script>
             </body>
 
             </html>
