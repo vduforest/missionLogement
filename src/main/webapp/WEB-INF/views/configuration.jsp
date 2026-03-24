@@ -353,9 +353,13 @@ M.;Durand;Lucas;15/06/2002;75015;Paris;France;84532;lucas.durand@eleves.ec-nante
                                                 <label class="field-label">Infobulle Genre</label>
                                                 <input type="text" name="tooltip_genre" value="${tooltip_genre}" />
                                             </div>
-                                            <div>
+                                            <div class="mb-3">
                                                 <label class="field-label">Infobulle Téléphone</label>
                                                 <input type="text" name="tooltip_tel" value="${tooltip_tel}" />
+                                            </div>
+                                            <div>
+                                                <label class="field-label">Infobulle Téléphone 2</label>
+                                                <input type="text" name="tooltip_tel2" value="${tooltip_tel2}" />
                                             </div>
                                         </div>
                                     </div>

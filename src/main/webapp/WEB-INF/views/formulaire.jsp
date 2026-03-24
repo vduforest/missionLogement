@@ -69,7 +69,9 @@
                 </div>
 
                 <div class="form-row">
-                  <div class="label-col">Date de naissance</div>
+                  <div class="label-col">Date de naissance <c:if test="${not empty tooltip_date_naissance}"><span
+                          class="tooltip-icon">i<span class="tooltip-text">${tooltip_date_naissance}</span></span></c:if>
+                  </div>
                   <div class="input-col">
                     <label for="date">Date de naissance</label>
                     <input type="text" id="date" value="<fmt:formatDate value='${item.dateDeNaissance}' pattern='dd/MM/yyyy' />"
@@ -138,7 +140,9 @@
                 </div>
 
                 <div class="form-row">
-                  <div class="label-col">Téléphone 2 (Optionnel)</div>
+                  <div class="label-col">Téléphone 2 (Optionnel) <c:if test="${not empty tooltip_tel2}"><span
+                          class="tooltip-icon">i<span class="tooltip-text">${tooltip_tel2}</span></span></c:if>
+                  </div>
                   <div class="input-col">
                       <label for="tel2">Téléphone 2</label>
                     <input type="text" name="tel2" id="tel2" value="${item.tel2}" <c:if
@@ -247,7 +251,9 @@
                 </div>
 
                 <div class="form-row">
-                  <div class="label-col">Informations Complémentaires</div>
+                  <div class="label-col">Informations Complémentaires <c:if test="${not empty tooltip_infos}"><span
+                          class="tooltip-icon">i<span class="tooltip-text">${tooltip_infos}</span></span></c:if>
+                  </div>
                   <div class="input-col">
                       <label for="infoSupplementaires">infos supplémentaires</label>
                     <textarea id="infoSupplementaires" name="infoSupplementaires" rows="5" <c:if
