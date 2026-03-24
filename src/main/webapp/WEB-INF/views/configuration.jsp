@@ -29,9 +29,11 @@
                                 const card = btn.closest('.info-card');
                                 const buttons = card.querySelectorAll('button[type="submit"], button.Supprimer, button.Import');
                                 buttons.forEach(b => {
-                                    if (b !== btn) b.disabled = true;
+                                    if (!b.hasAttribute('data-original-disabled')) {
+                                        b.setAttribute('data-original-disabled', b.disabled);
+                                    }
+                                    b.disabled = true;
                                 });
-                                btn.disabled = true;
                             }, 10);
                             
                             return true;
@@ -53,15 +55,23 @@
                                     expireCookie("fileDownload");
                                     const btn = document.querySelector(btnSelector);
                                     if (btn) {
-                                        btn.disabled = false;
                                         btn.classList.remove('is-loading');
                                         btn.innerHTML = originalText;
                                         
-                                        // Also re-enable other buttons in the same card
+                                        // Restore original disabled states in the same card
                                         const card = btn.closest('.info-card');
                                         if (card) {
                                             const buttons = card.querySelectorAll('button[type="submit"], button.Supprimer, button.Import');
-                                            buttons.forEach(b => b.disabled = false);
+                                            buttons.forEach(b => {
+                                                if (b.hasAttribute('data-original-disabled')) {
+                                                    b.disabled = b.getAttribute('data-original-disabled') === 'true';
+                                                    b.removeAttribute('data-original-disabled');
+                                                } else if (b === btn) {
+                                                    b.disabled = false;
+                                                }
+                                            });
+                                        } else {
+                                            btn.disabled = false;
                                         }
                                     }
                                     clearInterval(interval);
