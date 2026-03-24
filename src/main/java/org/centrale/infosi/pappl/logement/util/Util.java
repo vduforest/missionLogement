@@ -772,6 +772,7 @@ public class Util {
             try {
                 return ResponseEntity.ok()
                         .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + fileName + "\"")
+                        .header(HttpHeaders.SET_COOKIE, "fileDownload=true; path=/")
                         .contentType(mediaType)
                         .body(new InputStreamResource(new FileInputStream(theFile)));
             } catch (FileNotFoundException ex) {

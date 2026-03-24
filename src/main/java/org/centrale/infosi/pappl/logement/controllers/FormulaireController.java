@@ -152,7 +152,7 @@ public class FormulaireController {
             "tooltip_nom", "tooltip_prenom", "tooltip_date_naissance",
             "tooltip_ville", "tooltip_code_postal", "tooltip_pays",
             "tooltip_mail", "tooltip_confirm_mail", "tooltip_genre",
-            "tooltip_tel", "tooltip_bourse", "tooltip_souhait",
+            "tooltip_tel", "tooltip_tel2", "tooltip_bourse", "tooltip_souhait",
             "tooltip_pmr", "tooltip_infos"
         };
         for (String tooltip : tooltips) {
@@ -519,6 +519,19 @@ public class FormulaireController {
             returned.addObject("pays", paysList);
             returned.addObject("souhaitsList", souhaitRepository.findAll(Sort.by(Sort.Direction.ASC, "souhaitOrdre")));
             returned.addObject("genresList", genreRepository.findAll(Sort.by(Sort.Direction.ASC, "genreOrdre")));
+
+            // Tooltips
+            String[] tooltips = {
+                "tooltip_nom", "tooltip_prenom", "tooltip_date_naissance",
+                "tooltip_ville", "tooltip_code_postal", "tooltip_pays",
+                "tooltip_mail", "tooltip_confirm_mail", "tooltip_genre",
+                "tooltip_tel", "tooltip_tel2", "tooltip_bourse", "tooltip_souhait",
+                "tooltip_pmr", "tooltip_infos"
+            };
+            for (String tooltip : tooltips) {
+                returned.addObject(tooltip, getLast(tooltip));
+            }
+
             return returned;
         }
         return connectionService.prepareModelAndView(connection, "index");

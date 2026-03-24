@@ -28,10 +28,15 @@
         <script type="text/javascript" src="dataTables/js/dataTables.responsive.min.js"></script>
         <script type="text/javascript" src="dataTables/js/dataTables.rowReorder.min.js"></script>
         <script type="text/javascript">
+            function saveScrollPosition() {
+                localStorage.setItem("pageDossiersScrollPos", window.scrollY);
+            }
+
             function checkSubmit(formId, msg) {
                 var result = confirm(msg);
                 var formRef = document.getElementById(formId);
                 if ((formRef !== null) && (result)) {
+                    saveScrollPosition();
                     formRef.submit();
                     return true;
                 }
@@ -40,6 +45,8 @@
 
             function showLoading(btn, text) {
                 if (btn.classList.contains('is-loading')) return false;
+
+                saveScrollPosition();
                 btn.classList.add('is-loading');
 
                 const spinner = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span> ';
@@ -51,6 +58,41 @@
                 }, 10);
 
                 return true;
+            }
+
+            document.addEventListener("DOMContentLoaded", function() {
+                const scrollPos = localStorage.getItem("pageDossiersScrollPos");
+                if (scrollPos) {
+                    window.scrollTo(0, parseInt(scrollPos));
+                    localStorage.removeItem("pageDossiersScrollPos");
+                }
+            });
+
+            function getCookie(name) {
+                var value = "; " + document.cookie;
+                var parts = value.split("; " + name + "=");
+                if (parts.length === 2) return parts.pop().split(";").shift();
+            }
+
+            function expireCookie(name) {
+                document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+            }
+
+            function checkDownload(btnId, originalText) {
+                const interval = setInterval(() => {
+                    if (getCookie("fileDownload")) {
+                        expireCookie("fileDownload");
+                        const btn = document.getElementById(btnId);
+                        if (btn) {
+                            btn.disabled = false;
+                            btn.classList.remove('is-loading');
+                            btn.innerHTML = originalText;
+                        }
+                        clearInterval(interval);
+                    }
+                }, 1000);
+                // Clear interval after 60 seconds as fail-safe
+                setTimeout(() => clearInterval(interval), 60000);
             }
         </script>
 
@@ -210,7 +252,7 @@
                                         <td class="text-center">
                                             <form action="export.do" method="POST">
                                                 <input type="hidden" name="connexionId" value="${connexionId}" />
-                                                <button id="export" onclick="showLoading(this, 'Export en cours...')">Exporter les dossiers</button>
+                                                <button id="export" onclick="if(showLoading(this, 'Export en cours...')) checkDownload('export', 'Exporter les dossiers')">Exporter les dossiers</button>
                                             </form>
                                         </td>
                                     </tr>

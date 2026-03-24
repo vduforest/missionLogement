@@ -17,8 +17,22 @@
 
                     <script src="${pageContext.request.contextPath}/js/configuration.js"></script>
                     <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            const scrollPos = localStorage.getItem("configScrollPos");
+                            if (scrollPos) {
+                                window.scrollTo(0, parseInt(scrollPos));
+                                localStorage.removeItem("configScrollPos");
+                            }
+                        });
+
+                        function saveScrollPosition() {
+                            localStorage.setItem("configScrollPos", window.scrollY);
+                        }
+
                         function showLoadingConfig(btn, text) {
                             if (btn.classList.contains('is-loading')) return false;
+                            
+                            saveScrollPosition();
                             btn.classList.add('is-loading');
 
                             const spinner = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span> ';
@@ -29,12 +43,55 @@
                                 const card = btn.closest('.info-card');
                                 const buttons = card.querySelectorAll('button[type="submit"], button.Supprimer, button.Import');
                                 buttons.forEach(b => {
-                                    if (b !== btn) b.disabled = true;
+                                    if (!b.hasAttribute('data-original-disabled')) {
+                                        b.setAttribute('data-original-disabled', b.disabled);
+                                    }
+                                    b.disabled = true;
                                 });
-                                btn.disabled = true;
                             }, 10);
                             
                             return true;
+                        }
+
+                        function getCookie(name) {
+                            var value = "; " + document.cookie;
+                            var parts = value.split("; " + name + "=");
+                            if (parts.length === 2) return parts.pop().split(";").shift();
+                        }
+
+                        function expireCookie(name) {
+                            document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+                        }
+
+                        function checkDownload(btnSelector, originalText) {
+                            const interval = setInterval(() => {
+                                if (getCookie("fileDownload")) {
+                                    expireCookie("fileDownload");
+                                    const btn = document.querySelector(btnSelector);
+                                    if (btn) {
+                                        btn.classList.remove('is-loading');
+                                        btn.innerHTML = originalText;
+                                        
+                                        // Restore original disabled states in the same card
+                                        const card = btn.closest('.info-card');
+                                        if (card) {
+                                            const buttons = card.querySelectorAll('button[type="submit"], button.Supprimer, button.Import');
+                                            buttons.forEach(b => {
+                                                if (b.hasAttribute('data-original-disabled')) {
+                                                    b.disabled = b.getAttribute('data-original-disabled') === 'true';
+                                                    b.removeAttribute('data-original-disabled');
+                                                } else if (b === btn) {
+                                                    b.disabled = false;
+                                                }
+                                            });
+                                        } else {
+                                            btn.disabled = false;
+                                        }
+                                    }
+                                    clearInterval(interval);
+                                }
+                            }, 1000);
+                            setTimeout(() => clearInterval(interval), 60000);
                         }
 
                         function checkSubmit(formId, action, message, btn) {
@@ -51,8 +108,11 @@
                         function handleImport(input) {
                             if (input.files && input.files.length > 0) {
                                 const btn = document.querySelector('.Import');
-                                showLoadingConfig(btn, 'Import en cours...');
-                                document.getElementById('importForm').submit();
+                                const originalText = btn.innerHTML;
+                                if (showLoadingConfig(btn, 'Import en cours...')) {
+                                    checkDownload('.Import', originalText);
+                                    document.getElementById('importForm').submit();
+                                }
                             }
                         }
                     </script>
@@ -63,6 +123,19 @@
 
                     <div class="main-container">
                         <div class="info-card" style="position: relative;">
+
+                            <c:if test="${not empty confirmationMessage}">
+                                <div id="popupMessage"
+                                    style="display: block; position: fixed; bottom: 20px; left: 20px; background-color: #4CAF50; color: white; padding: 10px; border-radius: 5px;">
+                                    ${confirmationMessage}
+                                </div>
+                                <script type="text/javascript">
+                                    setTimeout(function () {
+                                        const popup = document.getElementById("popupMessage");
+                                        if (popup) popup.style.display = 'none';
+                                    }, 5000);
+                                </script>
+                            </c:if>
 
                             <form method="post" action="configuration.do"
                                 style="position: absolute; top: 20px; right: 20px; z-index: 10;">
@@ -317,9 +390,13 @@ M.;Durand;Lucas;15/06/2002;75015;Paris;France;84532;lucas.durand@eleves.ec-nante
                                                 <label class="field-label">Infobulle Genre</label>
                                                 <input type="text" name="tooltip_genre" value="${tooltip_genre}" />
                                             </div>
-                                            <div>
+                                            <div class="mb-3">
                                                 <label class="field-label">Infobulle Téléphone</label>
                                                 <input type="text" name="tooltip_tel" value="${tooltip_tel}" />
+                                            </div>
+                                            <div>
+                                                <label class="field-label">Infobulle Téléphone 2</label>
+                                                <input type="text" name="tooltip_tel2" value="${tooltip_tel2}" />
                                             </div>
                                         </div>
                                     </div>

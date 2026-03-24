@@ -20,8 +20,20 @@
                 <div class="main-container">
                     <div class="info-card" style="position: relative;">
 
-                        <form method="post" action="formulaireVe.do"
-                            style="position: absolute; top: 20px; right: 20px; z-index: 10;">
+                        <c:if test="${not empty ConfirmationMessage}">
+                            <div id="popupMessage"
+                                style="display: block; position: fixed; bottom: 20px; left: 20px; background-color: #4CAF50; color: white; padding: 10px; border-radius: 5px; z-index: 1000;">
+                                ${ConfirmationMessage}
+                            </div>
+                            <script type="text/javascript">
+                                setTimeout(function () {
+                                    const popup = document.getElementById("popupMessage");
+                                    if (popup) popup.style.display = 'none';
+                                }, 5000);
+                            </script>
+                        </c:if>
+
+                        <form method="post" action="formulaireVe.do"                            style="position: absolute; top: 20px; right: 20px; z-index: 10;">
                             <input type="hidden" name="connexionId" value="${connexionId}" />
                             <input type="hidden" name="id" value="${item.formulaireId}" />
                             <input type="hidden" name="personneId" value="${item.personneId.personneId}" />
@@ -56,13 +68,22 @@
                                         <script>
                                             // Récupérer la valeur de formulaireId depuis le JSP
                                             var formulaireId = "${item.formulaireId}";
+
+                                            document.addEventListener("DOMContentLoaded", function () {
+                                                const pageKey = window.location.pathname.split('/').pop().replace('.do', '');
+                                                if (typeof restoreScrollPosition === "function") {
+                                                    restoreScrollPosition(pageKey);
+                                                }
+                                            });
                                         </script>
 
                                         <div class="table-responsive">
                                             <div class="modern-form-table">
 
                                                 <div class="form-row">
-                                                    <div class="label-col"><label for="nom">Nom</label></div>
+                                                    <div class="label-col"><label for="nom">Nom</label>
+                                                        <c:if test="${not empty tooltip_nom}"><span class="tooltip-icon">i<span class="tooltip-text">${tooltip_nom}</span></span></c:if>
+                                                    </div>
                                                     <div class="input-col">
                                                         <input type="hidden" name="numSCEI"
                                                             value="${item.numeroScei}" />
@@ -84,6 +105,7 @@
 
                                                 <div class="form-row">
                                                     <div class="label-col"><label for="prenom">Prenom</label>
+                                                        <c:if test="${not empty tooltip_prenom}"><span class="tooltip-icon">i<span class="tooltip-text">${tooltip_prenom}</span></span></c:if>
                                                     </div>
                                                     <div class="input-col">
                                                         <input type="text" id="prenom" name="prenom"
@@ -104,7 +126,9 @@
 
                                                 <div class="form-row">
                                                     <div class="label-col"><label for="dateNaissance">Date de
-                                                            Naissance(XX/MM/YYYY)</label></div>
+                                                            Naissance(XX/MM/YYYY)</label>
+                                                        <c:if test="${not empty tooltip_date_naissance}"><span class="tooltip-icon">i<span class="tooltip-text">${tooltip_date_naissance}</span></span></c:if>
+                                                    </div>
                                                     <div class="input-col">
                                                         <fmt:formatDate value="${item.dateDeNaissance}"
                                                             pattern="dd/MM/yyyy" var="formattedDate" />
@@ -126,6 +150,7 @@
 
                                                 <div class="form-row">
                                                     <div class="label-col"><label for="ville">Ville</label>
+                                                        <c:if test="${not empty tooltip_ville}"><span class="tooltip-icon">i<span class="tooltip-text">${tooltip_ville}</span></span></c:if>
                                                     </div>
                                                     <div class="input-col">
                                                         <input type="text" id="ville" name="ville" value="${item.ville}"
@@ -145,7 +170,9 @@
 
                                                 <div class="form-row">
                                                     <div class="label-col"><label for="codePostal">Code
-                                                            Postal</label></div>
+                                                            Postal</label>
+                                                        <c:if test="${not empty tooltip_code_postal}"><span class="tooltip-icon">i<span class="tooltip-text">${tooltip_code_postal}</span></span></c:if>
+                                                    </div>
                                                     <div class="input-col">
                                                         <input type="text" id="codePostal" name="codePostal"
                                                             value="${item.codePostal}" disabled="disabled" />
@@ -163,7 +190,9 @@
                                                 </div>
 
                                                 <div class="form-row">
-                                                    <div class="label-col">Pays</div>
+                                                    <div class="label-col">Pays
+                                                        <c:if test="${not empty tooltip_pays}"><span class="tooltip-icon">i<span class="tooltip-text">${tooltip_pays}</span></span></c:if>
+                                                    </div>
                                                     <div class="input-col">
                                                         <select id='pays' name="pays" disabled='disabled'
                                                             required="required">
@@ -186,7 +215,9 @@
                                                 </div>
 
                                                 <div class="form-row">
-                                                    <div class="label-col"><label for="mail">Mail</label></div>
+                                                    <div class="label-col"><label for="mail">Mail</label>
+                                                        <c:if test="${not empty tooltip_mail}"><span class="tooltip-icon">i<span class="tooltip-text">${tooltip_mail}</span></span></c:if>
+                                                    </div>
                                                     <div class="input-col">
                                                         <input type="text" id="mail" name="mail" value="${item.mail}"
                                                             placeholder="insérer votre mail" disabled="disabled"
@@ -205,7 +236,9 @@
                                                 </div>
 
                                                 <div class="form-row">
-                                                    <div class="label-col">Genre</div>
+                                                    <div class="label-col">Genre
+                                                        <c:if test="${not empty tooltip_genre}"><span class="tooltip-icon">i<span class="tooltip-text">${tooltip_genre}</span></span></c:if>
+                                                    </div>
                                                     <div class="input-col">
                                                         <select id="Genre" name="Genre" disabled="disabled"
                                                             required="required">
@@ -241,7 +274,9 @@
 
                                                 <div class="form-row">
                                                     <div class="label-col"><label for="tel">Numéro de
-                                                            téléphone</label></div>
+                                                            téléphone</label>
+                                                        <c:if test="${not empty tooltip_tel}"><span class="tooltip-icon">i<span class="tooltip-text">${tooltip_tel}</span></span></c:if>
+                                                    </div>
                                                     <div class="input-col">
                                                         <input id="tel" type="text" name="tel" value="${item.numeroTel}"
                                                             disabled="disabled" required="required" />
@@ -260,7 +295,9 @@
 
                                                 <div class="form-row">
                                                     <div class="label-col"><label for="tel2">Deuxième numéro de
-                                                            téléphone</label></div>
+                                                            téléphone</label>
+                                                        <c:if test="${not empty tooltip_tel2}"><span class="tooltip-icon">i<span class="tooltip-text">${tooltip_tel2}</span></span></c:if>
+                                                    </div>
                                                     <div class="input-col">
                                                         <input id="tel2" type="text" name="tel2" value="${item.tel2}"
                                                             disabled="disabled" />
@@ -278,7 +315,9 @@
                                                 </div>
 
                                                 <div class="form-row">
-                                                    <div class="label-col">Êtes-vous boursier ?</div>
+                                                    <div class="label-col">Êtes-vous boursier ?
+                                                        <c:if test="${not empty tooltip_bourse}"><span class="tooltip-icon">i<span class="tooltip-text">${tooltip_bourse}</span></span></c:if>
+                                                    </div>
                                                     <div class="input-col">
                                                         <select name="boursier" id="boursier" disabled="disabled"
                                                             required="required">
@@ -323,7 +362,9 @@
 
                                                 <div class="form-row">
                                                     <div class="label-col"><label for="souhait">Préférence
-                                                            logement</label></div>
+                                                            logement</label>
+                                                        <c:if test="${not empty tooltip_souhait}"><span class="tooltip-icon">i<span class="tooltip-text">${tooltip_souhait}</span></span></c:if>
+                                                    </div>
                                                     <div class="input-col">
                                                         <select id="souhait" name="Souhait" disabled="disabled"
                                                             required="required">
@@ -357,7 +398,9 @@
                                                 <div class="form-row">
                                                     <div class="label-col"><label for="pmr">Avez-vous besoin de
                                                             dispositions particulières<br />(pmr, traitement
-                                                            médical...) ?</label></div>
+                                                            médical...) ?</label>
+                                                        <c:if test="${not empty tooltip_pmr}"><span class="tooltip-icon">i<span class="tooltip-text">${tooltip_pmr}</span></span></c:if>
+                                                    </div>
                                                     <div class="input-col">
                                                         <select name="pmr" id="pmr" disabled="disabled"
                                                             required="required">
@@ -386,6 +429,7 @@
                                                 <div class="form-row">
                                                     <div class="label-col" style="color: var(--brand-blue);">
                                                         <label for="comEleve">Commentaire Eleve</label>
+                                                        <c:if test="${not empty tooltip_infos}"><span class="tooltip-icon">i<span class="tooltip-text">${tooltip_infos}</span></span></c:if>
                                                     </div>
                                                     <div class="input-col" id="comEleve"
                                                         style="color: #495057; width: 70%; padding: 15px 20px; flex-grow: 1; font-style: italic;">
@@ -653,7 +697,6 @@
                                                     </c:choose>
                                                 </div>
                                             </div>
-                                            </script>
                                     </form>
                                 </div>
                             </div>
@@ -662,15 +705,6 @@
                 </div>
                 </div>
                 </div>
-
-                <script>
-                    window.onload = function () {
-                        var message = "<%= request.getAttribute("confirmationMessage")%>";
-                        if (message && message.trim() !== "null") {
-                            alert(message);
-                        }
-                    };
-                </script>
             </body>
 
             </html>

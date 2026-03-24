@@ -18,8 +18,14 @@
 
         <script type="text/javascript" src="js/jquery-3.6.1.min.js"></script>
         <script type="text/javascript">
+          function saveScrollPosition() {
+            localStorage.setItem("accueilAdminScrollPos", window.scrollY);
+          }
+
           function showLoading(btn, text) {
             if (btn.classList.contains('is-loading')) return false;
+
+            saveScrollPosition();
             btn.classList.add('is-loading');
 
             const spinner = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span> ';
@@ -32,6 +38,14 @@
 
             return true;
           }
+
+          document.addEventListener("DOMContentLoaded", function() {
+            const scrollPos = localStorage.getItem("accueilAdminScrollPos");
+            if (scrollPos) {
+              window.scrollTo(0, parseInt(scrollPos));
+              localStorage.removeItem("accueilAdminScrollPos");
+            }
+          });
         </script>
       </head>
 
